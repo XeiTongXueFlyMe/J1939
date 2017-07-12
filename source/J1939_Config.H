@@ -95,10 +95,29 @@
 #define Port_TXinterruptOk() J1939_TXinterruptOk()
 #define Port_CAN_identifier_clc()  CAN_identifier_clc()
 
+/***************************************************************************************/
+/*
+*输入：
+*输出： 
+*说明：基于SAE J1939协议，我们需要CAN控制器提供至少3个滤波器给J1939协议代码。三个滤波器分别配置如下： 
+		1. 设置滤波器0，只接受广播信息（PF = 240 -255）。 
+		2. 设置设置滤波器1，2只接受全局地址（J1939_GLOBAL_ADDRESS） 
+		3. 随着程序的运行，将改变滤波器2，来适应程序逻辑。
+	J1939_SetAddressFilter() 是用来设置滤波器2的， 函数主要设置PS位（目标地址），其目的是，让控制器
+	只接受发送给本设备的消息。
+*/
 void J1939_SetAddressFilter(unsigned char Ps_Address)
 {
 	;
 }
+/*
+*输入： CAN自带的结构体（包含ID） 协议本身的结构体 IDJ1939_MESSAGE
+*输出： 
+*说明：我们需要配置can的远程帧ID,函数ChangeGroupIDofLMO（）提供这样的配置。配置方法和移植，和
+	J1939_CAN_Transmit函数有关，建议一起配置：
+	我们需要配置can的远程帧ID,函数ChangeGroupIDofLMO（）提供这样的配置。配置方法和移植，和
+	J1939_CAN_Transmit函数有关，建议一起配置：
+*/
 void ChangeGroupIDofLMO(const CAN_NODE_LMO_t *lmo_ptr,J1939_MESSAGE *MsgPtr)
 {
 	;
