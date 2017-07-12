@@ -45,7 +45,6 @@
 
 #include "J1939.H"
 
-#include "../UserApp/includes.h"//使用者，自己工程必要的声明
 
 /***************************J1939 标识符和地址配置*************************************/
 
@@ -95,95 +94,35 @@
 #define Port_TXinterruptDisable() J1939_TXinterruptDisable() 
 #define Port_TXinterruptOk() J1939_TXinterruptOk()
 #define Port_CAN_identifier_clc()  CAN_identifier_clc()
+
 void J1939_SetAddressFilter(unsigned char Ps_Address)
 {
-	CAN_NODE3_DEBUG.lmobj_ptr[0]->mo_ptr->can_id_mask &=0XFFFF00FF;
-	CAN_NODE3_DEBUG.lmobj_ptr[0]->mo_ptr->can_id_mask |= (Ps_Address<<8);
-    CAN_NODE_MO_Init(CAN_NODE3_DEBUG.lmobj_ptr[0]);
+	;
 }
 void ChangeGroupIDofLMO(const CAN_NODE_LMO_t *lmo_ptr,J1939_MESSAGE *MsgPtr)
 {
-	int _i=0;
-	lmo_ptr->mo_ptr->can_identifier = 0;
-	/*读取J1939协议结构体中的数据到 CAN的结构中*/
-	for(_i=0;_i<4;_i++)
-	{
-		lmo_ptr->mo_ptr->can_identifier = (lmo_ptr->mo_ptr->can_identifier << 8) + MsgPtr->Array[_i];
-	}
-	// 在线修改lmo配置
-    CAN_NODE_MO_Init(lmo_ptr);
+	;
 }
 
 /*从MsgPtr加载到CAN自带的结构体中*/
 void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 {
-	CAN_NODE_LMO_t *lmo_ptr = CAN_NODE3_DEBUG.lmobj_ptr[1];
-	/*加载29位ID*/
-	ChangeGroupIDofLMO((const CAN_NODE_LMO_t * const)(CAN_NODE3_DEBUG.lmobj_ptr[1]),MsgPtr);
-	/*加载数据长度*/
-	lmo_ptr->mo_ptr->can_data_length = MsgPtr->Mxe.DataLength;
-	CAN_NODE_MO_Init(lmo_ptr);
-	/*加载数据*/
-	lmo_ptr->mo_ptr->can_data_byte[0] = MsgPtr->Mxe.Data[0];
-	lmo_ptr->mo_ptr->can_data_byte[1] = MsgPtr->Mxe.Data[1];
-	lmo_ptr->mo_ptr->can_data_byte[2] = MsgPtr->Mxe.Data[2];
-	lmo_ptr->mo_ptr->can_data_byte[3] = MsgPtr->Mxe.Data[3];
-	lmo_ptr->mo_ptr->can_data_byte[4] = MsgPtr->Mxe.Data[4];
-	lmo_ptr->mo_ptr->can_data_byte[5] = MsgPtr->Mxe.Data[5];
-	lmo_ptr->mo_ptr->can_data_byte[6] = MsgPtr->Mxe.Data[6];
-	lmo_ptr->mo_ptr->can_data_byte[7] = MsgPtr->Mxe.Data[7];
-	/*加载RTR*/
-	//你的代码
-	//开始发送数据
-	(CAN_NODE_STATUS_t) CAN_NODE_MO_Transmit(lmo_ptr) ;
+	;
 }
 //将设备CAN中的数据取出，存入J1939_MESSAGE结构体中
 int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 {
-	uint32_t receive_status=0;
-	uint32_t _id=0;
-	receive_status = CAN_NODE_MO_GetStatus( ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]);
-	if ( receive_status & XMC_CAN_MO_STATUS_RX_PENDING)  //XMC_CAN_MO_STATUS_NEW_DATA
-	{
-	  // 清除接受标识位
-	  CAN_NODE_MO_ClearStatus(((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0],XMC_CAN_MO_RESET_STATUS_RX_PENDING);
-	  // 读取数据
-	  CAN_NODE_MO_Receive( ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]);
-	  //将29位标志位（can_identifier）写入J1939的结构中
-	  _id = ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]->mo_ptr->can_identifier;
-	  MsgPtr->Array[0] = _id>>(8*3);
-	  MsgPtr->Array[1] = _id>>(8*2);
-	  MsgPtr->Array[2] = _id>>(8*1);
-	  MsgPtr->Array[3] = _id>>(8*0);
-	  //读取数据长度
-	  MsgPtr->Mxe.DataLength = ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]->mo_ptr->can_data_length;
-	  if (MsgPtr->Mxe.DataLength > 8)
-		  MsgPtr->Mxe.DataLength = 8;
-	  //读取数据
-	  MsgPtr->Mxe.Data[0] = ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]->mo_ptr->can_data_byte[0];
-	  MsgPtr->Mxe.Data[1] = ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]->mo_ptr->can_data_byte[1];
-	  MsgPtr->Mxe.Data[2] = ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]->mo_ptr->can_data_byte[2];
-	  MsgPtr->Mxe.Data[3] = ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]->mo_ptr->can_data_byte[3];
-	  MsgPtr->Mxe.Data[4] = ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]->mo_ptr->can_data_byte[4];
-	  MsgPtr->Mxe.Data[5] = ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]->mo_ptr->can_data_byte[5];
-	  MsgPtr->Mxe.Data[6] = ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]->mo_ptr->can_data_byte[6];
-	  MsgPtr->Mxe.Data[7] = ((CAN_NODE_t *)&CAN_NODE3_DEBUG)->lmobj_ptr[0]->mo_ptr->can_data_byte[7];
-
-	  return 1;
-	}else
-	{
-		return 0;//没有消息
-	}
+	;
 }
 
 void J1939_RXinterruptEnable()
 {
-	INTERRUPT_Enable(&CAN_RInterrupt_DEBUG);
+	;
 }
 
 void J1939_RXinterruptDisable()
 {
-	INTERRUPT_Disable(&CAN_RInterrupt_DEBUG);
+	;
 }
 void J1939_TXinterruptEnable()
 {
