@@ -1,0 +1,1625 @@
+<?xml version="1.0" encoding="ASCII"?>
+<pi:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:al="http://eclipse.org/graphiti/mm/algorithms" xmlns:pi="http://eclipse.org/graphiti/mm/pictograms" visible="true" gridUnit="10" diagramTypeId="HWdependenciesdiagramType" name="ceProject" snapToGrid="true" pictogramLinks="//@link" version="0.10.0">
+  <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.1" foreground="//@colors.0" lineWidth="1" transparency="0.0" width="1000" height="1000"/>
+  <link>
+    <businessObjects href="ModelConfigData.data#/"/>
+  </link>
+  <children xsi:type="pi:ContainerShape" visible="true" active="true">
+    <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0"/>
+    <properties key="APP_NAME_ID" value="CLOCK_XMC4/0"/>
+    <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="161" height="221" x="90" y="262">
+      <graphicsAlgorithmChildren xsi:type="al:RoundedRectangle" lineWidth="2" transparency="0.0" width="121" height="221" x="20" style="//@styles.0/@styles.3" cornerHeight="5" cornerWidth="5"/>
+    </graphicsAlgorithm>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.0/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="external_clock_pin"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_extclkpin"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="120" y="50"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" referencedGraphicsAlgorithm="//@children.0/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="clk_ccu_output"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_fccu"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="120" y="70"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" referencedGraphicsAlgorithm="//@children.0/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="clk_perbridge_output"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_fpb"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="120" y="90"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.0/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="clk_external_output"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_extclk"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="120" y="110"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.0/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="osc_hp_watchdog_trap"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_sysoscwd_trap"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="120" y="130"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.0/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="system_vco_lock_trap"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_sysvcolock_trap"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="120" y="150"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.0/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="usb_vco_lock_trap"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_usbvcolock_trap"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="120" y="170"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.0/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="osc_ulp_watchdog_trap"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_ulpwdg_trap"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="120" y="190"/>
+    </anchors>
+    <children visible="true">
+      <graphicsAlgorithm xsi:type="al:Polyline" lineStyle="UNSPECIFIED" style="//@styles.0">
+        <points x="20" y="40"/>
+        <points x="141" y="40"/>
+      </graphicsAlgorithm>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="121" height="20" x="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="119" height="20" x="2" style="//@styles.0/@styles.0" horizontalAlignment="ALIGNMENT_CENTER" value="CLOCK_XMC4"/>
+      </children>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="121" height="20" x="20" y="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="119" height="20" x="2" style="//@styles.0/@styles.1" horizontalAlignment="ALIGNMENT_CENTER" value="CLOCK_XMC4_0">
+          <properties key="AppInstanceLabel" value="CLOCK_XMC4_0"/>
+        </graphicsAlgorithm>
+      </children>
+    </children>
+    <children active="true">
+      <properties key="SignalName" value="external_clock_pin"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_extclkpin"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="30"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_extclkpin"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="105" height="20" x="30" y="45" horizontalAlignment="ALIGNMENT_RIGHT" value="external_clock_pin"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="clk_ccu_output"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_fccu"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="50"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_fccu"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="105" height="20" x="30" y="65" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="clk_ccu_output"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="clk_perbridge_output"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_fpb"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="70"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_fpb"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="105" height="20" x="30" y="85" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="clk_perbridge_output"/>
+    </children>
+    <children active="true">
+      <properties key="SignalName" value="clk_external_output"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_extclk"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="90"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_extclk"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="105" height="20" x="30" y="105" horizontalAlignment="ALIGNMENT_RIGHT" value="clk_external_output"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="osc_hp_watchdog_trap"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_sysoscwd_trap"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="110"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_sysoscwd_trap"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="95" height="20" x="40" y="125" horizontalAlignment="ALIGNMENT_RIGHT" value="osc_hp_watchdog_trap"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="system_vco_lock_trap"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_sysvcolock_trap"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="130"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_sysvcolock_trap"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="105" height="20" x="30" y="145" horizontalAlignment="ALIGNMENT_RIGHT" value="system_vco_lock_trap"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="usb_vco_lock_trap"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_usbvcolock_trap"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="150"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_usbvcolock_trap"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="105" height="20" x="30" y="165" horizontalAlignment="ALIGNMENT_RIGHT" value="usb_vco_lock_trap"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="osc_ulp_watchdog_trap"/>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_ulpwdg_trap"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="170"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.0.18/app/CLOCK_XMC4/0/vs_ulpwdg_trap"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="105" height="20" x="30" y="185" horizontalAlignment="ALIGNMENT_RIGHT" value="osc_ulp_watchdog_trap"/>
+    </children>
+  </children>
+  <children xsi:type="pi:ContainerShape" visible="true" active="true">
+    <properties key="uri" value="http://resources/4.0.12/app/CPU_CTRL_XMC4/0"/>
+    <properties key="APP_NAME_ID" value="CPU_CTRL_XMC4/0"/>
+    <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="161" height="71" x="90" y="151">
+      <graphicsAlgorithmChildren xsi:type="al:RoundedRectangle" lineWidth="2" transparency="0.0" width="121" height="71" x="20" style="//@styles.0/@styles.3" cornerHeight="5" cornerWidth="5"/>
+    </graphicsAlgorithm>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" referencedGraphicsAlgorithm="//@children.1/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="nmi_irq"/>
+      <properties key="uri" value="http://resources/4.0.12/app/CPU_CTRL_XMC4/0/vs_nmi_irq"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="-20" y="50"/>
+    </anchors>
+    <children visible="true">
+      <graphicsAlgorithm xsi:type="al:Polyline" lineStyle="UNSPECIFIED" style="//@styles.0">
+        <points x="20" y="40"/>
+        <points x="141" y="40"/>
+      </graphicsAlgorithm>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="121" height="20" x="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="119" height="20" x="2" style="//@styles.0/@styles.0" horizontalAlignment="ALIGNMENT_CENTER" value="CPU_CTRL_XMC4"/>
+      </children>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="121" height="20" x="20" y="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="119" height="20" x="2" style="//@styles.0/@styles.1" horizontalAlignment="ALIGNMENT_CENTER" value="CPU_CTRL_XMC4_0">
+          <properties key="AppInstanceLabel" value="CPU_CTRL_XMC4_0"/>
+        </graphicsAlgorithm>
+      </children>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="nmi_irq"/>
+      <properties key="uri" value="http://resources/4.0.12/app/CPU_CTRL_XMC4/0/vs_nmi_irq"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="30"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.0.12/app/CPU_CTRL_XMC4/0/vs_nmi_irq"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="60" height="20" x="25" y="45" style="//@styles.0/@styles.2" value="nmi_irq"/>
+    </children>
+  </children>
+  <children xsi:type="pi:ContainerShape" visible="true" active="true">
+    <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1"/>
+    <properties key="APP_NAME_ID" value="CAN_NODE/1"/>
+    <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="261" height="1451" x="20" y="523">
+      <graphicsAlgorithmChildren xsi:type="al:RoundedRectangle" lineWidth="2" transparency="0.0" width="221" height="1451" x="20" style="//@styles.0/@styles.3" cornerHeight="5" cornerWidth="5"/>
+    </graphicsAlgorithm>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="receive_pin"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_rxd"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.4" lineStyle="UNSPECIFIED" width="20" height="10" x="-20" y="50"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="transmit_pin"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_txd"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.4" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="50"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="receive_pad"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_rxpin"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.4" lineStyle="UNSPECIFIED" width="20" height="10" x="-20" y="70"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="transmit_pad"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_txpin"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.4" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="70"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_node_alert"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_alinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="90"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_node_lec_error"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_lecinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="110"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_node_frame_count"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_cfcinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="150"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_node_transfer_ok"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_trinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="130"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_01_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message1_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="170"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" outgoingConnections="//@connections.1" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_02_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message2_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="190"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_03_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message3_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="210"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_04_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message4_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="230"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_05_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message5_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="250"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_06_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message6_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="270"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_07_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message7_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="290"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_08_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message8_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="310"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_09_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message9_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="330"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_10_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message10_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="350"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_11_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message11_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="370"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_12_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message12_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="390"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_13_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message13_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="410"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_14_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message14_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="430"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_15_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message15_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="450"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_16_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message16_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="470"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_17_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message17_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="490"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_18_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message18_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="510"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_19_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message19_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="530"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_20_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message20_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="550"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_21_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message21_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="570"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_22_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message22_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="590"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_23_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message23_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="610"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_24_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message24_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="630"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_25_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message25_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="650"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_26_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message26_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="670"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_27_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message27_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="690"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_28_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message28_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="710"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_29_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message29_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="730"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_30_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message30_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="750"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_31_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message31_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="770"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_32_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message32_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="790"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" outgoingConnections="//@connections.0" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_01_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message1_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="810"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_02_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message2_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="830"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" outgoingConnections="//@connections.2" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_03_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message3_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="850"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" outgoingConnections="//@connections.3" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_04_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message4_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="870"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_05_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message5_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="890"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_06_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message6_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="910"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_07_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message7_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="930"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_08_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message8_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="950"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_09_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message9_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="970"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_10_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message10_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="990"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_11_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message11_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1010"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_12_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message12_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1030"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_13_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message13_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1050"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_14_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message14_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1070"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_15_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message15_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1090"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_16_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message16_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1110"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_17_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message17_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1130"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_18_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message18_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1150"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_19_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message19_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1170"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_20_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message20_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1190"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_21_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message21_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1210"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_22_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message22_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1230"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_23_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message23_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1250"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_24_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message24_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1270"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_25_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message25_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1290"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_26_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message26_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1310"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_27_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message27_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1330"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_28_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message28_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1350"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_29_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message29_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1370"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_30_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message30_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1390"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_31_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message31_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1410"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.2/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="event_lmo_32_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message32_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="220" y="1430"/>
+    </anchors>
+    <children visible="true">
+      <graphicsAlgorithm xsi:type="al:Polyline" lineStyle="UNSPECIFIED" style="//@styles.0">
+        <points x="20" y="40"/>
+        <points x="241" y="40"/>
+      </graphicsAlgorithm>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="221" height="20" x="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="219" height="20" x="2" style="//@styles.0/@styles.0" horizontalAlignment="ALIGNMENT_CENTER" value="CAN_NODE"/>
+      </children>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="221" height="20" x="20" y="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="219" height="20" x="2" style="//@styles.0/@styles.1" horizontalAlignment="ALIGNMENT_CENTER" value="CAN_NODE3_DEBUG">
+          <properties key="AppInstanceLabel" value="CAN_NODE_1"/>
+        </graphicsAlgorithm>
+      </children>
+    </children>
+    <children active="true">
+      <properties key="SignalName" value="receive_pin"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_rxd"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="30"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_rxd"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.3" lineStyle="UNSPECIFIED" width="86" height="20" x="25" y="45" style="//@styles.0/@styles.2" value="receive_pin"/>
+    </children>
+    <children active="true">
+      <properties key="SignalName" value="transmit_pin"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_txd"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="30"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_txd"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.3" lineStyle="UNSPECIFIED" width="115" height="20" x="120" y="45" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="transmit_pin"/>
+    </children>
+    <children active="true">
+      <properties key="SignalName" value="receive_pad"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_rxpin"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="50"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_rxpin"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.3" lineStyle="UNSPECIFIED" width="86" height="20" x="25" y="65" style="//@styles.0/@styles.2" value="receive_pad"/>
+    </children>
+    <children active="true">
+      <properties key="SignalName" value="transmit_pad"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_txpin"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="50"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_txpin"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.3" lineStyle="UNSPECIFIED" width="115" height="20" x="120" y="65" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="transmit_pad"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_node_alert"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_alinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="70"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_alinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="85" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_node_alert"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_node_lec_error"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_lecinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="90"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_lecinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="105" horizontalAlignment="ALIGNMENT_RIGHT" value="event_node_lec_error"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_node_frame_count"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_cfcinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="130"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_cfcinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="145" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_node_frame_count"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_node_transfer_ok"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_trinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="110"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_can_trinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="125" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_node_transfer_ok"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_01_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message1_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="150"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message1_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="165" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_01_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_02_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message2_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="170"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message2_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="185" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_02_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_03_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message3_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="190"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message3_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="205" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_03_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_04_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message4_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="210"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message4_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="225" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_04_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_05_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message5_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="230"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message5_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="245" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_05_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_06_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message6_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="250"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message6_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="265" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_06_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_07_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message7_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="270"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message7_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="285" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_07_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_08_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message8_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="290"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message8_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="305" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_08_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_09_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message9_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="310"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message9_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="325" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_09_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_10_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message10_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="330"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message10_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="345" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_10_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_11_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message11_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="350"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message11_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="365" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_11_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_12_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message12_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="370"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message12_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="385" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_12_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_13_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message13_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="390"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message13_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="405" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_13_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_14_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message14_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="410"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message14_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="425" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_14_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_15_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message15_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="430"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message15_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="445" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_15_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_16_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message16_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="450"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message16_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="465" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_16_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_17_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message17_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="470"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message17_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="485" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_17_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_18_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message18_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="490"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message18_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="505" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_18_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_19_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message19_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="510"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message19_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="525" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_19_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_20_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message20_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="530"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message20_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="545" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_20_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_21_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message21_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="550"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message21_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="565" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_21_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_22_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message22_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="570"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message22_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="585" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_22_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_23_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message23_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="590"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message23_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="605" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_23_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_24_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message24_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="610"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message24_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="625" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_24_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_25_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message25_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="630"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message25_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="645" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_25_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_26_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message26_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="650"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message26_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="665" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_26_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_27_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message27_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="670"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message27_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="685" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_27_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_28_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message28_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="690"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message28_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="705" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_28_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_29_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message29_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="710"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message29_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="725" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_29_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_30_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message30_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="730"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message30_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="745" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_30_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_31_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message31_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="750"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message31_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="765" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_31_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_32_txinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message32_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="770"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message32_txinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="785" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_32_txinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_01_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message1_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="790"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message1_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="805" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_01_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_02_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message2_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="810"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message2_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="825" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_02_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_03_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message3_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="830"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message3_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="845" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_03_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_04_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message4_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="850"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message4_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="865" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_04_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_05_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message5_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="870"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message5_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="885" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_05_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_06_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message6_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="890"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message6_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="905" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_06_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_07_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message7_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="910"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message7_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="925" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_07_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_08_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message8_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="930"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message8_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="945" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_08_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_09_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message9_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="950"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message9_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="965" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_09_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_10_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message10_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="970"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message10_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="985" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_10_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_11_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message11_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="990"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message11_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1005" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_11_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_12_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message12_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1010"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message12_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1025" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_12_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_13_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message13_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1030"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message13_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1045" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_13_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_14_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message14_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1050"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message14_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1065" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_14_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_15_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message15_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1070"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message15_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1085" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_15_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_16_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message16_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1090"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message16_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1105" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_16_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_17_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message17_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1110"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message17_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1125" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_17_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_18_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message18_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1130"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message18_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1145" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_18_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_19_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message19_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1150"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message19_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1165" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_19_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_20_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message20_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1170"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message20_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1185" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_20_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_21_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message21_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1190"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message21_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1205" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_21_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_22_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message22_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1210"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message22_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1225" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_22_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_23_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message23_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1230"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message23_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1245" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_23_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_24_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message24_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1250"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message24_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1265" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_24_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_25_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message25_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1270"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message25_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1285" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_25_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_26_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message26_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1290"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message26_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1305" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_26_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_27_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message27_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1310"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message27_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1325" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_27_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_28_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message28_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1330"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message28_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1345" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_28_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_29_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message29_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1350"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message29_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1365" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_29_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_30_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message30_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1370"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message30_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1385" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_30_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_31_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message31_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1390"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message31_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1405" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_31_rxinp"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="event_lmo_32_rxinp"/>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message32_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="1410"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/vs_message32_rxinp"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="205" height="20" x="30" y="1425" horizontalAlignment="ALIGNMENT_RIGHT" value="event_lmo_32_rxinp"/>
+    </children>
+  </children>
+  <children xsi:type="pi:ContainerShape" visible="true" active="true">
+    <properties key="uri" value="http://resources/4.0.8/app/INTERRUPT/3"/>
+    <properties key="APP_NAME_ID" value="INTERRUPT/3"/>
+    <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="171" height="71" x="320" y="1017">
+      <graphicsAlgorithmChildren xsi:type="al:RoundedRectangle" lineWidth="2" transparency="0.0" width="131" height="71" x="20" style="//@styles.0/@styles.3" cornerHeight="5" cornerWidth="5"/>
+    </graphicsAlgorithm>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" incomingConnections="//@connections.0 //@connections.2 //@connections.3" referencedGraphicsAlgorithm="//@children.3/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="sr_irq"/>
+      <properties key="uri" value="http://resources/4.0.8/app/INTERRUPT/3/vs_nvic_signal_in"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="-20" y="50"/>
+    </anchors>
+    <children visible="true">
+      <graphicsAlgorithm xsi:type="al:Polyline" lineStyle="UNSPECIFIED" style="//@styles.0">
+        <points x="20" y="40"/>
+        <points x="151" y="40"/>
+      </graphicsAlgorithm>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="131" height="20" x="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="129" height="20" x="2" style="//@styles.0/@styles.0" horizontalAlignment="ALIGNMENT_CENTER" value="INTERRUPT"/>
+      </children>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="131" height="20" x="20" y="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="129" height="20" x="2" style="//@styles.0/@styles.1" horizontalAlignment="ALIGNMENT_CENTER" value="CAN_RInterrupt_DEBUG">
+          <properties key="AppInstanceLabel" value="INTERRUPT_0"/>
+        </graphicsAlgorithm>
+      </children>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="sr_irq"/>
+      <properties key="uri" value="http://resources/4.0.8/app/INTERRUPT/3/vs_nvic_signal_in"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="30"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.0.8/app/INTERRUPT/3/vs_nvic_signal_in"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="96" height="20" x="25" y="45" style="//@styles.0/@styles.2" value="sr_irq"/>
+    </children>
+  </children>
+  <children xsi:type="pi:ContainerShape" visible="true" active="true">
+    <properties key="uri" value="http://resources/4.0.16/app/DIGITAL_IO/0"/>
+    <properties key="APP_NAME_ID" value="DIGITAL_IO/0"/>
+    <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="161" height="91" x="90" y="20">
+      <graphicsAlgorithmChildren xsi:type="al:RoundedRectangle" lineWidth="2" transparency="0.0" width="121" height="91" x="20" style="//@styles.0/@styles.3" cornerHeight="5" cornerWidth="5"/>
+    </graphicsAlgorithm>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" referencedGraphicsAlgorithm="//@children.4/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="pin"/>
+      <properties key="uri" value="http://resources/4.0.16/app/DIGITAL_IO/0/vs_digital_io_pad_pin"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="120" y="50"/>
+    </anchors>
+    <anchors xsi:type="pi:BoxRelativeAnchor" active="true" referencedGraphicsAlgorithm="//@children.4/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="hardware pin control"/>
+      <properties key="uri" value="http://resources/4.0.16/app/DIGITAL_IO/0/vs_digital_io_hwsel"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="120" y="70"/>
+    </anchors>
+    <children visible="true">
+      <graphicsAlgorithm xsi:type="al:Polyline" lineStyle="UNSPECIFIED" style="//@styles.0">
+        <points x="20" y="40"/>
+        <points x="141" y="40"/>
+      </graphicsAlgorithm>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="121" height="20" x="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="119" height="20" x="2" style="//@styles.0/@styles.0" horizontalAlignment="ALIGNMENT_CENTER" value="DIGITAL_IO"/>
+      </children>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="121" height="20" x="20" y="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="119" height="20" x="2" style="//@styles.0/@styles.1" horizontalAlignment="ALIGNMENT_CENTER" value="O_SystemLight">
+          <properties key="AppInstanceLabel" value="DIGITAL_IO_0"/>
+        </graphicsAlgorithm>
+      </children>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="pin"/>
+      <properties key="uri" value="http://resources/4.0.16/app/DIGITAL_IO/0/vs_digital_io_pad_pin"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="30"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.0.16/app/DIGITAL_IO/0/vs_digital_io_pad_pin"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="125" height="20" x="10" y="45" style="//@styles.0/@styles.2" horizontalAlignment="ALIGNMENT_RIGHT" value="pin"/>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="hardware pin control"/>
+      <properties key="uri" value="http://resources/4.0.16/app/DIGITAL_IO/0/vs_digital_io_hwsel"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="50"/>
+    </children>
+    <children>
+      <properties key="uri" value="http://resources/4.0.16/app/DIGITAL_IO/0/vs_digital_io_hwsel"/>
+      <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="105" height="20" x="30" y="65" horizontalAlignment="ALIGNMENT_RIGHT" value="hardware pin control"/>
+    </children>
+  </children>
+  <children xsi:type="pi:ContainerShape" visible="true" active="true">
+    <properties key="uri" value="http://resources/4.0.8/app/INTERRUPT/4"/>
+    <properties key="APP_NAME_ID" value="INTERRUPT/4"/>
+    <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="171" height="71" x="320" y="906">
+      <graphicsAlgorithmChildren xsi:type="al:RoundedRectangle" lineWidth="2" transparency="0.0" width="131" height="71" x="20" style="//@styles.0/@styles.3" cornerHeight="5" cornerWidth="5"/>
+    </graphicsAlgorithm>
+    <anchors xsi:type="pi:BoxRelativeAnchor" visible="true" active="true" incomingConnections="//@connections.1" referencedGraphicsAlgorithm="//@children.5/@graphicsAlgorithm/@graphicsAlgorithmChildren.0">
+      <properties key="SignalName" value="sr_irq"/>
+      <properties key="uri" value="http://resources/4.0.8/app/INTERRUPT/4/vs_nvic_signal_in"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" background="//@colors.2" lineStyle="UNSPECIFIED" width="20" height="10" x="-20" y="50"/>
+    </anchors>
+    <children visible="true">
+      <graphicsAlgorithm xsi:type="al:Polyline" lineStyle="UNSPECIFIED" style="//@styles.0">
+        <points x="20" y="40"/>
+        <points x="151" y="40"/>
+      </graphicsAlgorithm>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="131" height="20" x="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="129" height="20" x="2" style="//@styles.0/@styles.0" horizontalAlignment="ALIGNMENT_CENTER" value="INTERRUPT"/>
+      </children>
+    </children>
+    <children xsi:type="pi:ContainerShape" visible="true">
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="131" height="20" x="20" y="20"/>
+      <children visible="true">
+        <graphicsAlgorithm xsi:type="al:Text" lineStyle="UNSPECIFIED" width="129" height="20" x="2" style="//@styles.0/@styles.1" horizontalAlignment="ALIGNMENT_CENTER" value="CAN_TInterrupt_DEBUG">
+          <properties key="AppInstanceLabel" value="INTERRUPT_0"/>
+        </graphicsAlgorithm>
+      </children>
+    </children>
+    <children visible="true" active="true">
+      <properties key="SignalName" value="sr_irq"/>
+      <properties key="uri" value="http://resources/4.0.8/app/INTERRUPT/4/vs_nvic_signal_in"/>
+      <graphicsAlgorithm xsi:type="al:Rectangle" lineWidth="1" filled="false" lineVisible="false" transparency="0.0" width="20" height="10" x="-20" y="30"/>
+    </children>
+    <children visible="true">
+      <properties key="uri" value="http://resources/4.0.8/app/INTERRUPT/4/vs_nvic_signal_in"/>
+      <graphicsAlgorithm xsi:type="al:Text" foreground="//@colors.2" lineStyle="UNSPECIFIED" width="96" height="20" x="25" y="45" style="//@styles.0/@styles.2" value="sr_irq"/>
+    </children>
+  </children>
+  <children xsi:type="pi:ContainerShape" visible="true" active="true">
+    <properties key="junctionPoint"/>
+    <graphicsAlgorithm xsi:type="al:Ellipse" lineStyle="UNSPECIFIED" width="6" height="6" x="297" y="1335">
+      <graphicsAlgorithmChildren xsi:type="al:Ellipse" background="//@colors.6" foreground="//@colors.6" lineWidth="1" transparency="0.0" width="5" height="5"/>
+    </graphicsAlgorithm>
+  </children>
+  <children xsi:type="pi:ContainerShape" visible="true" active="true">
+    <properties key="junctionPoint"/>
+    <graphicsAlgorithm xsi:type="al:Ellipse" lineStyle="UNSPECIFIED" width="6" height="6" x="297" y="1375">
+      <graphicsAlgorithmChildren xsi:type="al:Ellipse" background="//@colors.6" foreground="//@colors.6" lineWidth="1" transparency="0.0" width="5" height="5"/>
+    </graphicsAlgorithm>
+  </children>
+  <styles background="//@colors.1" lineWidth="2" lineVisible="true" transparency="0.0" id="COMMON-VALUES" horizontalAlignment="UNSPECIFIED" verticalAlignment="UNSPECIFIED">
+    <styles foreground="//@colors.2" lineStyle="UNSPECIFIED" filled="false" id="APP_NAME" font="//@fonts.0"/>
+    <styles foreground="//@colors.2" lineStyle="UNSPECIFIED" filled="false" id="APP_INST_NAME" font="//@fonts.1"/>
+    <styles foreground="//@colors.2" lineStyle="UNSPECIFIED" filled="false" id="SIGNAL_NAME" font="//@fonts.0"/>
+    <styles lineStyle="UNSPECIFIED" filled="true" id="E-CLASS" horizontalAlignment="UNSPECIFIED" verticalAlignment="UNSPECIFIED">
+      <renderingStyle>
+        <adaptedGradientColoredAreas definedStyleId="blue-white-gloss" gradientType="0">
+          <adaptedGradientColoredAreas styleAdaption="0">
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="0">
+                <color red="248" green="251" blue="254"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="1">
+                <color red="248" green="251" blue="254"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="1">
+                <color red="237" green="245" blue="252"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="2">
+                <color red="237" green="245" blue="252"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="2">
+                <color red="222" green="237" blue="250"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="3">
+                <color red="222" green="237" blue="250"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="3">
+                <color red="212" green="231" blue="248"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="2">
+                <color red="250" green="251" blue="252"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="2">
+                <color red="226" green="229" blue="233"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="0">
+                <color red="226" green="229" blue="233"/>
+              </end>
+            </gradientColor>
+          </adaptedGradientColoredAreas>
+          <adaptedGradientColoredAreas styleAdaption="1">
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="0">
+                <color red="238" green="246" blue="253"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="1">
+                <color red="238" green="246" blue="253"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="1">
+                <color red="208" green="230" blue="249"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="2">
+                <color red="208" green="230" blue="249"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="2">
+                <color red="172" green="210" blue="244"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="3">
+                <color red="172" green="210" blue="244"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="3">
+                <color red="129" green="185" blue="234"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="2">
+                <color red="170" green="208" blue="242"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="2">
+                <color red="154" green="191" blue="224"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="0">
+                <color red="154" green="191" blue="224"/>
+              </end>
+            </gradientColor>
+          </adaptedGradientColoredAreas>
+          <adaptedGradientColoredAreas styleAdaption="2">
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="0">
+                <color red="245" green="249" blue="254"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="1">
+                <color red="245" green="249" blue="254"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="1">
+                <color red="226" green="239" blue="252"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="2">
+                <color red="226" green="239" blue="252"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="2">
+                <color red="203" green="227" blue="249"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="3">
+                <color red="203" green="227" blue="249"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="3">
+                <color red="187" green="218" blue="247"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="2">
+                <color red="197" green="224" blue="247"/>
+              </end>
+            </gradientColor>
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="2">
+                <color red="178" green="205" blue="229"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="0">
+                <color red="178" green="205" blue="229"/>
+              </end>
+            </gradientColor>
+          </adaptedGradientColoredAreas>
+          <adaptedGradientColoredAreas styleAdaption="3">
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="0">
+                <color red="153" green="204"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="0">
+                <color red="51" green="153" blue="102"/>
+              </end>
+            </gradientColor>
+          </adaptedGradientColoredAreas>
+          <adaptedGradientColoredAreas styleAdaption="4">
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="0">
+                <color red="255" green="204"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="0">
+                <color red="255" green="102"/>
+              </end>
+            </gradientColor>
+          </adaptedGradientColoredAreas>
+        </adaptedGradientColoredAreas>
+      </renderingStyle>
+    </styles>
+    <styles lineStyle="UNSPECIFIED" filled="true" id="HWConnectedApps" horizontalAlignment="UNSPECIFIED" verticalAlignment="UNSPECIFIED">
+      <renderingStyle>
+        <adaptedGradientColoredAreas definedStyleId="light-yellow" gradientType="0">
+          <adaptedGradientColoredAreas styleAdaption="0">
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="0">
+                <color red="254" green="254" blue="244"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="0">
+                <color red="254" green="254" blue="244"/>
+              </end>
+            </gradientColor>
+          </adaptedGradientColoredAreas>
+          <adaptedGradientColoredAreas styleAdaption="1">
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="0">
+                <color red="229" green="229" blue="194"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="0">
+                <color red="229" green="229" blue="194"/>
+              </end>
+            </gradientColor>
+          </adaptedGradientColoredAreas>
+          <adaptedGradientColoredAreas styleAdaption="2">
+            <gradientColor>
+              <start locationType="LOCATION_TYPE_ABSOLUTE_START" locationValue="0">
+                <color red="250" green="250" blue="217"/>
+              </start>
+              <end locationType="LOCATION_TYPE_ABSOLUTE_END" locationValue="0">
+                <color red="250" green="250" blue="217"/>
+              </end>
+            </gradientColor>
+          </adaptedGradientColoredAreas>
+        </adaptedGradientColoredAreas>
+      </renderingStyle>
+    </styles>
+  </styles>
+  <connections xsi:type="pi:FreeFormConnection" visible="true" active="true" start="//@children.2/@anchors.40" end="//@children.3/@anchors.0">
+    <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/http://resources/4.1.10/app/CAN_NODE/1/vs_message1_rxinp/http://resources/4.0.8/app/INTERRUPT/3/vs_nvic_signal_in"/>
+    <graphicsAlgorithm xsi:type="al:Polyline" background="//@colors.6" foreground="//@colors.6" lineStyle="UNSPECIFIED" style="//@styles.0/@styles.3"/>
+    <connectionDecorators visible="true" locationRelative="true" location="1.0">
+      <graphicsAlgorithm xsi:type="al:Polyline" background="//@colors.6" foreground="//@colors.6" lineStyle="UNSPECIFIED" style="//@styles.0/@styles.3">
+        <points x="-10" y="5"/>
+        <points/>
+        <points x="-10" y="-5"/>
+      </graphicsAlgorithm>
+    </connectionDecorators>
+    <bendpoints x="300" y="1338"/>
+    <bendpoints x="300" y="1072"/>
+  </connections>
+  <connections xsi:type="pi:FreeFormConnection" visible="true" active="true" start="//@children.2/@anchors.9" end="//@children.5/@anchors.0">
+    <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/http://resources/4.1.10/app/CAN_NODE/1/vs_message2_txinp/http://resources/4.0.8/app/INTERRUPT/4/vs_nvic_signal_in"/>
+    <graphicsAlgorithm xsi:type="al:Polyline" background="//@colors.6" foreground="//@colors.6" lineStyle="UNSPECIFIED" style="//@styles.0/@styles.3"/>
+    <connectionDecorators visible="true" locationRelative="true" location="1.0">
+      <graphicsAlgorithm xsi:type="al:Polyline" background="//@colors.6" foreground="//@colors.6" lineStyle="UNSPECIFIED" style="//@styles.0/@styles.3">
+        <points x="-10" y="5"/>
+        <points/>
+        <points x="-10" y="-5"/>
+      </graphicsAlgorithm>
+    </connectionDecorators>
+    <bendpoints x="300" y="718"/>
+    <bendpoints x="300" y="961"/>
+  </connections>
+  <connections xsi:type="pi:FreeFormConnection" visible="true" active="true" start="//@children.2/@anchors.42" end="//@children.3/@anchors.0">
+    <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/http://resources/4.1.10/app/CAN_NODE/1/vs_message3_rxinp/http://resources/4.0.8/app/INTERRUPT/3/vs_nvic_signal_in"/>
+    <graphicsAlgorithm xsi:type="al:Polyline" background="//@colors.6" foreground="//@colors.6" lineStyle="UNSPECIFIED" style="//@styles.0/@styles.3"/>
+    <connectionDecorators visible="true" locationRelative="true" location="1.0">
+      <graphicsAlgorithm xsi:type="al:Polyline" background="//@colors.6" foreground="//@colors.6" lineStyle="UNSPECIFIED" style="//@styles.0/@styles.3">
+        <points x="-10" y="5"/>
+        <points/>
+        <points x="-10" y="-5"/>
+      </graphicsAlgorithm>
+    </connectionDecorators>
+    <bendpoints x="300" y="1378"/>
+    <bendpoints x="300" y="1072"/>
+  </connections>
+  <connections xsi:type="pi:FreeFormConnection" visible="true" active="true" start="//@children.2/@anchors.43" end="//@children.3/@anchors.0">
+    <properties key="uri" value="http://resources/4.1.10/app/CAN_NODE/1/http://resources/4.1.10/app/CAN_NODE/1/vs_message4_rxinp/http://resources/4.0.8/app/INTERRUPT/3/vs_nvic_signal_in"/>
+    <graphicsAlgorithm xsi:type="al:Polyline" background="//@colors.6" foreground="//@colors.6" lineStyle="UNSPECIFIED" style="//@styles.0/@styles.3"/>
+    <connectionDecorators visible="true" locationRelative="true" location="1.0">
+      <graphicsAlgorithm xsi:type="al:Polyline" background="//@colors.6" foreground="//@colors.6" lineStyle="UNSPECIFIED" style="//@styles.0/@styles.3">
+        <points x="-10" y="5"/>
+        <points/>
+        <points x="-10" y="-5"/>
+      </graphicsAlgorithm>
+    </connectionDecorators>
+    <bendpoints x="300" y="1398"/>
+    <bendpoints x="300" y="1072"/>
+  </connections>
+  <colors red="227" green="238" blue="249"/>
+  <colors red="255" green="255" blue="255"/>
+  <colors/>
+  <colors red="128" green="128" blue="128"/>
+  <colors red="192" green="192" blue="192"/>
+  <colors green="127"/>
+  <colors blue="127"/>
+  <fonts name="Arial" size="8"/>
+  <fonts name="Arial" size="8" bold="true"/>
+</pi:Diagram>

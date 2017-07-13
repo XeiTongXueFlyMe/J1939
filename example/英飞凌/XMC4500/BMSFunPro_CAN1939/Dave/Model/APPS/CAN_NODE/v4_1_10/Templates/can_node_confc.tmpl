@@ -1,0 +1,469 @@
+package Model.APPS.CAN_NODE.v4_1_10.Templates;
+
+import Model.APPS.CAN_NODE.v4_1_10.CAN_NODE
+
+out.print("""
+/**
+ * @cond
+ ***********************************************************************************************************************
+ *
+ * Copyright (c) 2015, Infineon Technologies AG
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,are permitted provided that the
+ * following conditions are met:
+ *
+ *   Redistributions of source code must retain the above copyright notice, this list of conditions and the  following
+ *   disclaimer.
+ *
+ *   Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+ *   following disclaimer in the documentation and/or other materials provided with the distribution.
+ *
+ *   Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote
+ *   products derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes
+ * with Infineon Technologies AG (dave@infineon.com).
+ ***********************************************************************************************************************
+ *
+ * Change History
+ * --------------
+ *
+ * 2015-05-15:
+ *     - Initial version<br>
+ *
+ * @endcond
+ *
+ */
+/***********************************************************************************************************************
+ * HEADER FILES
+ **********************************************************************************************************************/
+#include "can_node.h"
+
+""");
+
+ /* Variable declaration */
+
+ String appInst = null
+ List NodeUri = null   /* CAN Node */
+ 
+ /* For MO */
+ List Consumed_can_mo_num = null
+ 
+ /* GPIO configuration */
+ String  portNo = null;
+ String  pinNo = null;
+ String port_iocr_pcr = null;
+ String port_iocr_oe = null;
+ 
+  String portNo_rx = null;
+  String pinNo_rx = null;
+ 
+ List map_arr= new Object[40] 
+
+ 
+ List OutputArray_8 = [
+   'XMC_GPIO_MODE_OUTPUT_PUSH_PULL' ,       //!< XMC_GPIO_MODE_OUTPUT_PUSH_PULL
+   'XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT1' ,  //!< XMC_GPIO_MODE_OUTPUT_PUSH_PULL
+   'XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT2' ,  //!< XMC_GPIO_MODE_OUTPUT_PUSH_PULL
+   'XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT3' ,  //!< XMC_GPIO_MODE_OUTPUT_PUSH_PULL
+   'XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT4' ,  //!< XMC_GPIO_MODE_OUTPUT_PUSH_PULL
+   'XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT5' ,  //!< XMC_GPIO_MODE_OUTPUT_PUSH_PULL
+   'XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT6' ,  //!< XMC_GPIO_MODE_OUTPUT_PUSH_PULL
+   'XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT7' ,  //!< XMC_GPIO_MODE_OUTPUT_PUSH_PULL
+   'XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT8' ,  //!< XMC_GPIO_MODE_OUTPUT_PUSH_PULL
+   'XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT9'    //!< XMC_GPIO_MODE_OUTPUT_PUSH_PULL
+  ];
+
+List InputArray_8 = [
+  
+  'XMC_GPIO_MODE_INPUT_TRISTATE' ,
+  'XMC_GPIO_MODE_INPUT_PULL_DOWN',
+  'XMC_GPIO_MODE_INPUT_PULL_UP' ,
+  'XMC_GPIO_MODE_INPUT_SAMPLING',
+  'XMC_GPIO_MODE_INPUT_INVERTED_TRISTATE' ,
+  'XMC_GPIO_MODE_INPUT_INVERTED_PULL_DOWN' ,
+  'XMC_GPIO_MODE_INPUT_INVERTED_PULL_UP',
+  'XMC_GPIO_MODE_INPUT_INVERTED_SAMPLING' 
+ ];
+ 
+ 
+ List PadArray_8  = [
+  'XMC_GPIO_OUTPUT_STRENGTH_STRONG_SHARP_EDGE',
+  'XMC_GPIO_OUTPUT_STRENGTH_STRONG_MEDIUM_EDGE',
+  'XMC_GPIO_OUTPUT_STRENGTH_STRONG_SOFT_EDGE',
+  'XMC_GPIO_OUTPUT_STRENGTH_STRONG_SLOW_EDGE',
+  'XMC_GPIO_OUTPUT_STRENGTH_MEDIUM',
+  'XMC_GPIO_OUTPUT_STRENGTH_WEAK'                                         
+ ];
+                    
+ out.print("""
+ 
+/**********************************************************************************************************************
+* DATA STRUCTURES
+**********************************************************************************************************************/
+/**
+  * @ingroup can_node_datastructures
+  * @{
+  */
+""");
+
+/* To identify the number of instances created in the project */
+  for (CAN_NODE CanInstance : appInstancesList) {
+   appInst= CanInstance.getInstanceLabel()
+   String series = (CanInstance.daveEnv.project.selectedDevice.deviceId.family + CanInstance.daveEnv.project.selectedDevice.deviceId.series)
+   NodeUri = CanInstance.hwres_can_node.getSolverUri()
+   
+   Map msg_objarr = [
+     
+    0: CanInstance.hwres_can_mobj1,
+    1: CanInstance.hwres_can_mobj2,
+    2: CanInstance.hwres_can_mobj3,
+    3: CanInstance.hwres_can_mobj4,
+    4: CanInstance.hwres_can_mobj5,
+    5: CanInstance.hwres_can_mobj6,
+    6: CanInstance.hwres_can_mobj7,
+    7: CanInstance.hwres_can_mobj8,
+    8: CanInstance.hwres_can_mobj9,
+    9: CanInstance.hwres_can_mobj10,
+    10: CanInstance.hwres_can_mobj11,
+    11: CanInstance.hwres_can_mobj12,
+    12: CanInstance.hwres_can_mobj13,
+    13: CanInstance.hwres_can_mobj14,
+    14: CanInstance.hwres_can_mobj15,
+    15: CanInstance.hwres_can_mobj16,
+    16: CanInstance.hwres_can_mobj17,
+    17: CanInstance.hwres_can_mobj18,
+    18: CanInstance.hwres_can_mobj19,
+    19: CanInstance.hwres_can_mobj20,
+    20: CanInstance.hwres_can_mobj21,
+    21: CanInstance.hwres_can_mobj22,
+    22: CanInstance.hwres_can_mobj23,
+    23: CanInstance.hwres_can_mobj24,
+    24: CanInstance.hwres_can_mobj25,
+    25: CanInstance.hwres_can_mobj26,
+    26: CanInstance.hwres_can_mobj27,
+    27: CanInstance.hwres_can_mobj28,
+    28: CanInstance.hwres_can_mobj29,
+    29: CanInstance.hwres_can_mobj30,
+    30: CanInstance.hwres_can_mobj31,
+    31: CanInstance.hwres_can_mobj32
+    ]
+      
+   for(int loop_index_mo = 0; loop_index_mo <32; loop_index_mo++)
+   {
+    
+     int mo_obj_instance_num  = loop_index_mo;
+     Consumed_can_mo_num = msg_objarr[mo_obj_instance_num].getSolverUri()
+     if (Consumed_can_mo_num != null)
+     {
+       map_arr[loop_index_mo] = Consumed_can_mo_num[6];
+     }
+     
+   }
+
+if(!CanInstance.gcheck_loopback_mode.value){
+ /* Transmit related Configuration */
+   portNo = CanInstance.hwres_port_pad_can_tx.getSolverUri().getAt(4);
+   pinNo  = CanInstance.hwres_port_pad_can_tx.getSolverUri().getAt(6);
+   port_iocr_oe = CanInstance.hwres_port_pad_can_tx.getRegValue("","iocr_oe");
+   dummy_pdisc_read = CanInstance.hwres_port_pad_can_tx.getRegValue("pdisc","pdisc_pdis");
+out.print("""
+/**********************************************************************************************************************
+* DATA STRUCTURES
+**********************************************************************************************************************/
+/**< GPIO configuration for output pin */
+const CAN_NODE_GPIO_t ${appInst}_gpio_out = {
+  .port = (XMC_GPIO_PORT_t *)PORT${portNo}_BASE,
+  .pin  = (uint8_t)${pinNo}
+
+};
+
+const XMC_GPIO_CONFIG_t  ${appInst}_gpio_out_config =
+{
+  .mode              = ${OutputArray_8[(int)CanInstance.hwres_port_pad_can_tx.getRegValue("","iocr_pcr").value]},
+  .output_level      = XMC_GPIO_OUTPUT_LEVEL_HIGH """);
+if (series != 'XMC14')
+{
+out.print(""", 
+  .output_strength   = XMC_GPIO_OUTPUT_STRENGTH_STRONG_SOFT_EDGE """);
+}
+
+out.print("""
+};
+""");
+
+/* Receive Related Configuration */
+portNo_rx = CanInstance.hwres_port_pad_can_rx.getSolverUri().getAt(4);
+pinNo_rx  = CanInstance.hwres_port_pad_can_rx.getSolverUri().getAt(6);
+            CanInstance.hwres_port_pad_can_rx.getRegValue("HWSEL","hwsel_hw") 
+if(CanInstance.hwres_port_pad_can_rx.getRegValue("","iocr_pcr") != null)
+{
+  String port_iocr_pcr_rx = CanInstance.hwres_port_pad_can_rx.getRegValue("","iocr_pcr");
+}
+String port_iocr_oe_rx = CanInstance.hwres_port_pad_can_rx.getRegValue("","iocr_oe");
+if(CanInstance.hwres_port_pad_can_rx.getRegValue("","pdisc_pdis") != null)
+{
+  String dummy_port_pdis = CanInstance.hwres_port_pad_can_rx.getRegValue("","pdisc_pdis")
+}
+
+out.print(""" 
+/**< GPIO configuration for input pin */
+const CAN_NODE_GPIO_t ${appInst}_gpio_in = {
+  .port = (XMC_GPIO_PORT_t *)PORT${portNo_rx}_BASE,
+  .pin  = (uint8_t)${pinNo_rx}
+
+};
+
+const XMC_GPIO_CONFIG_t  ${appInst}_gpio_in_config =
+{
+  .mode = XMC_GPIO_MODE_INPUT_TRISTATE    
+};
+""");
+
+}
+
+float Calculate_freq = (CanInstance.gactualclock.value * 1000000)
+out.print("""
+/* CAN_NODE Bit Time Configuration */
+XMC_CAN_NODE_NOMINAL_BIT_TIME_CONFIG_t  ${appInst}_BitTimeConfig = {
+  .can_frequency = (uint32_t)${Calculate_freq}, 
+  .baudrate      = (uint32_t)(${CanInstance.ginteger_required_baudrate.value} * 1000),   
+  .sample_point  = (uint16_t)(${CanInstance.ginteger_next_bit_time_percent.value} * 100),
+  .sjw           = (uint16_t)${CanInstance.ginteger_sync_jump_width.value}
+
+};
+""");
+
+String node_alert_event = CanInstance.hwres_can_node.getRegValue("nipr${NodeUri[6].value}","nipr_alinp").value;
+String lec_alert_event = CanInstance.hwres_can_node.getRegValue("nipr${NodeUri[6].value}","nipr_lecinp").value;
+String trintr_alert_event = CanInstance.hwres_can_node.getRegValue("nipr${NodeUri[6].value}","nipr_trinp").value;
+String framecount_alert_event = CanInstance.hwres_can_node.getRegValue("nipr${NodeUri[6].value}","nipr_cfcinp").value;
+
+out.print ("""
+/* Node Service request */
+const CAN_NODE_SR_t ${appInst}_sr = {
+
+  .alert_event_sr      = ${(CanInstance.hwres_can_node.getRegValue("nipr${NodeUri[6].value}","nipr_alinp").value)}U,""");
+                
+out.print("""
+  .lec_event_sr        = ${(CanInstance.hwres_can_node.getRegValue("nipr${NodeUri[6].value}","nipr_lecinp").value)}U,""");
+                              
+out.print("""
+  .txok_event_sr       = ${(CanInstance.hwres_can_node.getRegValue("nipr${NodeUri[6].value}","nipr_trinp").value)}U,""");
+                                                
+out.print("""
+  .framecount_event_sr = ${(CanInstance.hwres_can_node.getRegValue("nipr${NodeUri[6].value}","nipr_cfcinp").value)}U,""");
+                
+
+out.print("""
+};""");
+
+String hold_str_val = null;
+Integer temp_val_in_dec = 0
+for(int loop_count_var = 1; loop_count_var <= (CanInstance.ginteger_num_msg_obj.value);loop_count_var++)
+{
+  if(map_arr[loop_count_var - 1] != null)
+  {
+  
+    if(loop_count_var < 10)
+    {
+      out.print("""
+XMC_CAN_MO_t  ${appInst}_LMO_0${loop_count_var} = {""");
+    }
+    else
+    {
+      out.print("""
+XMC_CAN_MO_t  ${appInst}_LMO_${loop_count_var} = {""");
+    
+    }
+    out.print("""  
+  .can_mo_type      =  """);if(CanInstance.gcombo_msgType_arr[loop_count_var-1].value == "Tx")
+                            {
+                              out.print("""XMC_CAN_MO_TYPE_TRANSMSGOBJ""");
+                            }
+                            else if(CanInstance.gcombo_msgType_arr[loop_count_var-1].value == "Rx")
+                            {
+                              out.print("""XMC_CAN_MO_TYPE_RECMSGOBJ""");
+                            }
+  out.print(""",
+  .can_id_mode      = """);if(CanInstance.gcombo_identifierType_arr[loop_count_var-1].value == "Std_11bit")
+                           {
+                             out.print("""XMC_CAN_FRAME_TYPE_STANDARD_11BITS""");
+                           }
+                           else if(CanInstance.gcombo_identifierType_arr[loop_count_var-1].value == "Ext_29bit")
+                           {
+                             out.print("""XMC_CAN_FRAME_TYPE_EXTENDED_29BITS""");
+                           }
+  out.print(""",
+  .can_priority     = XMC_CAN_ARBITRATION_MODE_IDE_DIR_BASED_PRIO_2""");
+  temp_val_in_dec = CanInstance.gint_IdntfVal_arr[loop_count_var-1].value
+  hold_str_val = Integer.toHexString(temp_val_in_dec)
+  out.print(""",
+  .can_identifier   = 0x${hold_str_val}U, """);
+  temp_val_in_dec = CanInstance.gint_MaskVal_arr[loop_count_var-1].value
+  hold_str_val = Integer.toHexString(temp_val_in_dec)
+ out.print("""
+  .can_id_mask      = 0x${hold_str_val}U,
+  .can_ide_mask     = """);if(CanInstance.gcombo_aceptMask_arr[loop_count_var-1].value == "Matching_IDE")
+                           {
+                             out.print("""1U""");
+                           }
+                           else if(CanInstance.gcombo_aceptMask_arr[loop_count_var-1].value == "Std_Ext")
+                           {
+                              out.print("""0U""");
+                           }
+ out.print(""",
+  .can_mo_ptr       = (CAN_MO_TypeDef*)CAN_MO${map_arr[loop_count_var-1]},
+  .can_data_length  = ${CanInstance.gint_data_length_arr[loop_count_var-1].value}U,""");
+
+  temp_val_in_dec = CanInstance.gint_data_high_arr[loop_count_var-1].value
+  hold_str_val = Integer.toHexString(temp_val_in_dec)
+out.print("""
+  .can_data[1]      = 0x${hold_str_val}U,""");
+temp_val_in_dec = CanInstance.gint_data_low_arr[loop_count_var-1].value
+hold_str_val = Integer.toHexString(temp_val_in_dec)
+out.print("""
+  .can_data[0]      = 0x${hold_str_val}U 
+};
+""");
+
+if(loop_count_var < 10){ 
+out.print("""
+const CAN_NODE_LMO_t ${appInst}_LMO_0${loop_count_var}_Config = {""");
+}
+else
+{
+out.print("""
+const CAN_NODE_LMO_t ${appInst}_LMO_${loop_count_var}_Config = {""");
+}
+if(loop_count_var < 10){
+out.print("""
+  .mo_ptr     = (XMC_CAN_MO_t*)&${appInst}_LMO_0${loop_count_var},    """);
+}
+else
+{
+out.print("""
+  .mo_ptr     = (XMC_CAN_MO_t*)&${appInst}_LMO_${loop_count_var},    """);
+}
+
+out.print(""" 
+  .number  = ${map_arr[loop_count_var -1]}U,  """);
+  
+  String dummy_tx_mo_read = msg_objarr[loop_count_var-1].getRegValue("moipr${map_arr[loop_count_var]}","moipr_txinp").value;
+out.print(""" 
+  .tx_sr   = """);if(CanInstance.gcheck_txinterrupt_arr[loop_count_var-1].value == true )
+                  {
+                    out.print("""${(msg_objarr[loop_count_var-1].getRegValue("moipr${map_arr[loop_count_var-1]}","moipr_txinp").value)}U,""");
+                  }
+                  else 
+                  {
+                    out.print("""0U,""");
+                  }
+
+
+String dummy_rx_mo_read = msg_objarr[loop_count_var-1].getRegValue("moipr${map_arr[loop_count_var-1]}","moipr_rxinp").value;
+out.print("""
+  .rx_sr   = """);
+if(CanInstance.gcheck_rxinterrupt_arr[loop_count_var-1].value == true )
+{
+  out.print("""${(msg_objarr[loop_count_var-1].getRegValue("moipr${map_arr[loop_count_var-1]}","moipr_rxinp").value)}U,""");
+}
+else 
+{
+  out.print("""0U,""");
+}
+ out.print("""
+  .tx_event_enable = ${CanInstance.gcheck_txinterrupt_arr[loop_count_var-1].value},
+  .rx_event_enable = ${CanInstance.gcheck_rxinterrupt_arr[loop_count_var-1].value}
+};
+""");
+  } /* if block end */
+}
+
+out.print("""
+/* CAN_NODE init Structure configuration */
+
+const CAN_NODE_t  ${appInst} = {
+  .global_ptr        = (GLOBAL_CAN_t *)&${CanInstance.can_global.getInstanceLabel()},
+  .node_ptr          = (CAN_NODE_TypeDef*)CAN_NODE${NodeUri[6]},
+  .baudrate_config   = (XMC_CAN_NODE_NOMINAL_BIT_TIME_CONFIG_t*)&${appInst}_BitTimeConfig,   """);
+ 
+if(!CanInstance.gcheck_loopback_mode.value){
+out.print("""
+  .gpio_out          = &${appInst}_gpio_out,
+  .gpio_out_config   = &${appInst}_gpio_out_config,  
+  .gpio_in           = &${appInst}_gpio_in,
+  .gpio_in_config    = &${appInst}_gpio_in_config,
+  .rx_signal         = ${[
+                         "XMC_CAN_NODE_RECEIVE_INPUT_RXDCA",
+                          "XMC_CAN_NODE_RECEIVE_INPUT_RXDCB",
+                          "XMC_CAN_NODE_RECEIVE_INPUT_RXDCC",
+                          "XMC_CAN_NODE_RECEIVE_INPUT_RXDCD",
+                          "XMC_CAN_NODE_RECEIVE_INPUT_RXDCE",
+                          "XMC_CAN_NODE_RECEIVE_INPUT_RXDCF",
+                          "XMC_CAN_NODE_RECEIVE_INPUT_RXDCG",
+                          "XMC_CAN_NODE_RECEIVE_INPUT_RXDCH"
+            ][CanInstance.hwres_can_node.getRegValue("npcr","npcr_rxsel").toInteger()]},""");
+
+}
+else
+{
+out.print("""
+  .gpio_out          = NULL,
+  .gpio_out_config   = NULL,
+  .gpio_in           = NULL, 
+  .gpio_in_config    = NULL, """);  
+}
+
+out.print("""
+  .node_sr_ptr       = """); out.print("""(CAN_NODE_SR_t*)&${appInst}_sr,
+  .lmobj_ptr         = { """);
+
+for(int ltemp_count = 0; ltemp_count < 32;ltemp_count++)
+{
+  if(map_arr[ltemp_count]!= null && ( ltemp_count < CanInstance.ginteger_num_msg_obj.value ))
+  {
+    if((ltemp_count + 1) < 10 )
+    {
+      out.print("""
+      (CAN_NODE_LMO_t*)&${appInst}_LMO_0${ltemp_count+1}_Config"""); 
+    }
+    else
+    {
+      out.print("""
+     (CAN_NODE_LMO_t*)&${appInst}_LMO_${ltemp_count+1}_Config"""); 
+    }  
+   
+  }
+  else
+  {
+    out.print(""" 
+      NULL""");
+    
+  }
+  if(ltemp_count != 31)
+  {
+    out.print(""", """);
+    }
+}
+out.print(""" },
+  .node_num          = ${NodeUri[6]}U,
+  .mo_count          = ${CanInstance.ginteger_num_msg_obj.value}U,
+  .loopback_enable         = ${CanInstance.gcheck_loopback_mode.value}, 
+  .alert_event_enable      = ${CanInstance.gcheck_node_alert_event.value},
+  .lec_event_enable        = ${CanInstance.gcheck_last_err_code_event.value}, 
+  .txok_event_enable       = ${CanInstance.gcheck_transfer_ok_event.value}, 
+  .framecount_event_enable = ${CanInstance.gcheck_frame_counter_event.value} 
+  };
+""");
+ }
+ 

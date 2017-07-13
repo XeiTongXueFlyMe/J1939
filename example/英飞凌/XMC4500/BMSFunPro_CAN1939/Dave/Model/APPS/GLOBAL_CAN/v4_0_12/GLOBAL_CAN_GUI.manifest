@@ -1,0 +1,25 @@
+package Model.APPS.GLOBAL_CAN.v4_0_12;
+
+/* Import statements */
+import ifx.davex.app.manifest.*
+
+abstract class GLOBAL_CAN_GUI extends AppManifest {
+	/* Begin : UI variable section */
+	 public GTab tab1;
+	 public GCombo gcombo_select_clock_source;
+	 public GFloat gfloat_desired_can_freq;
+	 public GLabel glabel_desired_can_freq;
+	 public GLabel glabel_select_clock_source;
+
+	 public GLOBAL_CAN_GUI(DaveEnv daveEnv){
+
+	 tab1 = GTab(widgetName:"tab1", text:"General Settings", enabled:true, visible:true)
+	 gcombo_select_clock_source = GCombo(widgetName:"gcombo_select_clock_source", options:["Main Clock (MCLK)","External Crystal Oscillator (OSC_HP)","CAN Baudrate Clock"], value:"Main Clock (MCLK)", enabled:true, visible:true, isMandatoryValue:false)
+	 gfloat_desired_can_freq = GFloat(widgetName:"gfloat_desired_can_freq", value:60, minValue:5, maxValue:120.0, enabled:true, visible:true, isMandatoryValue:false)
+	 glabel_desired_can_freq = GLabel(widgetName:"glabel_desired_can_freq", text:"Desired CAN frequency [MHz]:          ", enabled:true, visible:true)
+	 glabel_select_clock_source = GLabel(widgetName:"glabel_select_clock_source", text:"Select clock source:", enabled:true, visible:true)
+
+
+	 }
+	/* End : UI variable section */
+}

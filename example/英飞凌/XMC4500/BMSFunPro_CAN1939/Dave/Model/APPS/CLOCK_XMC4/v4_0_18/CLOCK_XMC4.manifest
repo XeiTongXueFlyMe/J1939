@@ -1,0 +1,1874 @@
+package Model.APPS.CLOCK_XMC4.v4_0_18;
+
+/*
+ Copyright (c) 2015, Infineon Technologies AG
+ All rights reserved.
+											
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+ following conditions are met:
+																			 
+ Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+ disclaimer.
+  
+ Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+ disclaimer in the documentation and/or other materials provided with the distribution.
+  
+ Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote
+ products derived from this software without specific prior written permission.
+																			 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+																			 
+ To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes with
+ Infineon Technologies AG: dave@infineon.com. */
+
+/*************** Revision History **********************************************
+ Version    Date          Description //Retain this format
+ 4.0.0     16-Feb-2015   Initial version for DAVEv4
+ 4.0.1     20-Feb-2015   Maximum value of PLL frequency (fPLL) has been changed into 120MHz.
+ 4.0.2     30-Apr-2015   Device specific clock diagrams are added in 'Clock control settings' page of GUI.
+ 4.0.4     19-Jun-2015   Version check added for XMCLib dependency.
+ 4.0.6     09-Jul-2015   Help doc updated.
+ 4.0.10    15-Oct-2015   1) Supported XMC48 and XMC47 device.<br>
+                         2) Data structure, enums, CLOCK_XMC4_Init() and CLOCK_XMC4_StepSystemPllFrequency() APIs are provided.<br>
+ 4.0.12    20-Oct-2015   High Precision Oscillator Settings are enabled only when it is required.<br>
+ 4.0.13    30-Nov-2015   1) Gmessage widget is provided for validating the boundary conditions of fSYS, fCPU and other peripheral frequency.<br>
+                         2) Maximum frequency of fPLL is supported as 560MHz in GUI.<br>
+                         3) EtherCAT frequency (fECAT) is fixed to 100MHz for its proper functionality.<br>
+                         4) Appropriate clock ratio combinations between fCCU, fCPU and fPERIPH are validated in GUI.<br>
+                         5) Supported XMC43 device.<br>
+ 4.0.14    20-Dec-2015   1) Disabled option supported in combo box for High Precision Oscillator Settings.<br>
+                         2) Warning message for fUSB if frequency value is not equal to 48MHz.<br>
+                         3) USB PLL setting is disabled if USB PLL source not used in dependent peripherals and High Precision Oscillator disabled.<br>
+                         4) GUI usability improved in clock generation setting page.<br>
+ 4.0.16    08-Jan-2016   1) GUI usability improved in clock selection setting page.<br>
+                         2) TRAP event settings are moved to SystemCoreClockSetup API from CLOCK_XMC4_Init.<br>
+                         3) code size is improved.<br>
+                         4) OSCHP_GetFrequency API is made to available only when high precision oscillator is used.<br>
+                         5) Consumption of the CPU_CTRL_XMC4 APP for handling the NMI trap based on trap event selection in event settings page of CLOCK_XMC4 APP GUI.<br>
+                         6) Removed clear trap status settings at the end of the clock initialization which was redundant code.<br>
+ 4.0.18    08-Feb-2016   1) Validation message issue has resolved when the CLOCK_XMC4 APP is dragged for XMC4504-F144 Device.<br>
+                         2) CLOCK_XMC4 APP upgradation failure issue has resolved.<br>
+                         3) TRAP disable and clear request code has removed from SystemCoreClockSetup() API and ensured first cleaning of pending traps before enabling it as per guideline of interrupts.<br>
+                         4) Code generation has blocked when fUSB/SDMMC not equal to 48 MHz and fECAT not equal to 100 MHz.<br>
+                         5) Help documentation improved.<br>
+                         
+ *******************************************************************************/
+
+/* Import statements */
+import ifx.davex.app.manifest.*
+
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
+class  CLOCK_XMC4 extends CLOCK_XMC4_GUI {
+
+	/* Note  : Following APP properties are mandatory and important */
+	/* Begin : APP property section */
+
+	/**
+	 * APP version
+	 * Format: a string with three digit separated by a dot.
+	 */
+	def version            = '4.0.18'
+
+	/**
+	 * APP categories declaration.
+	 * It is list of strings. Sub-categories are separated by slash.
+	 * No limits on number of categories and sub-categories depth.
+	 */
+	def categoriesDescription = ['System']
+
+	/**
+	 * Minimum DAVE version required for this APP.
+	 *
+	 * It is string with three digit separated by a dot.
+	 */
+	def minDaveVersion           = '4.0.0'
+
+	/**
+	 * Keywords used by search feature in APPs selection view
+	 *
+	 * It is a list of string.
+	 */
+	def keywords      = ["System Clock", "PLL", "CLOCK", "Clock", "ALL"]
+	/**
+	 * softwareIDs is used to declare which devices are compatible with this APP.
+	 * It is a map with key a string containing a pattern that shall match the SW id of
+	 * the device and as value the minimal version of the APP.
+	 *
+	 *
+	 */
+
+	def softwareIDs       = [
+		"XMC4.8.*.*.*":"1.0.0",
+		"XMC4.7.*.*.*":"1.0.0",
+		"XMC4.5.*.*.*":"1.0.0",
+		"XMC4.4.*.*.*":"1.0.0",
+		"XMC4.3.*.*.*":"1.0.0",
+		"XMC4.2.*.*.*":"1.0.0",
+		"XMC4.1.*.*.*":"1.0.0",
+		]
+
+	/**
+	 * Singleton property:
+	 * When it is true the APP can be instantiated only once.
+	 */
+	def singleton     = true
+
+
+	/**
+	 * initProvider property
+	 * It shall be true to add a call to <AppName>_Init()
+	 */
+	def initProvider  = true
+
+	/**
+	 * Deprecated APP
+	 * Set it to true to indicate that the APP shall be not used for new projects.
+	 */
+	def deprecated    = false
+
+	/**
+	 * Sharable property.
+	 * It shall be true to allows multiple APPs to require the same instance of this APP.
+	 */
+	def sharable      = true
+	// This APP consumes direct HW pin resource/
+	def ioApp         = true
+
+	/**
+	 *  APP function description.
+	 */
+	def description = "CLOCK_XMC4 APP configures system and peripheral clocks."
+
+	// End   : APP property section
+
+	// Begin : User app property section
+	/* Object to point virtual resource groups/ functional blocks */
+	MVirtualResourceGroup hwres_pll
+	MVirtualResourceGroup hwres_sys
+	MVirtualResourceGroup hwres_cpu
+	MVirtualResourceGroup hwres_perbridge
+	MVirtualResourceGroup hwres_ebu
+	MVirtualResourceGroup hwres_ccu
+	MVirtualResourceGroup hwres_wdt
+	MVirtualResourceGroup hwres_usb
+	MVirtualResourceGroup hwres_mmc
+	MVirtualResourceGroup hwres_extclk
+	MVirtualResourceGroup hwres_hibernate
+	MVirtualResourceGroup hwres_rtcclksel
+	MVirtualResourceGroup hwres_extclkpin
+	
+	MVirtualResourceGroup hwres_sysoscwd_trap
+	MVirtualResourceGroup hwres_sysvcolock_trap
+	MVirtualResourceGroup hwres_usbvcolock_trap
+	MVirtualResourceGroup hwres_ulpwdg_trap
+	/* Object to point virtual signals */
+	MVirtualSignal vs_fpb
+	MVirtualSignal vs_fccu
+	MVirtualSignal vs_extclk
+	MVirtualSignal vs_extclkpin
+	MVirtualSignal vs_sysoscwd_trap
+	MVirtualSignal vs_sysvcolock_trap
+	MVirtualSignal vs_usbvcolock_trap
+	MVirtualSignal vs_ulpwdg_trap
+	
+	/* List of APP Consumption */
+	MRequiredApp appres_cpu /* CPU APP consumption for XMC4xxx device */
+	MVirtualSignalRA  vs_cpuctrl_app_node
+	/* Variable to hold PLL input clock frequency */
+	GFloat gfloat_pll_input_freq = GFloat(widgetName:"gfloat_pll_input_freq")
+	/* Variable to hold NDIV value of Main PLL */
+	GInteger gint_mainpllndiv = GInteger(widgetName:"gint_mainpllndiv")
+	/* Variable to hold PDIV value of Main PLL */
+	GInteger gint_mainpllpdiv = GInteger(widgetName:"gint_mainpllpdiv")
+	/* Variable to hold K2DIV value of Main PLL */
+	GInteger gint_mainpllk2div = GInteger(widgetName:"gint_mainpllk2div")
+	/* Variable to hold K1DIV value of Main PLL */
+	GInteger gint_mainpllk1div = GInteger(widgetName:"gint_mainpllk1div")
+	/* Variable to hold NDIV value of USB PLL */
+	GInteger gint_usbpll_ndiv = GInteger(widgetName:"gint_usbpll_ndiv")
+	/* Variable to hold PDIV value of USB PLL */
+	GInteger gint_usbpll_pdiv = GInteger(widgetName:"gint_usbpll_pdiv")
+	/* Variable to hold VCO frequency */
+	GFloat gfloat_vco = GFloat(widgetName:"VCO Frequency")
+	/* Variable to hold VCO frequency */
+	GFloat gfloat_usbvco = GFloat(widgetName:"usb VCO Frequency")
+	
+	/* Variable to hold VCO frequency */
+	GFloat gfloat_vco_clkin = GFloat(widgetName:"VCO input clock Frequency")
+	/* Variable to hold VCO frequency */
+	GFloat gfloat_usbvco_clkin = GFloat(widgetName:"VCO input clock Frequency")
+	// End   : User APP property section
+
+	// APP Constructor
+	public CLOCK_XMC4(DaveEnv daveEnv) {
+		// Target based variables for resource consumption, UI dependency etc.
+		String family = daveEnv.project.selectedDevice.deviceId.family 	/* ex:XMC4 or XMC1 */
+		String series = (daveEnv.project.selectedDevice.deviceId.family + daveEnv.project.selectedDevice.deviceId.series) /* ex:XMC45, 44.. */
+		String device = daveEnv.project.selectedDevice.deviceId.device 	/* 00, 02, 04, 06 */
+		String device_short_name = series + device /* XMC4500, XMC4502, XMC4400 ... */
+		String device_name = daveEnv.project.selectedDevice.deviceId.deviceName 	/* XMC4500-F144x1024-AB... */
+		String step = daveEnv.project.selectedDevice.deviceId.step 		/* AA, AB, AC.... */
+		String device_package = daveEnv.project.selectedDevice.deviceId.icPackage /* F144, E144.. */
+		String sofware_id  = daveEnv.project.selectedDevice.deviceId.softwareId   /* XMC4.5.00.F144.AB */
+		/* For debug purpose */
+//		String family = "XMC4"
+//		String series = "XMC48"
+//		String device = "02"
+//		String device_short_name = "XMC4800"
+//		String device_name = "XMC4500-F144x1024-AB"
+//		String step = "AA"
+//		String device_package = "F144"
+//		String sofware_id  = "XMC4.5.00.F144.AB"
+		/* manifest functions in order to control dynamic consumption of hardware resources and to make connections dynamically based on GUI configuration */
+		MF NMI_enabled = MF({((gcheck_osc_hp_oscillator_watchdog_trap_event.value == true) || (gcheck_system_vco_lock_trap_event.value == true) || (gcheck_usb_vco_lock_trap_event.value == true) ||
+                              (gcheck_osc_ulp_oscillator_watchdog_trap_event.value == true))}, Boolean)
+		
+		/* CPU_CTRL_XMC4 APP consumption for XMC4xxx devices */
+		appres_cpu =  MRequiredApp("CPU_CTRL_XMC4", "CPU", RSHARABLE, "4.0.2", NMI_enabled)
+		
+		vs_cpuctrl_app_node  =  MVirtualSignalRA(appres_cpu, "vs_nmi_irq")
+		/* Minimum value for vco frequency */
+		float vco_min = 260
+		/* Maximum value for vco frequency */
+		float vco_max = 520
+		
+		/* Maximum value for vco frequency */
+		float k2_default = 2
+		float p_default = 2
+		
+		/* Minimum value for vco frequency */
+		float vco_in_min = 4
+		/* Maximum value for vco frequency */
+		float vco_in_max = 16
+		
+		/* Fixed PDIV value for USB PLL */
+		int usb_pdiv = 2
+		/* Fixed USB PLL target value */
+		int usbpll_target = 192
+		/* Backup clock const */
+		float backup_clk = 24
+		/* Standby clock const */
+		float standby_clk = 0.032768
+	
+		/* Variables to hold availability information of peripherals */
+		boolean is_ccu_available = true
+		boolean is_usb_available = true
+		boolean is_ebu_available = true
+		boolean is_ecat_available = false
+		boolean is_sdmmc_available = true
+		boolean is_ethernet_available = true
+		boolean is_can_available = true
+		boolean is_extclkout_available = true
+		boolean is_usbpll_available = true
+		/*----------------------------------------------------------------------------------------------------------------------
+		 Device specific dependency
+		 ----------------------------------------------------------------------------------------------------------------------*/
+		if(series == "XMC45"){
+			if(Integer.parseInt(device) >= 2) /* if XMC4502, 04.. */
+			{
+				is_ethernet_available = false
+			}
+			if(Integer.parseInt(device) >= 4) /* if XMC4504.. */
+			{
+				is_can_available = false
+				is_usb_available = false
+				is_usbpll_available = false
+				gcheck_enable_usb_clock.value = false
+			}
+		}
+		else if(series == "XMC44"){
+			is_ebu_available = false
+			is_sdmmc_available = false
+			if(Integer.parseInt(device) >= 2) /* if XMC4402, 04.. */
+			{
+				is_ethernet_available = false
+			}
+			if(Integer.parseInt(device) >= 4) /* if XMC4404.. */
+			{
+				is_can_available = false
+				is_usb_available = false
+				is_usbpll_available = false
+			}
+		}
+		else if((series == "XMC42") || (series == "XMC41")){
+			is_ebu_available = false
+			is_sdmmc_available = false
+			if(Integer.parseInt(device) >= 2) /* if XMC4202, 04.. or XMC4102, 04.. */
+			{
+				is_ethernet_available = false
+			}
+			if(Integer.parseInt(device) >= 4) /* if XMC4204.. or XMC4104.. */
+			{
+				is_can_available = false
+				is_usb_available = false
+				is_usbpll_available = false
+			}
+		}
+		
+		if(device_short_name == "XMC4500")
+		{
+			gimage_1.path = "doc/ClockTree.png"
+			gfloat_dia_ecatclkfreq.visible = false
+			glabel_dia_ecatclkfreq.visible = false
+		}else if(device_short_name == "XMC4800")
+		{
+			
+			is_ecat_available = true
+			gimage_1.path = "doc/ClockTree_xmc48.png"
+		}else if(device_short_name == "XMC4700")
+		{
+			
+			gimage_1.path = "doc/ClockTree_xmc47.png"
+			gfloat_dia_ecatclkfreq.visible = false
+			glabel_dia_ecatclkfreq.visible = false
+		}
+		else if(device_short_name == "XMC4502")
+		{
+			gimage_1.path = "doc/ClockTree_NO_ETH.png"
+			gfloat_dia_ethclkfreq.visible = false
+			glabel_dia_ethclkfreq.visible = false
+			gfloat_dia_ecatclkfreq.visible = false
+			glabel_dia_ecatclkfreq.visible = false
+		}
+		else if(device_short_name == "XMC4504")
+		{
+			gimage_1.path = "doc/ClockTree_NO_USB_ETH.png"
+			gfloat_dia_usbclkfreq.visible = false
+			glabel_dia_usbclkfreq.visible = false
+			gfloat_dia_ethclkfreq.visible = false
+			glabel_dia_ethclkfreq.visible = false
+			gfloat_dia_ecatclkfreq.visible = false
+			glabel_dia_ecatclkfreq.visible = false
+//			ggroup_usbfreq.text = "SDMMC Clock (fSDMMC)"
+		}
+		else if(device_short_name == "XMC4400")
+		{
+			gimage_1.path = "doc/ClockTree_NO_SDMMC_EBU.png"
+			gfloat_dia_sdmmcclkfreq.visible = false
+			glabel_dia_sdmmcclkfreq.visible = false
+			gfloat_dia_ebuclkfreq.visible = false
+			glabel_dia_ebuclkfreq.visible = false
+			gfloat_dia_ecatclkfreq.visible = false
+			glabel_dia_ecatclkfreq.visible = false
+//			ggroup_usbfreq.text = "USB Clock (fUSB)"
+		}
+		else if(device_short_name == "XMC4300")
+		{
+			
+			is_ecat_available = true
+			is_ebu_available = false
+			
+			gfloat_dia_ebuclkfreq.visible = false
+			glabel_dia_ebuclkfreq.visible = false
+			gimage_1.path = "doc/ClockTree_xmc43.png"
+		}
+		else if((device_short_name == "XMC4402") || (device_short_name == "XMC4200") || (device_short_name == "XMC4100"))
+		{
+			gimage_1.path = "doc/ClockTree_NO_SDMMC_ETH_EBU.png"
+			gfloat_dia_sdmmcclkfreq.visible = false
+			glabel_dia_sdmmcclkfreq.visible = false
+			gfloat_dia_ethclkfreq.visible = false
+			glabel_dia_ethclkfreq.visible = false
+			gfloat_dia_ebuclkfreq.visible = false
+			glabel_dia_ebuclkfreq.visible = false
+			gfloat_dia_ecatclkfreq.visible = false
+			glabel_dia_ecatclkfreq.visible = false
+//			ggroup_usbfreq.text = "USB Clock (fUSB)"
+		}
+		else if((device_short_name == "XMC4104") || (device_short_name == "XMC4108"))
+		{
+			gimage_1.path = "doc/ClockTree_NO_USBPLL_USB_SDMMC_ETH_EBU.png"
+			gfloat_dia_ohpclkfreq.visible = false
+			glabel_dia_ohpclkfreq.visible = false
+			gfloat_dia_usbpllclkfreq.visible = false
+			glabel_dia_usbpllclkfreq.visible = false
+//			ggroup_usbfreq.visible = false
+			gfloat_dia_usbclkfreq.visible = false
+			glabel_dia_usbclkfreq.visible = false
+			gfloat_dia_sdmmcclkfreq.visible = false
+			glabel_dia_sdmmcclkfreq.visible = false
+			gfloat_dia_ethclkfreq.visible = false
+			glabel_dia_ethclkfreq.visible = false
+			gfloat_dia_ebuclkfreq.visible = false
+			glabel_dia_ebuclkfreq.visible = false
+			gfloat_dia_ecatclkfreq.visible = false
+			glabel_dia_ecatclkfreq.visible = false
+		}
+		else {gimage_1.path = "doc/ClockTree.png"
+			gfloat_dia_ecatclkfreq.visible = false
+			glabel_dia_ecatclkfreq.visible = false
+		}
+		/*----------------------------------------------------------------------------------------------------------------------
+		 Device specific combo options
+		 ----------------------------------------------------------------------------------------------------------------------*/
+		if(is_ecat_available == false)
+		{
+			gcombo_ecatclksrc.value = "Main PLL Clock"
+		}
+		if(is_usbpll_available == false)
+		{
+			gcombo_usbclksrc.value = "Main PLL Clock"
+		}
+		if((series == "XMC45") || (series == "XMC44"))
+		{
+			gcombo_extclkoutsrc.options = ["System Clock", "USB PLL Clock", "Main PLL Clock"]
+//			gfloat_actsysfreq.maxValue = 120.0
+			gfloat_mainplldesfreq.value = 120.0
+		}
+		else if((series == "XMC47"))
+		{
+//			gfloat_actsysfreq.maxValue = 144.0
+			gcombo_extclkoutsrc.options = ["System Clock", "USB PLL Clock", "Main PLL Clock"]
+			gfloat_mainplldesfreq.value = 288.0
+			gcombo_usbclksrc.value = "USB PLL Clock"
+			gfloat_usbplldesfreq.value = 192
+			gint_sysclkdiv.value = 2
+			gint_usbdiv.value =  4
+		}
+		else if((series == "XMC48") || (series == "XMC43"))     
+		{
+			gcombo_extclkoutsrc.options = ["System Clock", "USB PLL Clock", "Main PLL Clock"]
+//			gfloat_actsysfreq.maxValue = 144.0
+			gfloat_mainplldesfreq.value = 288.0
+			gcombo_usbclksrc.value = "Main PLL Clock"
+			gcombo_ecatclksrc.value = "USB PLL Clock"
+			gfloat_usbplldesfreq.value = 200
+			gint_sysclkdiv.value = 2
+			gint_ecatdiv.value = 2
+			gint_usbdiv.value =  6
+		}
+		else
+		{
+			gcombo_extclkoutsrc.options = ["System Clock", "USB PLL Clock", "Main PLL Clock", "Standby Clock"]
+//			gfloat_actsysfreq.maxValue = 80.0
+			gfloat_mainplldesfreq.value = 80.0
+		}
+
+		/*----------------------------------------------------------------------------------------------------------------------
+		 GUI Visibility and  Enable control
+		 ----------------------------------------------------------------------------------------------------------------------*/
+		if(is_extclkout_available == false)
+		{
+			ggroup_extclkoutfreq.visible = false
+		}
+		else{
+			glabel_extclkoutsrc.enabled = MF({gcheck_extclkout.value == true}, Boolean)
+			gcombo_extclkoutsrc.enabled = MF({gcheck_extclkout.value == true}, Boolean)
+			glabel_extclkplldiv.enabled = MF({(gcheck_extclkout.value == true) && ((gcombo_extclkoutsrc.value == "USB PLL Clock") || (gcombo_extclkoutsrc.value == "Main PLL Clock"))},Boolean)
+			gint_extclkplldiv.enabled = MF({(gcheck_extclkout.value == true) && ((gcombo_extclkoutsrc.value == "USB PLL Clock") || (gcombo_extclkoutsrc.value == "Main PLL Clock"))},Boolean)
+			glabel_extclkfreqact.enabled = MF({gcheck_extclkout.value == true}, Boolean)
+		}
+		
+		
+		glabel_ccufreqdiv.enabled = MF({gcheck_enable_ccu_clock.value == true}, Boolean)	
+		gint_ccufreqdiv.enabled = MF({gcheck_enable_ccu_clock.value == true}, Boolean)
+		glabel_ccufreq.enabled = MF({gcheck_enable_ccu_clock.value == true}, Boolean)
+		
+		
+		glabel_usbclksrc.enabled = MF({(gcheck_enable_usb_clock.value == true) && (ggroup_usbfreq.visible == true)}, Boolean)
+		gcombo_usbclksrc.enabled =  MF({(gcheck_enable_usb_clock.value == true) && (ggroup_usbfreq.visible == true)}, Boolean)
+		glabel_usbdiv.enabled = MF({(gcheck_enable_usb_clock.value == true) && (ggroup_usbfreq.visible == true)}, Boolean)
+		gint_usbdiv.enabled = MF({(gcheck_enable_usb_clock.value == true) && (ggroup_usbfreq.visible == true)}, Boolean)
+		glabel_usbactfreq.enabled =  MF({(gcheck_enable_usb_clock.value == true) && (ggroup_usbfreq.visible == true)}, Boolean)
+		
+		
+		glabel_wdtclksrc.enabled = MF({gcheck_enable_wdt_clock.value == true}, Boolean)
+		gcombo_wdtclksrc.enabled = MF({gcheck_enable_wdt_clock.value == true}, Boolean)
+		glabel_wdtclkdiv.enabled = MF({gcheck_enable_wdt_clock.value == true}, Boolean)
+		glabel_wdtactfreq.enabled = MF({gcheck_enable_wdt_clock.value == true}, Boolean)
+		ginteger_wdtclkdiv.enabled = MF({gcheck_enable_wdt_clock.value == true}, Boolean)
+		
+		
+		
+		glabel_ebufreqdiv.enabled = MF({(gcheck_enable_ebu_clock.value == true) && (ggroup_ebufreq.visible == true)}, Boolean)
+		gint_ebufreqdiv.enabled = MF({(gcheck_enable_ebu_clock.value == true) && (ggroup_ebufreq.visible == true)}, Boolean)
+		glabel_ebufreq.enabled = MF({(gcheck_enable_ebu_clock.value == true) && (ggroup_ebufreq.visible == true)}, Boolean)
+		
+		glabel_ecatclksrc.enabled =  MF({(gcheck_enable_ecat_clock.value == true) && (ggroup_ecatfreq.visible == true)}, Boolean)
+		gcombo_ecatclksrc.enabled = MF({(gcheck_enable_ecat_clock.value == true) && (ggroup_ecatfreq.visible == true)}, Boolean)
+		glabel_ecatdiv.enabled = MF({(gcheck_enable_ecat_clock.value == true) && (ggroup_ecatfreq.visible == true)}, Boolean)
+		gint_ecatdiv.enabled = MF({(gcheck_enable_ecat_clock.value == true) && (ggroup_ecatfreq.visible == true)}, Boolean)
+		glabel_ecatactfreq.enabled = MF({(gcheck_enable_ecat_clock.value == true) && (ggroup_ecatfreq.visible == true)}, Boolean)
+
+		ggroup_usbfreq.visible = MF({(is_usb_available == true) ||(is_sdmmc_available == true)  }, Boolean)
+		ggroup_ebufreq.visible = MF({(is_ebu_available == true)}, Boolean)
+		gstring_note.visible = MF({false}, Boolean)
+		ggroup_ecatfreq.visible = MF({(is_ecat_available == true)}, Boolean)
+		
+//		glabel_nmi_trap_note.visible = MF({((gcheck_osc_hp_oscillator_watchdog_trap_event.value == true) || (gcheck_system_vco_lock_trap_event.value == true) || (gcheck_usb_vco_lock_trap_event.value == true) ||
+//								           (gcheck_osc_ulp_oscillator_watchdog_trap_event.value == true))}, Boolean)
+		
+		gmessage_clock_generation.visible = MF({
+			if( ((gfloat_mainpllactfreq.value > gfloat_mainpllactfreq.maxValue) || (gfloat_mainpllactfreq.value < gfloat_mainpllactfreq.minValue)) || 
+			    (((gfloat_usbpllactfreq.value > gfloat_usbpllactfreq.maxValue)|| (gfloat_usbpllactfreq.value < gfloat_usbpllactfreq.minValue)) && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true)) ) 
+			{
+			  true
+			}else
+		    {
+			  false
+			}			
+		}, Boolean)
+		
+		gmessage_clock_selection.visible =  MF({
+			if( ((gfloat_actsysfreq.value > gfloat_actsysfreq.maxValue) || (gfloat_actsysfreq.value < gfloat_actsysfreq.minValue)) || 
+				((gfloat_cpuclkfreq.value > gfloat_cpuclkfreq.maxValue)|| (gfloat_cpuclkfreq.value < gfloat_cpuclkfreq.minValue)) ||
+				((gfloat_peribusfreq.value > gfloat_peribusfreq.maxValue) || (gfloat_peribusfreq.value < gfloat_peribusfreq.minValue)) || 
+				((gfloat_ccufreq.value > gfloat_ccufreq.maxValue)|| (gfloat_ccufreq.value < gfloat_ccufreq.minValue)) ||
+				(((gfloat_usbactfreq.value > gfloat_usbactfreq.maxValue) || (gfloat_usbactfreq.value < gfloat_usbactfreq.minValue)) && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true)) || 
+				((gfloat_wdtactfreq.value > gfloat_wdtactfreq.maxValue)|| (gfloat_wdtactfreq.value < gfloat_wdtactfreq.minValue)) ||
+				(((gfloat_ebufreq.value > gfloat_ebufreq.maxValue) || (gfloat_ebufreq.value < gfloat_ebufreq.minValue)) && (ggroup_ebufreq.visible == true) && (gcheck_enable_ebu_clock.value == true)) || 
+				((gfloat_extclkfreqact.value > gfloat_extclkfreqact.maxValue)|| (gfloat_extclkfreqact.value < gfloat_extclkfreqact.minValue)) || 
+				(((gfloat_ecatactfreq.value > gfloat_ecatactfreq.maxValue) || (gfloat_ecatactfreq.value < gfloat_ecatactfreq.minValue)) && (ggroup_ecatfreq.visible == true) && (gcheck_enable_ecat_clock.value == true)) ||
+				(((gint_ccufreqdiv.value == 2) && (gcheck_enable_ccu_clock.value == true)) && ((gint_cpuclkdiv.value == 2)  && (gint_peribusdiv.value == 2))) ||
+				(((gint_ccufreqdiv.value == 2) && (gcheck_enable_ccu_clock.value == true)) && ((gint_cpuclkdiv.value == 1)  && (gint_peribusdiv.value == 1))) ||
+				(((gint_ccufreqdiv.value == 1) && (gcheck_enable_ccu_clock.value == true)) && ((gint_cpuclkdiv.value == 2)  && (gint_peribusdiv.value == 2))) ||
+				(((gcheck_enable_ccu_clock.value == false)) && ((gint_cpuclkdiv.value == 2)  && (gint_peribusdiv.value == 2)))  ||
+				((gfloat_usbactfreq.value != 48) && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true)) ||
+				((gfloat_ecatactfreq.value != 100) && (ggroup_ecatfreq.visible == true) && (gcheck_enable_ecat_clock.value == true)) )
+			{
+			  true
+			}else
+			{
+			  false
+			}
+		}, Boolean)
+		
+		/* throw error message when expected criteria not met */
+		gmessage_clock_generation.isError = MF({
+			if( ((gfloat_mainpllactfreq.value > gfloat_mainpllactfreq.maxValue) || (gfloat_mainpllactfreq.value < gfloat_mainpllactfreq.minValue)) || 
+			    (((gfloat_usbpllactfreq.value > gfloat_usbpllactfreq.maxValue)|| (gfloat_usbpllactfreq.value < gfloat_usbpllactfreq.minValue)) && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true)) ) 
+			{
+			  true
+			}else
+			{
+			  false
+			}
+		}, Boolean)
+		gmessage_clock_selection.isError =  MF({
+			if( ((gfloat_actsysfreq.value > gfloat_actsysfreq.maxValue) || (gfloat_actsysfreq.value < gfloat_actsysfreq.minValue)) ||
+				((gfloat_cpuclkfreq.value > gfloat_cpuclkfreq.maxValue)|| (gfloat_cpuclkfreq.value < gfloat_cpuclkfreq.minValue)) ||
+				((gfloat_peribusfreq.value > gfloat_peribusfreq.maxValue) || (gfloat_peribusfreq.value < gfloat_peribusfreq.minValue)) ||
+				((gfloat_ccufreq.value > gfloat_ccufreq.maxValue)|| (gfloat_ccufreq.value < gfloat_ccufreq.minValue)) ||
+				(((gfloat_usbactfreq.value > gfloat_usbactfreq.maxValue) || (gfloat_usbactfreq.value < gfloat_usbactfreq.minValue)) && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true)) ||
+				((gfloat_wdtactfreq.value > gfloat_wdtactfreq.maxValue)|| (gfloat_wdtactfreq.value < gfloat_wdtactfreq.minValue))||
+				(((gfloat_ebufreq.value > gfloat_ebufreq.maxValue) || (gfloat_ebufreq.value < gfloat_ebufreq.minValue))  && (ggroup_ebufreq.visible == true) && (gcheck_enable_ebu_clock.value == true)) ||
+				((gfloat_extclkfreqact.value > gfloat_extclkfreqact.maxValue)|| (gfloat_extclkfreqact.value < gfloat_extclkfreqact.minValue)) ||
+				(((gfloat_ecatactfreq.value > gfloat_ecatactfreq.maxValue)|| (gfloat_ecatactfreq.value < gfloat_ecatactfreq.minValue)) && (ggroup_ecatfreq.visible == true) && (gcheck_enable_ecat_clock.value == true)) ||
+				(((gint_ccufreqdiv.value == 2) && (gcheck_enable_ccu_clock.value == true)) && ((gint_cpuclkdiv.value == 2)  && (gint_peribusdiv.value == 2))) ||
+				(((gint_ccufreqdiv.value == 2) && (gcheck_enable_ccu_clock.value == true)) && ((gint_cpuclkdiv.value == 1)  && (gint_peribusdiv.value == 1))) ||
+				(((gint_ccufreqdiv.value == 1) && (gcheck_enable_ccu_clock.value == true)) && ((gint_cpuclkdiv.value == 2)  && (gint_peribusdiv.value == 2))) ||
+				(((gcheck_enable_ccu_clock.value == false)) && ((gint_cpuclkdiv.value == 2)  && (gint_peribusdiv.value == 2))) ||
+				((gfloat_usbactfreq.value != 48) && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true)) ||
+				((gfloat_ecatactfreq.value != 100) && (ggroup_ecatfreq.visible == true) && (gcheck_enable_ecat_clock.value == true)) )
+			{
+			  true
+			}else
+			{
+			  false
+			}
+		}, Boolean)
+	  
+		/* display text message when expected criteria not met */
+		gmessage_clock_generation.text = MF({
+		 
+		   String msg
+		   if((gfloat_mainpllactfreq.value < gfloat_mainpllactfreq.minValue))
+		   {
+			 msg = "Actual PLL frequency (fPLL) value is not as expected. fPLL value is less than lower thershold value of fPLL (${gfloat_mainpllactfreq.minValue}MHz)."
+		   }else if((gfloat_mainpllactfreq.value > gfloat_mainpllactfreq.maxValue))
+		   {
+			 msg = "Actual USBPLL frequency (fUSBPLL) value is not as expected. fPLL value is greater than upper thershold value of fPLL (${gfloat_mainpllactfreq.maxValue}MHz)."
+		   }else if((gfloat_usbpllactfreq.value < gfloat_usbpllactfreq.minValue) && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true))
+	       {
+			   msg =  "Actual USBPLL frequency (fUSBPLL) value is not as expected. fUSBPLL value is less than lower thershold value of fUSBPLL (${gfloat_usbpllactfreq.minValue}MHz)."
+		   }
+		   else if((gfloat_usbpllactfreq.value > gfloat_usbpllactfreq.maxValue) && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true))
+		   {
+			 msg = "Actual USBPLL frequency (fUSBPLL) value is not as expected. fUSBPLL value is greater than upper thershold value of fUSBPLL (${gfloat_usbpllactfreq.maxValue}MHz)."
+		   }else
+	       {
+			   msg = ""
+		   }
+			
+		  return (msg)
+		}, String)
+		
+		gmessage_clock_selection.text = MF({
+			
+			  String msg
+			  if((gfloat_actsysfreq.value < gfloat_actsysfreq.minValue))
+			  {
+				msg = "Actual system frequency (fSYS) value is not as expected. Actual fSYS value is less than lower thershold value of fSYS (${gfloat_actsysfreq.minValue}MHz)."
+			  }else if((gfloat_actsysfreq.value > gfloat_actsysfreq.maxValue))
+			  {
+				msg = "Actual system frequency (fSYS) value is not as expected. Actual fSYS value is greater than upper thershold value of fSYS (${gfloat_actsysfreq.maxValue}MHz)."
+			  }else if((gfloat_cpuclkfreq.value < gfloat_cpuclkfreq.minValue))
+			  {
+				  msg =  "Actual CPU frequency (fCPU) value is not as expected. Actual fCPU value is less than lower thershold value of fCPU (${gfloat_cpuclkfreq.minValue}MHz)."
+			  }else if((gfloat_cpuclkfreq.value > gfloat_cpuclkfreq.maxValue))
+			  {
+				msg = "Actual CPU frequency (fCPU) value is not as expected. Actual fCPU value is greater than upper thershold value of fCPU (${gfloat_cpuclkfreq.maxValue}MHz)."
+			  }else if((gfloat_peribusfreq.value < gfloat_peribusfreq.minValue))
+			  {
+				  msg =  "Actual peripheral frequency (fPERIPH) value is not as expected. Actual fPERIPH value is less than lower thershold value of fPERIPH (${gfloat_peribusfreq.minValue}MHz)."
+			  }else if((gfloat_peribusfreq.value > gfloat_peribusfreq.maxValue))
+			  {
+				msg = "Actual peripheral frequency (fPERIPH) value is not as expected. Actual fPERIPH value is greater than upper thershold value of fPERIPH (${gfloat_peribusfreq.maxValue}MHz)."
+			  }else if((gfloat_ccufreq.value < gfloat_ccufreq.minValue))
+			  {
+				  msg =  "Actual CCU frequency (fCCU) value is not as expected. Actual fCCU value is less than lower thershold value of fCCU (${gfloat_ccufreq.minValue}MHz)."
+			  }else if((gfloat_ccufreq.value > gfloat_ccufreq.maxValue))
+			  {
+				msg = "Actual CCU frequency (fCCU) value is not as expected. Actual fCCU value is greater than upper thershold value of fCCU (${gfloat_ccufreq.maxValue}MHz)."
+			  }else if((gfloat_usbactfreq.value < gfloat_usbactfreq.minValue)  && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true))
+			  {
+				  msg =  "Actual USB / SDMMC frequency (fUSB / fSDMMC) value is not as expected. Actual fUSB / fSDMMC value is less than lower thershold value of fUSB / fSDMMC (${gfloat_usbactfreq.minValue}MHz)."
+			  }else if((gfloat_usbactfreq.value > gfloat_usbactfreq.maxValue)  && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true))
+			  {
+				msg = "Actual USB / SDMMC frequency (fUSB / fSDMMC) value is not as expected. Actual fUSB / fSDMMC value is greater than upper thershold value of fUSB / fSDMMC (${gfloat_usbactfreq.maxValue}MHz)."
+			  }else if((gfloat_wdtactfreq.value < gfloat_wdtactfreq.minValue))
+			  {
+				  msg =  "Actual WDT frequency (fWDT) value is not as expected. Actual fWDT value is less than lower thershold value of fWDT (${gfloat_wdtactfreq.minValue}MHz)."
+			  }else if((gfloat_wdtactfreq.value > gfloat_wdtactfreq.maxValue))
+			  {
+				msg = "Actual WDT frequency (fWDT) value is not as expected. Actual fWDT value is greater than upper thershold value of fWDT (${gfloat_wdtactfreq.maxValue}MHz)."
+			  }else if((gfloat_ebufreq.value < gfloat_ebufreq.minValue)  && (ggroup_ebufreq.visible == true) && (gcheck_enable_ebu_clock.value == true))
+			  {
+				  msg =  "Actual EBU frequency (fEBU) value is not as expected. Actual fEBU value is less than lower thershold value of fEBU (${gfloat_ebufreq.minValue}MHz)."
+			  }else if((gfloat_ebufreq.value > gfloat_ebufreq.maxValue) && (ggroup_ebufreq.visible == true) && (gcheck_enable_ebu_clock.value == true))
+			  {
+				msg = "Actual EBU frequency (fEBU) value is not as expected. Actual fEBU value is greater than upper thershold value of fEBU (${gfloat_ebufreq.maxValue}MHz)."
+			  }else if((gfloat_extclkfreqact.value < gfloat_extclkfreqact.minValue))
+			  {
+				  msg =  "Actual external clock frequency (fEXT) value is not as expected. Actual fEXT value is less than lower thershold value of fEXT (${gfloat_extclkfreqact.minValue}MHz)."
+			  }
+			  else if((gfloat_extclkfreqact.value > gfloat_extclkfreqact.maxValue))
+			  {
+				msg = "Actual external clock frequency (fEXT) value is not as expected. Actual fEXT value is greater than upper thershold value of fEXT (${gfloat_extclkfreqact.maxValue}MHz)."
+			  }else if((gfloat_ecatactfreq.value < gfloat_ecatactfreq.minValue) && (ggroup_ecatfreq.visible == true) && (gcheck_enable_ecat_clock.value == true))
+			  {
+				  msg =  "Actual EtherCAT frequency (fECAT) value is not as expected. Actual fECAT value should be 100 MHz for its proper functionality."
+			  }
+			  else if((gfloat_ecatactfreq.value > gfloat_ecatactfreq.maxValue) && (ggroup_ecatfreq.visible == true) && (gcheck_enable_ecat_clock.value == true))
+			  {
+				msg = "Actual EtherCAT frequency (fECAT) value is not as expected. Actual fECAT value should be 100 MHz for its proper functionality."
+			  }else if( (((gint_ccufreqdiv.value == 2) && (gcheck_enable_ccu_clock.value == true)) && ((gint_cpuclkdiv.value == 2)  && (gint_peribusdiv.value == 2))) ||
+			            (((gint_ccufreqdiv.value == 2) && (gcheck_enable_ccu_clock.value == true)) && ((gint_cpuclkdiv.value == 1)  && (gint_peribusdiv.value == 1))) ||
+			            (((gint_ccufreqdiv.value == 1) && (gcheck_enable_ccu_clock.value == true)) && ((gint_cpuclkdiv.value == 2)  && (gint_peribusdiv.value == 2))) ||
+			            (((gcheck_enable_ccu_clock.value == false)) && ((gint_cpuclkdiv.value == 2)  && (gint_peribusdiv.value == 2))) )
+			  {
+				  msg = "Invalid clock ratio combinations between fCCU, fCPU and fPERIPH. Refer CLOCK_XMC4 APP helpdoc or XMC4x user manual for valid clock ratio combinations."
+			  }else if ((gfloat_usbactfreq.value != 48) && (ggroup_usbfreq.visible == true) && (gcheck_enable_usb_clock.value == true))
+			  {
+				  msg = "Actual USB / SDMMC frequency (fUSB / fSDMMC) value is not as expected. Actual fUSB / fSDMMC value should be 48 MHz for its proper functionality."
+			  }else if ((gfloat_ecatactfreq.value != 100) && (ggroup_ecatfreq.visible == true) && (gcheck_enable_ecat_clock.value == true))
+			  {
+				  msg = "Actual EtherCAT frequency (fECAT) value is not as expected. Actual fECAT value should be 100 MHz for its proper functionality."
+			  }else
+			  {
+				  msg = ""
+			  }
+			   
+			 return (msg)
+		   }, String)
+//		gcombo_extclkmode.enabled = MF({(gcombo_pllclksrc.value == "External Crystal High Precision Oscillator")}, Boolean)
+		gfloat_extclkoscfreq.enabled = MF({(gcombo_extclkmode.value != "Disabled")}, Boolean) 
+		glabel_extclkoscfreq.enabled = MF({(gcombo_extclkmode.value != "Disabled")}, Boolean) 
+		
+		ggroup_usb_pll_settings.enabled = MF({((gcombo_extclkmode.value != "Disabled") && ((gcombo_usbclksrc.value == "USB PLL Clock") || ((gcombo_ecatclksrc.value == "USB PLL Clock") && (ggroup_ecatfreq.visible == true) && (gcheck_enable_ecat_clock.value == true))) )}, Boolean)
+		
+		gcheck_osc_hp_oscillator_watchdog_trap_event.enabled = MF({(gcombo_extclkmode.value != "Disabled")}, Boolean)
+		gcheck_usb_vco_lock_trap_event.enabled = MF({((gcombo_extclkmode.value != "Disabled") && ((gcombo_usbclksrc.value == "USB PLL Clock") || ((gcombo_ecatclksrc.value == "USB PLL Clock") && (ggroup_ecatfreq.visible == true) && (gcheck_enable_ecat_clock.value == true))) )}, Boolean)
+		gcheck_system_vco_lock_trap_event.enabled = MF({(gcombo_mainpllset.value == "Normal Mode")}, Boolean) 
+		gcheck_osc_ulp_oscillator_watchdog_trap_event.enabled = MF({(gcombo_standbyclksrc.value == "External Crystal Ultra Low Power Oscillator") || (gcombo_rtcclksrc.value == "External Crystal Ultra Low Power Oscillator")}, Boolean) 
+		/*----------------------------------------------------------------------------------------------------------------------
+		 GUI Actions
+		 ----------------------------------------------------------------------------------------------------------------------*/
+		gfloat_mainplldesfreq.minValue = MF({
+			if(gcombo_mainpllset.value == "Normal Mode")
+			{
+				float a = 3.0 /* fPLL = fvco/K2, where fvco range 260MHz to 520MHz, K2 Div is 7bit value  */
+				(a)
+			}
+			else
+			{
+				float a = (gfloat_pll_input_freq.value / 128) /* fOSC/K1 */
+				(a)
+			}
+		}, Float)
+
+		gfloat_mainplldesfreq.maxValue = MF({
+			if((series == "XMC45") || (series == "XMC44"))   
+			{
+				if(gcombo_mainpllset.value == "Normal Mode")
+				{
+					float a = 520.0 /* fPLL = fvco/K2, where fvco range 260MHz to 520MHz, K2 Div is 7bit value  */
+					(a)
+				}
+				else
+				{
+					float a = (gfloat_pll_input_freq.value) /* fOSC/K1 */
+					(a)
+				}
+			} else if((series == "XMC47"))   
+			{
+				if(gcombo_mainpllset.value == "Normal Mode") 
+				{
+					float a = 520.0 /* fPLL = fvco/K2, where fvco range 260MHz to 520MHz, K2 Div is 7bit value  */
+					(a)
+				}
+				else
+				{
+					float a = (gfloat_pll_input_freq.value) /* fOSC/K1 */
+					(a)
+				}
+				
+			}else if((series == "XMC48") || (series == "XMC43"))   
+			{
+				if(gcombo_mainpllset.value == "Normal Mode")
+				{
+					float a = 520.0 /* fPLL = fvco/K2, where fvco range 260MHz to 520MHz, K2 Div is 7bit value  */
+					(a)
+				}
+				else
+				{
+					float a = (gfloat_pll_input_freq.value) /* fOSC/K1 */
+					(a)
+				}
+				
+			}else
+			{  
+				if(gcombo_mainpllset.value == "Normal Mode")
+				{
+					float a = 520.0 /* fPLL = fvco/K2, where fvco range 260MHz to 520MHz, K2 Div is 7bit value  */
+					(a)
+				}
+				else
+				{
+					float a = (gfloat_pll_input_freq.value) /* fOSC/K1 */
+					(a)
+				}
+				
+			}
+		}, Float)
+
+		gfloat_mainpllactfreq.minValue = MF({gfloat_mainplldesfreq.minValue}, Float)
+		gfloat_mainpllactfreq.maxValue = MF({gfloat_mainplldesfreq.maxValue}, Float)
+		
+		gfloat_dia_pllclkfreq.minValue = MF({gfloat_mainplldesfreq.minValue}, Float)
+		gfloat_dia_pllclkfreq.maxValue = MF({gfloat_mainplldesfreq.maxValue}, Float)
+		
+		gfloat_actsysfreq.minValue = MF({(gfloat_mainplldesfreq.minValue / 256.0)}, Float)
+		gfloat_actsysfreq.maxValue = MF({
+			if((series == "XMC45") || (series == "XMC44"))
+			{
+				if(gcombo_mainpllset.value == "Normal Mode")
+				{
+					float a = 120.0 /* fPLL = fvco/K2, where fvco range 260MHz to 520MHz, K2 Div is 7bit value  */
+					(a)
+				}
+				else
+				{
+					float a = (gfloat_pll_input_freq.value) /* fOSC/K1 */
+					(a)
+				}
+			} else if((series == "XMC47"))
+			{
+				if(gcombo_mainpllset.value == "Normal Mode")
+				{
+					float a = 144.0 /* fPLL = fvco/K2, where fvco range 260MHz to 520MHz, K2 Div is 7bit value  */
+					(a)
+				}
+				else
+				{
+					float a = (gfloat_pll_input_freq.value) /* fOSC/K1 */
+					(a)
+				}
+				
+			}else if((series == "XMC48") || (series == "XMC43"))
+			{
+				if(gcombo_mainpllset.value == "Normal Mode")
+				{
+					float a = 144.0 /* fPLL = fvco/K2, where fvco range 260MHz to 520MHz, K2 Div is 7bit value  */
+					(a)
+				}
+				else
+				{
+					float a = (gfloat_pll_input_freq.value) /* fOSC/K1 */
+					(a)
+				}
+				
+			}else
+			{
+				if(gcombo_mainpllset.value == "Normal Mode")
+				{
+					float a = 80.0 /* fPLL = fvco/K2, where fvco range 260MHz to 520MHz, K2 Div is 7bit value  */
+					(a)
+				}
+				else
+				{
+					float a = (gfloat_pll_input_freq.value) /* fOSC/K1 */
+					(a)
+				}
+				
+			}
+		}, Float)
+		
+		gfloat_cpuclkfreq.minValue = MF({(gfloat_actsysfreq.minValue / 2.0)}, Float)
+		gfloat_cpuclkfreq.maxValue = MF({gfloat_actsysfreq.maxValue}, Float)
+		
+		gfloat_dia_cpuclkfreq.minValue = MF({(gfloat_actsysfreq.minValue / 2.0)}, Float)
+		gfloat_dia_cpuclkfreq.maxValue = MF({gfloat_actsysfreq.maxValue}, Float)
+		
+		
+		gfloat_dia_dmaclkfreq.minValue = MF({gfloat_cpuclkfreq.minValue}, Float)
+		gfloat_dia_dmaclkfreq.maxValue = MF({gfloat_cpuclkfreq.maxValue}, Float)
+		
+		gfloat_peribusfreq.minValue = MF({(gfloat_cpuclkfreq.minValue/2.0)}, Float)
+		gfloat_peribusfreq.maxValue = MF({gfloat_cpuclkfreq.maxValue}, Float)
+		
+		gfloat_dia_periphclkfreq.minValue = MF({(gfloat_cpuclkfreq.minValue/2.0)}, Float)
+		gfloat_dia_periphclkfreq.maxValue = MF({gfloat_cpuclkfreq.maxValue}, Float)
+		
+		gfloat_ccufreq.minValue = MF({gfloat_cpuclkfreq.minValue}, Float)
+		gfloat_ccufreq.maxValue = MF({gfloat_cpuclkfreq.maxValue}, Float)
+		
+		
+		gfloat_dia_ccuclkfreq.minValue = MF({gfloat_cpuclkfreq.minValue}, Float)
+		gfloat_dia_ccuclkfreq.maxValue = MF({gfloat_cpuclkfreq.maxValue}, Float)
+		
+		gfloat_dia_ethclkfreq.minValue = MF({gfloat_cpuclkfreq.minValue}, Float)
+		gfloat_dia_ethclkfreq.maxValue = MF({gfloat_cpuclkfreq.maxValue}, Float)
+		
+		gfloat_usbactfreq.minValue = MF({
+			if(gcombo_usbclksrc.value == "USB PLL Clock"){
+				(gfloat_usbplldesfreq.minValue/8.0)
+			}
+			else{
+				(gfloat_mainplldesfreq.minValue/8.0)
+			}
+		}, Float)
+		
+		gfloat_usbactfreq.maxValue = MF({
+			if(gcombo_usbclksrc.value == "USB PLL Clock"){
+				(gfloat_usbplldesfreq.maxValue)
+			}
+			else{
+				(gfloat_mainplldesfreq.maxValue)
+			}
+		}, Float)
+		
+		
+		gfloat_dia_usbclkfreq.minValue = MF({gfloat_usbactfreq.minValue}, Float)
+		gfloat_dia_usbclkfreq.maxValue = MF({gfloat_usbactfreq.maxValue}, Float)
+		
+		gfloat_dia_sdmmcclkfreq.minValue = MF({gfloat_usbactfreq.minValue}, Float)
+		gfloat_dia_sdmmcclkfreq.maxValue = MF({gfloat_usbactfreq.maxValue}, Float)
+		 
+		gfloat_ebufreq.minValue = MF({(gfloat_mainplldesfreq.minValue / 64.0)}, Float)
+		gfloat_ebufreq.maxValue = MF({gfloat_mainplldesfreq.maxValue}, Float)
+		
+		
+		gfloat_dia_ebuclkfreq.minValue = MF({(gfloat_ebufreq.minValue)}, Float)
+		gfloat_dia_ebuclkfreq.maxValue = MF({gfloat_ebufreq.maxValue}, Float)
+		
+		gfloat_ecatactfreq.minValue = MF({
+			if(gcombo_ecatclksrc.value == "USB PLL Clock"){
+				(gfloat_usbplldesfreq.minValue/4.0)
+			}
+			else{
+				(gfloat_mainplldesfreq.minValue/4.0)
+			}
+		}, Float)
+		
+		gfloat_ecatactfreq.maxValue = MF({
+			if(gcombo_ecatclksrc.value == "USB PLL Clock"){
+				(gfloat_usbplldesfreq.maxValue)
+			}
+			else{
+				(gfloat_mainplldesfreq.maxValue)
+			}			
+		}, Float)
+		
+		
+		
+		gfloat_wdtactfreq.minValue = MF({
+			if(gcombo_wdtclksrc.value == "Internal Fast Oscillator"){
+				(backup_clk / 256.0)
+			}
+			else if(gcombo_wdtclksrc.value == "Main PLL Clock"){
+				(gfloat_mainplldesfreq.minValue / 256.0)
+			}
+			else{
+				(standby_clk / 256.0)
+			}
+		}, Float)
+		
+		gfloat_wdtactfreq.maxValue = MF({
+			if(gcombo_wdtclksrc.value == "Internal Fast Oscillator"){
+				(backup_clk)
+			}
+			else if(gcombo_wdtclksrc.value == "Main PLL Clock"){
+				(gfloat_mainplldesfreq.maxValue)
+			}
+			else{
+				(standby_clk + 1.0)
+			}
+		}, Float)
+		
+		
+		gfloat_dia_wdtclkfreq.minValue = MF({(gfloat_wdtactfreq.minValue)}, Float)
+		gfloat_dia_wdtclkfreq.maxValue = MF({gfloat_wdtactfreq.maxValue}, Float)
+		
+		gfloat_extclkfreqact.minValue = MF({
+			if(gcombo_extclkoutsrc.value == "USB PLL Clock"){
+				(gfloat_usbplldesfreq.minValue / 256.0)
+			}
+			else if(gcombo_extclkoutsrc.value == "Main PLL Clock"){
+				(gfloat_mainplldesfreq.minValue / 256.0)
+			}
+			else{
+				(gfloat_actsysfreq.minValue / 256.0)
+			}
+		}, Float)
+		
+		gfloat_extclkfreqact.maxValue = MF({
+			if(gcombo_extclkoutsrc.value == "USB PLL Clock"){
+				(gfloat_usbplldesfreq.maxValue)
+			}
+			else if(gcombo_extclkoutsrc.value == "Main PLL Clock"){
+				(gfloat_mainplldesfreq.maxValue)
+			}
+			else{
+				(gfloat_actsysfreq.maxValue)
+			}
+		}, Float)
+		
+		gfloat_dia_extclkoutfreq.minValue = MF({(gfloat_extclkfreqact.minValue)}, Float)
+		gfloat_dia_extclkoutfreq.maxValue = MF({gfloat_extclkfreqact.maxValue}, Float)
+		
+		
+		gfloat_actsysfreq.value = MF({
+			if(gcombo_sysclksrc.value == "Internal Fast Oscillator")
+			{
+				float a = (backup_clk / gint_sysclkdiv.value)
+				(a)
+			}
+			else if(gcombo_sysclksrc.value == "Main PLL Clock")
+			{
+				float b = (gfloat_mainpllactfreq.value / gint_sysclkdiv.value)
+				(b)
+			}
+			else
+			{
+				float c = 120.0
+				(c)
+			}
+		}, Float)
+
+		gfloat_pll_input_freq.value = MF({
+			if(gcombo_pllclksrc.value == "Internal Fast Oscillator"){
+				(backup_clk)
+			}
+			else{
+				(gfloat_extclkoscfreq.value)
+			}
+		}, Float)
+
+		/* Calculation to find the Main PLL PDIV */
+		gint_mainpllpdiv.value = MF({
+			float fvco = 480.0
+			
+			if(gcombo_mainpllset.value == "Normal Mode"){
+				float a
+				/* PDIV = (fOSC * NDIV) / (fPLL * K2DIV) */
+				a = (gfloat_pll_input_freq.value * gint_mainpllndiv.value) / (gfloat_mainplldesfreq.value * gint_mainpllk2div.value)
+				fvco = (Math.round(gint_mainpllndiv.value) * gfloat_pll_input_freq.value) / a
+				return Math.round(a)
+			}
+			else{
+				1
+			}
+		},Integer)
+
+		/* Calculation to find the Main PLL K2 PDIV */
+		gint_mainpllk2div.value = MF ({
+			if(gcombo_mainpllset.value == "Normal Mode"){
+				
+				float p_div = 2.0
+				float k2_div = 2.0
+				float fvco = 480.0
+				if(gfloat_mainplldesfreq.value > 260)
+				{
+					 p_div = 2.0
+					 k2_div = 1.0
+				}
+				float fref = 4
+				fref = (gfloat_pll_input_freq.value) / p_div
+				/* if fref < vco_in_min then increase the NDIV */
+				while(fref < vco_in_min)
+				{
+					p_div = p_div - 1
+					fref = (gfloat_pll_input_freq.value) / p_div
+				}
+
+				/* if fref > vco_in_max then decrease the NDIV */
+				while(fref > vco_in_max)
+				{
+					p_div = p_div + 1
+					fref = (gfloat_pll_input_freq.value) / p_div
+				}
+				/* NDIV = (fPLL * PDIV * K2DIV) / fOSC */
+				float n_div_init =  (gfloat_mainplldesfreq.value * p_div * k2_div) / gfloat_pll_input_freq.value
+				float n_div = n_div_init
+				float err = 0.0
+				float actpllfreq = 0.0
+				/* fvco = (NDIV * fOSC)/PDIV */
+				fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+
+				/* if vco < vco_min then increase the NDIV */
+				while(fvco < vco_min)
+				{
+					n_div = 2 * n_div
+					fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+				}
+
+				/* if vco > vco_max then decrease the NDIV */
+				while(fvco > vco_max)
+				{
+					n_div = n_div - 1
+					fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+				}
+
+				k2_div = k2_div * (Math.round(n_div) / n_div_init)
+				k2_div = Math.round(k2_div)
+				/* fPLL = (NDIV * fOSC)/(PDIV * K2DIV) */
+				actpllfreq = ((Math.round(n_div) * gfloat_pll_input_freq.value)/ (p_div * k2_div))
+				/* Error = Desired PLL - Actual PLL */
+				err = gfloat_mainplldesfreq.value - actpllfreq
+				/* if Error > 100kHz */
+				
+				if(Math.abs(err) > 0.1)
+				{
+					/* Increase the PDIV and reverify the error */
+					p_div = p_div + 1
+					
+					fref = (gfloat_pll_input_freq.value) / p_div
+					/* if fref < vco_in_min then increase the NDIV */
+					while(fref < vco_in_min)
+					{
+						p_div = p_div - 1
+						fref = (gfloat_pll_input_freq.value) / p_div
+					}
+	
+					/* if fref > vco_in_max then decrease the NDIV */
+					while(fref > vco_in_max)
+					{
+						p_div = p_div + 1
+						fref = (gfloat_pll_input_freq.value) / p_div
+					}
+					n_div = (gfloat_mainplldesfreq.value * p_div * k2_div) / gfloat_pll_input_freq.value
+					/* fvco = (NDIV * fOSC)/PDIV */
+					fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+					
+									/* if vco < vco_min then increase the NDIV */
+					while(fvco < vco_min)
+					{
+						n_div = 2 * n_div
+						fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+					}
+	
+					/* if vco > vco_max then decrease the NDIV */
+					while(fvco > vco_max)
+					{
+						n_div = n_div - 1
+						fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+					}
+					actpllfreq = ((Math.round(n_div) * gfloat_pll_input_freq.value)/ ( p_div * k2_div))
+					err = gfloat_mainplldesfreq.value - actpllfreq
+					println "main PLL n_div = " + n_div
+					println "main PLL n_div = " + n_div
+					println "main PLL actpllfreq = " + actpllfreq
+				}
+				
+				if(gint_mainpllndiv.value > n_div)
+				{
+					/* K2DIV = K2DIV * ratio (temp_ndiv/desired_ndiv) */
+					k2_div = k2_div * ((gint_mainpllndiv.value) / n_div)
+
+					/* if K2DIV > 7Bit value */
+					if(k2_div > 128)
+					{
+						k2_div = k2_div - 1
+					}
+					
+				}
+				else
+				{
+					k2_div
+				}
+				p_div = (gfloat_pll_input_freq.value * n_div) / (gfloat_mainplldesfreq.value * k2_div)
+								
+				return Math.round(k2_div)
+			}
+			else{
+				4
+			}
+		},Integer)
+
+		/* Calculation to find the Main PLL N PDIV */
+		gint_mainpllndiv.value = MF ({
+			if(gcombo_mainpllset.value == "Normal Mode"){
+				float p_div = 2.0
+				float k2_div = 2.0
+				float fvco = 480.0
+				if(gfloat_mainplldesfreq.value > 260)
+				{
+					 p_div = 2.0
+					 k2_div = 1.0
+				}
+				float fref = 4
+				fref = (gfloat_pll_input_freq.value) / p_div
+				/* if fref < vco_in_min then increase the NDIV */
+				while(fref < vco_in_min)
+				{
+					p_div = p_div - 1
+					fref = (gfloat_pll_input_freq.value) / p_div
+				}
+
+				/* if fref > vco_in_max then decrease the NDIV */
+				while(fref > vco_in_max)
+				{
+					p_div = p_div + 1
+					fref = (gfloat_pll_input_freq.value) / p_div
+				}
+				/* NDIV = (fPLL * PDIV * K2DIV) / fOSC */
+				float n_div_init =  (gfloat_mainplldesfreq.value * p_div * k2_div) / gfloat_pll_input_freq.value
+				float n_div = n_div_init
+				float err = 0.0
+				float actpllfreq = 0.0
+				/* fvco = (NDIV * fOSC)/PDIV */
+				fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+
+				/* if vco < vco_min then increase the NDIV */
+				while(fvco < vco_min)
+				{
+					n_div = 2 * n_div
+					fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+				}
+
+				/* if vco > vco_max then decrease the NDIV */
+				while(fvco > vco_max)
+				{
+					n_div = n_div - 1
+					fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+				}
+
+				k2_div = k2_div * (Math.round(n_div) / n_div_init)
+				k2_div = Math.round(k2_div)
+				/* fPLL = (NDIV * fOSC)/(PDIV * K2DIV) */
+				actpllfreq = ((Math.round(n_div) * gfloat_pll_input_freq.value)/ (p_div * k2_div))
+				/* Error = Desired PLL - Actual PLL */
+				err = gfloat_mainplldesfreq.value - actpllfreq
+				/* if Error > 100kHz */
+				if(Math.abs(err) > 0.1)
+				{
+					/* Increase the PDIV and reverify the error */
+					p_div = p_div + 1
+					fref = (gfloat_pll_input_freq.value) / p_div
+					/* if fref < vco_in_min then increase the NDIV */
+					while(fref < vco_in_min)
+					{
+						p_div = p_div - 1
+						fref = (gfloat_pll_input_freq.value) / p_div
+					}
+	
+					/* if fref > vco_in_max then decrease the NDIV */
+					while(fref > vco_in_max)
+					{
+						p_div = p_div + 1
+						fref = (gfloat_pll_input_freq.value) / p_div
+					}
+					n_div = (gfloat_mainplldesfreq.value * p_div * k2_div) / gfloat_pll_input_freq.value
+					/* fvco = (NDIV * fOSC)/PDIV */
+					fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+					
+									/* if vco < vco_min then increase the NDIV */
+					while(fvco < vco_min)
+					{
+						n_div = 2 * n_div
+						fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+					}
+	
+					/* if vco > vco_max then decrease the NDIV */
+					while(fvco > vco_max)
+					{
+						n_div = n_div - 1
+						fvco = (Math.round(n_div) * gfloat_pll_input_freq.value) / p_div
+					}
+					actpllfreq = ((Math.round(n_div) * gfloat_pll_input_freq.value)/ (p_div * k2_div))
+					err = gfloat_mainplldesfreq.value - actpllfreq
+					
+				}
+				
+				p_div = (gfloat_pll_input_freq.value * n_div) / (gfloat_mainplldesfreq.value * k2_div)
+				
+				return Math.round(n_div)
+			}
+			else{
+				40
+			}
+		},Integer)
+
+		gint_mainpllk1div.value = MF({
+			if(gcombo_mainpllset.value == "Prescaler Mode")
+			{
+				int a = (gfloat_pll_input_freq.value / gfloat_mainplldesfreq.value)
+				if(a < 1)
+				{
+					a = 1
+				}
+				else if(a > 128)
+				{
+					a = 128
+				}
+				else
+				{
+					a = a
+				}
+				(a)
+			}
+			else /* Normal Mode */
+			{
+				int a = 1
+				(a)
+			}
+		}, Integer)
+
+		gfloat_vco.value = MF({
+			/* fvco = (NDIV * fOSC)/PDIV */
+			float a = ((gint_mainpllndiv.value * gfloat_pll_input_freq.value) / (gint_mainpllpdiv.value))
+			(a)
+		}, Float)
+		
+		gfloat_usbvco.value = MF({
+			/* fvco = (NDIV * fOSC)/PDIV */
+			float a = ((gint_usbpll_ndiv.value * gfloat_extclkoscfreq.value) / (gint_usbpll_pdiv.value))
+			(a)
+		}, Float)
+		gfloat_mainpllactfreq.value = MF ({
+			if(gcombo_pllclksrc.value == "External Crystal High Precision Oscillator"){
+				if(gcombo_mainpllset.value == "Normal Mode"){
+					/* fPLL = (NDIV * fOSC)/(PDIV * K2DIV) */
+					float a = ((gint_mainpllndiv.value * gfloat_pll_input_freq.value) / (gint_mainpllpdiv.value * gint_mainpllk2div.value))
+					(a)
+				}
+				else{
+					/* fPLL = fOSC/K1DIV */
+					(gfloat_pll_input_freq.value / gint_mainpllk1div.value)
+				}
+			}
+			else{
+				/* fPLL = (NDIV * fOSC)/(PDIV * K2DIV) */
+				if(gcombo_mainpllset.value == "Normal Mode"){
+					float a = ((gint_mainpllndiv.value * gfloat_pll_input_freq.value) / (gint_mainpllpdiv.value * gint_mainpllk2div.value))
+					(a)
+				}
+				else{
+					/* fPLL = fOSC/K1DIV */
+					(gfloat_pll_input_freq.value / gint_mainpllk1div.value)
+				}
+			}
+		},Float)
+		
+		gfloat_vco_clkin.value = MF({
+			(gfloat_pll_input_freq.value/gint_mainpllpdiv.value)
+		},Float)
+		gfloat_usbvco_clkin.value = MF({
+			(gfloat_extclkoscfreq.value/gint_usbpll_pdiv.value)
+		},Float)
+		
+		/* CPU Clock derived from System Clock */
+		gfloat_cpuclkfreq.value = MF({
+			(gfloat_actsysfreq.value/gint_cpuclkdiv.value)
+		},Float)
+
+		/* Peripheral Clock derived from CPU Clock */
+		gfloat_peribusfreq.value = MF({
+			(gfloat_cpuclkfreq.value/gint_peribusdiv.value)
+		},Float)
+		/* CCU Clock derived from System Clock */
+		gfloat_ccufreq.value = MF({
+			(gfloat_actsysfreq.value/gint_ccufreqdiv.value)
+		},Float)
+
+		/* Calculation to find the Main PLL PDIV */
+		gint_usbpll_pdiv.value = MF({
+			float p_min = (gfloat_extclkoscfreq.value / vco_in_max)
+			float p_max =( gfloat_extclkoscfreq.value / vco_in_min)
+			
+			float n_min = (vco_min / gfloat_extclkoscfreq.value )
+			float n_max =( vco_max/ gfloat_extclkoscfreq.value )
+			
+			float actpllfreq = 0.0
+			float err = 0.0
+			float err_min = 1000.0
+			float n_div=0.0
+			float p_div=2.0
+			float n_div_backup=0.0
+			float fref=4.0
+			float fvco=480.0
+			
+				for(int p=p_min;p<=p_max;p++)
+				{
+					fref = (gfloat_extclkoscfreq.value) / p
+					/* if fref < vco_in_min then increase the NDIV */
+					while(fref < vco_in_min)
+					{
+						p = p - 1
+						fref = (gfloat_extclkoscfreq.value) / p
+					}
+	
+					/* if fref > vco_in_max then decrease the NDIV */
+					while(fref > vco_in_max)
+					{
+						p = p + 1
+						fref = (gfloat_extclkoscfreq.value) / p
+					}
+					n_div = (gfloat_usbplldesfreq.value * p * 2) / gfloat_extclkoscfreq.value
+					fvco = (Math.round(n_div) * gfloat_extclkoscfreq.value) / p
+					
+					/* if vco < vco_min then increase the NDIV */
+					while(fvco < vco_min)
+					{
+						n_div = 2 * n_div
+						fvco = (Math.round(n_div) * gfloat_extclkoscfreq.value) / p
+					}
+		
+					/* if vco > vco_max then decrease the NDIV */
+					while(fvco > vco_max)
+					{
+						n_div = n_div - 1
+						fvco = (Math.round(n_div) * gfloat_extclkoscfreq.value) / p
+					}
+					//if(n_div >=n_min && n_div <=n_max  )
+					if(n_div<= 128)
+					{
+						actpllfreq = ((Math.round(n_div) * gfloat_extclkoscfreq.value)/ (p * 2))
+						err = gfloat_usbplldesfreq.value - actpllfreq
+						if(Math.abs(err) < err_min)
+						{
+							n_div_backup = n_div
+							p_div = p
+							err_min = Math.abs(err)
+						}
+					}
+			}
+				return Math.round(p_div)
+			
+		},Integer)
+		
+
+		/* Calculation to find the actual frequency depending on USB PLL divider parameters */
+		gfloat_usbactfreq.value = MF({
+			if(gcombo_usbclksrc.value == "USB PLL Clock"){
+				((gint_usbpll_ndiv.value * gfloat_extclkoscfreq.value) / (gint_usbpll_pdiv.value * 2 * gint_usbdiv.value))
+			}
+			else{
+				(gfloat_mainpllactfreq.value / gint_usbdiv.value)
+			}
+		}, Float)
+
+		gint_usbpll_ndiv.value = MF({
+			float p_min = (gfloat_extclkoscfreq.value / vco_in_max)
+			float p_max =( gfloat_extclkoscfreq.value / vco_in_min)
+			
+			float n_min = (vco_min / gfloat_extclkoscfreq.value )
+			float n_max =( vco_max/ gfloat_extclkoscfreq.value )
+			
+			float actpllfreq = 0.0
+			float err = 0.0
+			float err_min = 1000.0
+			float n_div=0.0
+			float p_div=2.0
+			float n_div_backup=0.0
+			float fref=4.0
+			float fvco=480.0
+			
+				for(int p=p_min;p<=p_max;p++)
+				{
+					fref = (gfloat_extclkoscfreq.value) / p
+					/* if fref < vco_in_min then increase the NDIV */
+					while(fref < vco_in_min)
+					{
+						p = p - 1
+						fref = (gfloat_extclkoscfreq.value) / p
+					}
+	
+					/* if fref > vco_in_max then decrease the NDIV */
+					while(fref > vco_in_max)
+					{
+						p = p + 1
+						fref = (gfloat_extclkoscfreq.value) / p
+					}
+					n_div = (gfloat_usbplldesfreq.value * p * 2) / gfloat_extclkoscfreq.value
+					fvco = (Math.round(n_div) * gfloat_extclkoscfreq.value) / p
+					
+					/* if vco < vco_min then increase the NDIV */
+					while(fvco < vco_min)
+					{
+						n_div = 2 * n_div
+						fvco = (Math.round(n_div) * gfloat_extclkoscfreq.value) / p
+					}
+		
+					/* if vco > vco_max then decrease the NDIV */
+					while(fvco > vco_max)
+					{
+						n_div = n_div - 1
+						fvco = (Math.round(n_div) * gfloat_extclkoscfreq.value) / p
+					}
+					//if(n_div >=n_min && n_div <=n_max  )
+					if(n_div<= 128)
+					{
+						actpllfreq = ((Math.round(n_div) * gfloat_extclkoscfreq.value)/ (p * 2))
+						err = gfloat_usbplldesfreq.value - actpllfreq
+						if(Math.abs(err) < err_min)
+						{
+							n_div_backup = n_div
+							p_div = p
+							err_min = Math.abs(err)
+						}
+					}
+			}
+				return Math.round(n_div_backup)
+			
+		},Integer)
+			
+		gfloat_usbpllactfreq.value = MF({
+					/* fUSBPLL = (NDIV * fOSC)/(PDIV * 2) */
+					float a = ((gint_usbpll_ndiv.value * gfloat_extclkoscfreq.value) / (gint_usbpll_pdiv.value * 2 ))
+					(a)
+		},Float)
+		
+		
+		gcombo_extclkoutsrc.options = MF({
+			if(((series == "XMC42") || (series == "XMC41")))
+			{
+				if(((gcombo_usbclksrc.value == "USB PLL Clock") && (ggroup_usbfreq.visible == true)) || ((gcombo_ecatclksrc.value == "USB PLL Clock") && (ggroup_ecatfreq.visible == true))){
+				
+				["System Clock",
+				"USB PLL Clock",
+				"Main PLL Clock",
+				"Standby Clock"]
+				}
+				else{
+				["System Clock",
+				"Main PLL Clock",
+				"Standby Clock"]
+				}
+			}else
+		    {
+				if(((gcombo_usbclksrc.value == "USB PLL Clock") && (ggroup_usbfreq.visible == true)) || ((gcombo_ecatclksrc.value == "USB PLL Clock") && (ggroup_ecatfreq.visible == true))){
+				
+				["System Clock",
+				"USB PLL Clock",
+				"Main PLL Clock"]
+				}
+				else{
+				["System Clock",
+				"Main PLL Clock"]
+				}
+				
+			}
+		}, List)
+		
+		
+		gcombo_pllclksrc.options = MF({
+			
+				if((gcombo_extclkmode.value != "Disabled")){
+				
+				["Internal Fast Oscillator",
+				"External Crystal High Precision Oscillator"]
+				}
+				else{
+				["Internal Fast Oscillator"]
+				}
+		}, List)
+		
+		gcombo_ecatclksrc.options = MF({
+			    if(is_ecat_available == true)
+				{
+					if((gcombo_extclkmode.value != "Disabled") && (is_ecat_available == true) && (is_usbpll_available == true)){
+					
+					[
+					"USB PLL Clock",
+					"Main PLL Clock"]
+					}
+					else{
+					[
+					"Main PLL Clock"]
+					}
+				}else
+				{
+					[
+						"USB PLL Clock",
+						"Main PLL Clock"]
+				}
+		}, List)
+		
+		gcombo_usbclksrc.options = MF({
+			if(is_usbpll_available == true)
+			{
+				if((gcombo_extclkmode.value != "Disabled") && (is_usbpll_available == true)){
+				
+				[
+				"USB PLL Clock",
+				"Main PLL Clock"]
+				}
+				else{
+				[
+				"Main PLL Clock"]
+				}
+			}else
+				{
+					[						
+					"Main PLL Clock"]
+				}
+			
+		}, List)
+		
+		/* Calculation to find the actual frequency depending on USB PLL divider parameters */
+		gfloat_ecatactfreq.value = MF({
+			if(gcombo_ecatclksrc.value == "USB PLL Clock"){
+				((gint_usbpll_ndiv.value * gfloat_extclkoscfreq.value) / (gint_usbpll_pdiv.value * 2 * gint_ecatdiv.value))
+			}
+			else{
+				(gfloat_mainpllactfreq.value / gint_ecatdiv.value)
+			}
+		}, Float)
+			
+//		if(is_ebu_available == true)
+//		{
+			gfloat_ebufreq.value = MF({gfloat_mainpllactfreq.value / gint_ebufreqdiv.value}, Float)
+//		}
+
+		gfloat_wdtactfreq.value = MF({
+			if(gcombo_wdtclksrc.value == "Internal Fast Oscillator"){
+				float a = (backup_clk / ginteger_wdtclkdiv.value)
+				(a)
+			}
+			else if(gcombo_wdtclksrc.value == "Standby Clock"){
+				float a = (standby_clk / ginteger_wdtclkdiv.value)
+				(a)
+			}
+			else if(gcombo_wdtclksrc.value == "Main PLL Clock"){
+				float a = (gfloat_mainpllactfreq.value / ginteger_wdtclkdiv.value)
+				(a)
+			}
+			else{
+				float a = 32.0
+				(a)
+			}
+		}, Float)
+
+		if(is_extclkout_available == true)
+		{
+			gfloat_extclkfreqact.value = MF({
+				if(gcombo_extclkoutsrc.value == "System Clock"){
+					(gfloat_actsysfreq.value)
+				}
+				else if(gcombo_extclkoutsrc.value == "USB PLL Clock"){
+					float a = (((gint_usbpll_ndiv.value * gfloat_extclkoscfreq.value) / (gint_usbpll_pdiv.value * 2)) / gint_extclkplldiv.value)
+					(a)
+				}
+				else if(gcombo_extclkoutsrc.value == "Main PLL Clock"){
+					float b = (gfloat_mainpllactfreq.value/gint_extclkplldiv.value)
+					(b)
+				}
+				else if(gcombo_extclkoutsrc.value == "Standby Clock"){
+					float b = (standby_clk)
+					(b)
+				}
+				else{
+					float c = 50.0
+					(c)
+				}
+			}, Float)
+		}
+
+		gfloat_dia_cpuclkfreq.value = MF({gfloat_cpuclkfreq.value}, Float);
+		gfloat_dia_dmaclkfreq.value = MF({gfloat_cpuclkfreq.value}, Float);
+		gfloat_dia_periphclkfreq.value = MF({gfloat_peribusfreq.value}, Float);
+		gfloat_dia_ccuclkfreq.value = MF({gfloat_ccufreq.value}, Float);
+		gfloat_dia_usbclkfreq.value = MF({gfloat_usbactfreq.value}, Float);
+		gfloat_dia_sdmmcclkfreq.value = MF({gfloat_usbactfreq.value}, Float);
+		gfloat_dia_ethclkfreq.value = MF({gfloat_actsysfreq.value}, Float);
+		gfloat_dia_ebuclkfreq.value = MF({gfloat_ebufreq.value}, Float);
+		gfloat_dia_wdtclkfreq.value = MF({gfloat_wdtactfreq.value}, Float);
+		gfloat_dia_extclkoutfreq.value = MF({gfloat_extclkfreqact.value}, Float);
+		gfloat_dia_usbpllclkfreq.value = MF({gfloat_usbpllactfreq.value}, Float);
+		gfloat_dia_pllclkfreq.value = MF({gfloat_mainpllactfreq.value}, Float);
+		
+		
+		
+		gfloat_dia_ecatclkfreq.value = MF({gfloat_ecatactfreq.value}, Float);
+		
+		gfloat_dia_oficlkfreq.value = MF({
+			float a = 24.0
+			(a)
+		}, Float);
+		gfloat_dia_ohpclkfreq.value = MF({gfloat_extclkoscfreq.value}, Float);
+		gfloat_dia_oscclkfreq.value = MF({
+			if(gcombo_pllclksrc.value == "External Crystal High Precision Oscillator")
+			{
+				gfloat_dia_ohpclkfreq.value
+			}
+			else
+			{
+				gfloat_dia_oficlkfreq.value
+			}
+		}, Float);
+
+//		ggroup_extclk.enabled = MF({
+//			if((gcombo_pllclksrc.value == "External Crystal High Precision Oscillator") || (gcombo_usbclksrc.value == "USB PLL Clock") || ((gcombo_ecatclksrc.value == "USB PLL Clock") && (ggroup_ecatfreq.visible == true)))
+//			{
+//				true
+//			}
+//			else
+//			{
+//				false
+//			}
+//		}, Boolean)
+
+		gfloat_extclkoscfreq.minValue = MF({
+			if(gcombo_extclkmode.value == "External Crystal Mode")
+			{
+				float a = 4.0
+				(a)
+			}
+			else
+			{
+				float a = 4.0
+				(a)
+			}
+		}, Float)
+		gfloat_extclkoscfreq.maxValue = MF({
+			if(gcombo_extclkmode.value == "External Crystal Mode")
+			{
+				float a = 25.0
+				(a)
+			}
+			else if(gcombo_extclkmode.value == "External Clock Input Mode")
+			{
+				float a = 40.0
+				(a)
+			}
+			else
+			{
+				float a = 25.0
+				(a)
+			}
+		}, Float)
+
+		gmessage_extclkoutfreq.visible = MF({(gcheck_extclkout.value == true) && (gfloat_extclkfreqact.value > 80.0)}, Boolean)
+
+		gmessage_extclkoutfreq.text = MF({
+			float a = 80.0
+			String msg
+			if(gfloat_extclkfreqact.value > a)
+			{
+				msg = "The maximum external clockout frequency supported at the EXTCLK pin is 80MHz."
+			}
+			else
+			{
+				msg = ""
+			}
+			(msg)
+		}, String)
+		
+		gmessage_extclkoutfreq.isError = MF({
+			float a = 80.0
+			if(gfloat_extclkfreqact.value > a)
+			{
+				true
+			}
+			else
+			{
+				false
+			}
+		}, Boolean)
+
+		/*--------------------------------------------------------------------------------------------------------------
+		 Consumed Resource Groups
+		 -------------------------------------------------------------------------------------------------------------*/
+		hwres_pll = MVirtualResourceGroup("PLL", ["peripheral", "scu", "0", "clkctrl", "0", "pll"])
+		hwres_sys = MVirtualResourceGroup("SYSTEM", ["peripheral", "scu", "0", "clkctrl", "0", "sys"])
+		
+		hwres_sysoscwd_trap = MVirtualResourceGroup("SYSTEM", ["peripheral", "scu", "0", "trap","0", "sysoscwd"])
+		hwres_sysvcolock_trap = MVirtualResourceGroup("SYSTEM", ["peripheral", "scu", "0", "trap","0", "sysvcolock"])
+		if(is_usbpll_available == true)
+		{
+		  hwres_usbvcolock_trap = MVirtualResourceGroup("SYSTEM", ["peripheral", "scu", "0", "trap","0", "usbvcolock"])
+		}
+		hwres_ulpwdg_trap = MVirtualResourceGroup("SYSTEM", ["peripheral", "scu", "0", "trap","0", "ulpwdg"])
+		
+		
+		hwres_cpu = MVirtualResourceGroup("CPU", ["peripheral", "scu", "0", "clkctrl", "0", "cpu"])
+		hwres_perbridge = MVirtualResourceGroup("PERIBRIDGE", ["peripheral", "scu", "0", "clkctrl", "0", "perbridge"])
+		if(is_ebu_available == true)
+		{
+			hwres_ebu = MVirtualResourceGroup("EBU", ["peripheral", "scu", "0", "clkctrl", "0", "ebu"])
+		}
+		if(is_ccu_available == true)
+		{
+			hwres_ccu = MVirtualResourceGroup("CCU", ["peripheral", "scu", "0", "clkctrl", "0", "ccu"])
+		}
+		hwres_wdt = MVirtualResourceGroup("WDT", ["peripheral", "scu", "0", "clkctrl", "0", "wdt"])
+		if(is_usb_available == true)
+		{
+			hwres_usb = MVirtualResourceGroup("USB", ["peripheral", "scu", "0", "clkctrl", "0", "usb"])
+		}
+		if(is_sdmmc_available == true)
+		{
+			hwres_mmc = MVirtualResourceGroup("SDMMC", ["peripheral", "scu", "0", "clkctrl", "0", "sdmmc"])
+		}
+		hwres_extclk = MVirtualResourceGroup("EXTCLK", ["peripheral", "scu", "0", "clkctrl", "0", "extclk"], MF({(is_extclkout_available==true) && (gcheck_extclkout.value == true)}, Boolean))
+		hwres_hibernate = MVirtualResourceGroup("HIBERNATE", ["peripheral", "scu", "0", "pwrctrl", "0", "hibernate"])
+		hwres_rtcclksel = MVirtualResourceGroup("RTC", ["peripheral", "scu", "0", "rtcclksel"])
+		hwres_extclkpin = MVirtualResourceGroup("External Clock Output Pin", ["port", "p", "*", "pad", "*"], MF({(is_extclkout_available==true) && (gcheck_extclkout.value == true)}, Boolean))
+
+		/*--------------------------------------------------------------------------------------------------------------
+		 Virtual Signals Definitions
+		 --------------------------------------------------------------------------------------------------------------*/
+		
+		vs_sysoscwd_trap = MVirtualSignal(hwres_sysoscwd_trap, "osc_hp_watchdog_trap", "trap", MF({(gcheck_osc_hp_oscillator_watchdog_trap_event.value == true)}, Boolean), false)
+		vs_sysvcolock_trap = MVirtualSignal(hwres_sysvcolock_trap, "system_vco_lock_trap", "trap", MF({(gcheck_system_vco_lock_trap_event.value == true)}, Boolean), false)
+		
+		if(is_usbpll_available == true)
+		{
+		  vs_usbvcolock_trap = MVirtualSignal(hwres_usbvcolock_trap, "usb_vco_lock_trap", "trap", MF({(gcheck_usb_vco_lock_trap_event.value == true)}, Boolean), false)
+		 
+		}else
+                {			
+		  ggroup_usb_pll_settings.visible = false
+		  gcheck_usb_vco_lock_trap_event.visible= false
+		}
+		vs_ulpwdg_trap = MVirtualSignal(hwres_ulpwdg_trap, "osc_ulp_watchdog_trap", "trap", MF({(gcheck_osc_ulp_oscillator_watchdog_trap_event.value == true)}, Boolean), false)
+		
+		vs_fpb =  MVirtualSignal(hwres_perbridge, "clk_perbridge_output", "fpb", true, true) /* required{}, exposeToUser{} */
+		vs_fccu =  MVirtualSignal(hwres_ccu, "clk_ccu_output", "fccu", MF({(is_ccu_available == true)}, Boolean), true) /* required{}, exposeToUser{} */
+		vs_extclk =  MVirtualSignal(hwres_extclk, "clk_external_output", "extclk", MF({(is_extclkout_available==true) && (gcheck_extclkout.value == true)}, Boolean), false) /* required{}, exposeToUser{} */
+		@AddPin(pinDisplayName ='external_clock_pin')
+				vs_extclkpin =  MVirtualSignal(hwres_extclkpin, "external_clock_pin", "pad", MF({(is_extclkout_available==true) && (gcheck_extclkout.value == true)}, Boolean), false) /* required{}, exposeToUser{} */
+
+		/*--------------------------------------------------------------------------------------------------------------
+		 Virtual Signals Connections
+		 --------------------------------------------------------------------------------------------------------------*/
+		addConnectionConstraint(vs_extclk, vs_extclkpin)
+		addConnectionConstraint(vs_sysoscwd_trap, vs_cpuctrl_app_node, MF({
+										if((gcheck_osc_hp_oscillator_watchdog_trap_event.value == true) && (gcombo_extclkmode.value != "Disabled"))
+										 {
+											 true
+										 }
+										 else
+										 {
+											 false
+										 }	 
+									  },Boolean))
+		
+		addConnectionConstraint(vs_sysvcolock_trap, vs_cpuctrl_app_node, MF({
+										if((gcheck_system_vco_lock_trap_event.value == true) && (gcheck_system_vco_lock_trap_event.enabled == true))
+										 {
+											 true
+										 }
+										 else
+										 {
+											 false
+										 }
+									  },Boolean))
+		
+		if (is_usbpll_available == true)
+		{
+			addConnectionConstraint(vs_usbvcolock_trap, vs_cpuctrl_app_node, MF({
+											if((gcheck_usb_vco_lock_trap_event.value == true) && (gcheck_usb_vco_lock_trap_event.enabled == true) && (gcheck_usb_vco_lock_trap_event.visible == true) && (is_usbpll_available == true))
+											 {
+												 true
+											 }
+											 else
+											 {
+												 false
+											 }
+										  },Boolean))
+		
+		}
+		addConnectionConstraint(vs_ulpwdg_trap, vs_cpuctrl_app_node, MF({
+										if((gcheck_osc_ulp_oscillator_watchdog_trap_event.value == true) && (gcheck_osc_ulp_oscillator_watchdog_trap_event.enabled == true))
+										 {
+											 true
+										 }
+										 else
+										 {
+											 false
+										 }
+									  },Boolean))
+	}
+
+	/*------------------------------------------------------------------------------------------------------------------
+	 Source Files Generation
+	 ------------------------------------------------------------------------------------------------------------------*/
+	// File Generation
+	def generateFiles(){
+		copy("clock_xmc4.c", "clock_xmc4.c")
+		copy("clock_xmc4.h", "clock_xmc4.h")
+		generate("clock_xmc4_confh.tmpl", "clock_xmc4_conf.h")
+		generate("clock_xmc4_confc.tmpl", "clock_xmc4_conf.c")
+		generate("clock_xmc4_externh.tmpl", "clock_xmc4_extern.h")
+	}
+
+	// testing purpose
+//		public static  main(args){
+//			CLOCK_XMC4 clock_xmc4 = new CLOCK_XMC4()
+//			println clock_xmc4.toString()
+//			clock_xmc4.gcombo_extclkmode.value = "External Clock Input Mode"
+//			clock_xmc4.gfloat_mainplldesfreq.value = 144.0
+////			for(int i=4; i<=40;i++)
+////			{
+////
+//			
+//			clock_xmc4.gfloat_extclkoscfreq.value = 12
+//				clock_xmc4.gfloat_usbplldesfreq.value = 200
+//			clock_xmc4.gfloat_mainplldesfreq.value = 288
+////			println "Ext clock mode = " + clock_xmc4.gcombo_extclkmode.value
+//			println "VCO Clock Input = " + clock_xmc4.gfloat_vco_clkin.value
+//			println "VCO Clock Output = " + clock_xmc4.gfloat_vco.value
+////			println "PLL Clock Input = " + clock_xmc4.gfloat_pll_input_freq.value
+////			println "Fosc = " + clock_xmc4.gfloat_extclkoscfreq.value
+//			println "gfloat_extclkoscfreq = " + clock_xmc4.gfloat_extclkoscfreq.value
+//			
+//			println "main PLL N DIV = " + clock_xmc4.gint_mainpllndiv.value
+//			println "main PLL P DIV = " + clock_xmc4.gint_mainpllpdiv.value
+//			println "main PLL k2 DIV = " + clock_xmc4.gint_mainpllk2div.value
+//			println "Des PLL Freq = " + clock_xmc4.gfloat_mainplldesfreq.value
+//			println "Act PLL Freq = " + clock_xmc4.gfloat_mainpllactfreq.value
+//			
+//			
+////			println "Des USB PLL Freq = " + clock_xmc4.gfloat_usbplldesfreq.value
+////			println "Act USB VCO OUT Freq = " + clock_xmc4.gfloat_usbvco.value
+////			println "Act USB VCO IN Freq = " + clock_xmc4.gfloat_usbvco_clkin.value
+////
+////			println "USB PLL N DIV = " + clock_xmc4.gint_usbpll_ndiv.value
+////			println "USB PLL P DIV = " + clock_xmc4.gint_usbpll_pdiv.value
+////			println "Act USB PLL Freq = " + clock_xmc4.gfloat_usbpllactfreq.value
+////			println "Act ECAT Freq = " + clock_xmc4.gfloat_ecatactfreq.value
+////			}
+//	
+//		}
+}

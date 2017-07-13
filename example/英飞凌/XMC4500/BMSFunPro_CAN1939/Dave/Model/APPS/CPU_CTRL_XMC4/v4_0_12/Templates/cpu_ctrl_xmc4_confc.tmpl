@@ -1,0 +1,435 @@
+package Model.APPS.CPU_CTRL_XMC4.v4_0_12.Templates;
+
+import Model.APPS.CPU_CTRL_XMC4.v4_0_12.CPU_CTRL_XMC4
+
+out.print("""
+/**
+ * @cond
+ ***********************************************************************************************************************
+ *
+ * Copyright (c) 2015, Infineon Technologies AG
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,are permitted provided that the
+ * following conditions are met:
+ *
+ *   Redistributions of source code must retain the above copyright notice, this list of conditions and the  following
+ *   disclaimer.
+ *
+ *   Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+ *   following disclaimer in the documentation and/or other materials provided with the distribution.
+ *
+ *   Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote
+ *   products derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes
+ * with Infineon Technologies AG (dave@infineon.com).
+ ***********************************************************************************************************************
+ *
+ * Change History
+ * --------------
+ *
+ * 2015-02-16:
+ *     - Initial version<br>
+ *
+ * 2015-08-28:
+ *     -Added exceptions and MPU settings
+ * 2015-11-30:
+ *     -Added disable write buffer
+ * @endcond
+ *
+ */
+/***********************************************************************************************************************
+ * HEADER FILES
+ **********************************************************************************************************************/
+#include <xmc_scu.h>
+#include <xmc_gpio.h>
+#include "cpu_ctrl_xmc4.h"
+/***********************************************************************************************************************
+ * MACROS
+ **********************************************************************************************************************/
+#if ((UC_SERIES == XMC48) || (UC_SERIES == XMC47)) 
+#define PMU_FLASH_WS          (0x4U)
+#elif ((UC_SERIES == XMC45) || (UC_SERIES == XMC44))
+#define PMU_FLASH_WS          (0x3U)
+#else
+#define PMU_FLASH_WS          (0x2U)
+#endif
+""");
+List traceclkuri = null
+List tracedata0uri = null
+List tracedata1uri = null
+List tracedata2uri = null
+List tracedata3uri = null
+
+String traceclk_PortNo 	= null
+String traceclk_PinNo 	= null
+String tracedata0_PortNo = null
+String tracedata0_PinNo  = null
+String tracedata1_PortNo = null
+String tracedata1_PinNo  = null
+String tracedata2_PortNo = null
+String tracedata2_PinNo  = null
+String tracedata3_PortNo = null
+String tracedata3_PinNo  = null
+
+for (Object obj : appInstancesList )
+{
+	String objLabel = obj.getInstanceLabel()
+	
+	obj.hwres_port_pad_tdo.getRegValue("hwsel","hwsel_hw")
+	obj.hwres_port_pad_swd_tdo.getRegValue("hwsel","hwsel_hw")
+	obj.hwres_port_pad_etm_traceclk.getRegValue("hwsel","hwsel_hw")
+	obj.hwres_port_pad_etm_tracedata0.getRegValue("hwsel","hwsel_hw")
+	obj.hwres_port_pad_etm_tracedata1.getRegValue("hwsel","hwsel_hw")
+	obj.hwres_port_pad_etm_tracedata2.getRegValue("hwsel","hwsel_hw")
+	obj.hwres_port_pad_etm_tracedata3.getRegValue("hwsel","hwsel_hw")
+	
+	obj.hwres_port_pad_tdo.getRegValue("iocr","iocr_oe")
+	obj.hwres_port_pad_swd_tdo.getRegValue("iocr","iocr_oe")
+	obj.hwres_port_pad_etm_traceclk.getRegValue("iocr","iocr_oe")
+	obj.hwres_port_pad_etm_tracedata0.getRegValue("iocr","iocr_oe")
+	obj.hwres_port_pad_etm_tracedata1.getRegValue("iocr","iocr_oe")
+	obj.hwres_port_pad_etm_tracedata2.getRegValue("iocr","iocr_oe")
+	obj.hwres_port_pad_etm_tracedata3.getRegValue("iocr","iocr_oe")
+
+	if(obj.gcombo_debuginterface.value == "SWD+ETM")
+	{
+		traceclkuri 	= obj.hwres_port_pad_etm_traceclk.getSolverUri()
+		if(traceclkuri != null)
+		{
+			traceclk_PortNo = traceclkuri[4]
+			traceclk_PinNo 	= traceclkuri[6]
+		}
+		tracedata0uri 	= obj.hwres_port_pad_etm_tracedata0.getSolverUri()
+		if(tracedata0uri != null)
+		{
+			tracedata0_PortNo = tracedata0uri[4]
+			tracedata0_PinNo  = tracedata0uri[6]
+		}
+		tracedata0uri 	= obj.hwres_port_pad_etm_tracedata0.getSolverUri()
+		if(tracedata0uri != null)
+		{
+			tracedata0_PortNo = tracedata0uri[4]
+			tracedata0_PinNo  = tracedata0uri[6]
+		}
+		tracedata1uri 	= obj.hwres_port_pad_etm_tracedata1.getSolverUri()
+		if(tracedata1uri != null)
+		{
+			tracedata1_PortNo = tracedata1uri[4]
+			tracedata1_PinNo  = tracedata1uri[6]
+		}
+		tracedata2uri 	= obj.hwres_port_pad_etm_tracedata2.getSolverUri()
+		if(tracedata2uri != null)
+		{
+			tracedata2_PortNo = tracedata2uri[4]
+			tracedata2_PinNo  = tracedata2uri[6]
+		}
+		tracedata3uri 	= obj.hwres_port_pad_etm_tracedata3.getSolverUri()
+		if(tracedata3uri != null)
+		{
+			tracedata3_PortNo = tracedata3uri[4]
+			tracedata3_PinNo  = tracedata3uri[6]
+		}
+	}
+if(obj.gcheck_mpu.value == true)
+{
+out.print("""
+#define REGION_VALID (0x10U)
+
+#define START_ADDR_32B   (0x05U)
+#define START_ADDR_64B   (0x06U)
+#define START_ADDR_128B  (0x07U)
+#define START_ADDR_256B  (0x08U)
+#define START_ADDR_512B  (0x09U)
+#define START_ADDR_1KB   (0x0AU)
+#define START_ADDR_2KB   (0x0BU)
+#define START_ADDR_4KB   (0x0CU)
+#define START_ADDR_8KB   (0x0DU)
+#define START_ADDR_16KB  (0x0EU)
+#define START_ADDR_32KB  (0x0FU)
+#define START_ADDR_64KB  (0x10U)
+#define START_ADDR_128KB (0x11U)
+#define START_ADDR_256KB (0x12U)
+#define START_ADDR_512KB (0x13U)
+#define START_ADDR_1MB   (0x14U)
+#define START_ADDR_2MB   (0x15U)
+#define START_ADDR_4MB   (0x16U)
+#define START_ADDR_8MB   (0x17U)
+#define START_ADDR_16MB  (0x18U)
+#define START_ADDR_32MB  (0x19U)
+#define START_ADDR_64MB  (0x1AU)
+#define START_ADDR_128MB (0x1BU)
+#define START_ADDR_256MB (0x1CU)
+#define START_ADDR_512MB (0x1DU)
+#define START_ADDR_1GB   (0x1EU)
+#define START_ADDR_2GB   (0x1FU)
+
+#define REGION_SIZE_32B (0x04U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_64B (0x05U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_128B (0x06U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_256B (0x07U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_512B (0x08U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_1KB (0x09U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_2KB (0x0AU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_4KB (0x0BU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_8KB (0x0CU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_16KB (0x0DU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_32KB (0x0EU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_64KB (0x0FU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_128KB (0x10U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_256KB (0x11U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_512KB (0x12U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_1MB (0x13U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_2MB (0x14U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_4MB (0x15U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_8MB (0x16U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_16MB (0x17U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_32MB (0x18U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_64MB (0x19U << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_128MB (0x1AU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_256MB (0x1BU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_512MB (0x1CU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_1GB (0x1DU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_2GB (0x1EU << MPU_RASR_SIZE_Pos)
+#define REGION_SIZE_4GB (0x1FU << MPU_RASR_SIZE_Pos)
+
+#define REGION_TYPE_FLASH        (0x2U << MPU_RASR_B_Pos)
+#define REGION_TYPE_SRAM         (0x6U << MPU_RASR_B_Pos)
+#define REGION_TYPE_EXTRAM       (0x7U << MPU_RASR_B_Pos)
+#define REGION_TYPE_PERIPHERAL   (0x5U << MPU_RASR_B_Pos)
+
+#define REGION_ACCESS_PERMISION_PV_NA_U_NA (0x0 << MPU_RASR_AP_Pos)
+#define REGION_ACCESS_PERMISION_PV_RW_U_NA (0x1 << MPU_RASR_AP_Pos)
+#define REGION_ACCESS_PERMISION_PV_RW_U_R  (0x2 << MPU_RASR_AP_Pos)
+#define REGION_ACCESS_PERMISION_PV_RW_U_RW (0x3 << MPU_RASR_AP_Pos)
+#define REGION_ACCESS_PERMISION_PV_R_U_NA  (0x5 << MPU_RASR_AP_Pos)
+#define REGION_ACCESS_PERMISION_PV_R_U_R  (0x6 << MPU_RASR_AP_Pos)
+""");
+}
+out.print("""
+extern uint32_t __Vectors;
+/**********************************************************************************************************************
+* DATA STRUCTURES
+**********************************************************************************************************************/
+CPU_CTRL_XMC4_t ${objLabel} =
+{
+  .initialized = false
+};	
+
+""");
+if(obj.gcheck_mpu.value == true)
+{
+out.print("""
+const uint32_t mpu_table[] =
+{ """);
+for( index = 0; index < 8; index++)
+{
+if(obj.rArraygindexgroup_memregion[index].gcombo_size.value != "4GB")
+{
+out.print("""
+  /* Configure region ${index} */
+  ((${(obj.rArraygindexgroup_memregion[index].ginteger_startaddr.value)} & (~((1 << START_ADDR_${["32B","64B","128B","256B","512B","1KB","2KB","4KB","8KB","16KB","32KB","64KB","128KB","256KB","512KB",
+																							  "1MB","2MB","4MB","8MB","16MB","32MB","64MB","128MB","256MB","512MB","1GB","2GB","4GB"
+				   ][obj.rArraygindexgroup_memregion[index].gcombo_size.options.indexOf(obj.rArraygindexgroup_memregion[index].gcombo_size.value)]}) - 1))) | REGION_VALID | ${index}), """);
+}
+else
+{
+out.print("""  /* Configure region ${index} */
+  (0 | REGION_VALID | ${index}), """);
+}
+if(obj.rArraygindexgroup_memregion[index].gcombo_codeexec.value == "Disabled"){
+out.print("""\n  (MPU_RASR_XN_Msk | """)
+}
+else{
+out.print("""      \n  (0 | """)
+}
+out.print("""${["REGION_ACCESS_PERMISION_PV_NA_U_NA",
+	"REGION_ACCESS_PERMISION_PV_RW_U_NA",
+	"REGION_ACCESS_PERMISION_PV_RW_U_R",
+	"REGION_ACCESS_PERMISION_PV_RW_U_RW",
+	"REGION_ACCESS_PERMISION_PV_R_U_NA",
+	"REGION_ACCESS_PERMISION_PV_R_U_R"
+   ][obj.rArraygindexgroup_memregion[index].gcombo_accessper.options.indexOf(obj.rArraygindexgroup_memregion[index].gcombo_accessper.value)]} |
+   ${["REGION_TYPE_FLASH",
+	  "REGION_TYPE_SRAM",
+	  "REGION_TYPE_EXTRAM",
+	  "REGION_TYPE_PERIPHERAL"
+   ][obj.rArraygindexgroup_memregion[index].gcombo_type.options.indexOf(obj.rArraygindexgroup_memregion[index].gcombo_type.value)]} | """);
+if(obj.rArraygindexgroup_memregion[index].ginteger_subregion.enabled == true){
+out.print("""  (${obj.rArraygindexgroup_memregion[index].ginteger_subregion.value} << MPU_RASR_SRD_Pos) | \n""");
+}
+else
+{
+out.print(""" 0 | \n""");
+}
+out.print("""   REGION_SIZE_${["32B","64B","128B","256B","512B","1KB","2KB","4KB","8KB","16KB","32KB","64KB","128KB","256KB","512KB",
+				  "1MB","2MB","4MB","8MB","16MB","32MB","64MB","128MB","256MB","512MB","1GB","2GB","4GB"
+				   ][obj.rArraygindexgroup_memregion[index].gcombo_size.options.indexOf(obj.rArraygindexgroup_memregion[index].gcombo_size.value)]} | """);
+if(obj.rArraygindexgroup_memregion[index].gcheck_memregion.value == true){
+out.print(""" 1), """);
+}
+else
+{
+out.print(""" 0), \n""");
+}
+}
+out.print("""\n}\n;""");
+}
+out.print("""
+void SystemCoreSetup(void)
+{
+  uint32_t temp;
+
+  NVIC_SetPriorityGrouping(${~obj.gint_preemptPriorityBits.value & 0x7}U);
+	
+  /* relocate vector table */
+  __disable_irq();
+
+#if !defined(__TASKING__)
+  SCB->VTOR = (uint32_t)(&__Vectors);
+#endif
+
+  __DSB();
+  __enable_irq();
+	
+#if ((__FPU_PRESENT == 1) && (__FPU_USED == 1))
+  SCB->CPACR |= ((3UL << 10*2) |                 /* set CP10 Full Access */
+				 (3UL << 11*2)  );               /* set CP11 Full Access */
+#endif
+  /* Set flash wait states */
+  temp = FLASH0->FCON;
+  temp &= ~FLASH_FCON_WSPFLASH_Msk;
+  temp |= PMU_FLASH_WS;
+  FLASH0->FCON = temp;
+""");
+if(obj.gcheck_dividebyzero.value == true)
+{
+out.print("""\n
+  /* Enable divide by zero trap */
+  SCB->CCR |= SCB_CCR_DIV_0_TRP_Msk; """);
+}
+else
+{
+out.print("""\n
+  /* Disable divide by zero trap */
+  SCB->CCR &= ~SCB_CCR_DIV_0_TRP_Msk; """);
+}
+if(obj.gcheck_unaligned.value == true)
+{
+out.print("""\n
+  /* Enable unaligned memory access trap */
+  SCB->CCR |= SCB_CCR_UNALIGN_TRP_Msk; """);
+}
+else
+{
+out.print("""\n
+  /* Disable unaligned memory access trap */
+  SCB->CCR &= ~SCB_CCR_UNALIGN_TRP_Msk; """);
+}
+if(obj.gcheck_memmanage.value == true)
+{
+  out.print("""\n
+  /* Set priority of memory managment fault */
+  NVIC_SetPriority((IRQn_Type)MemoryManagement_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),${obj.ginterruptprio_memmanage.priorityValue},${obj.ginterruptprio_memmanage.subPriorityValue}));
+  /* Enable memory management fault */
+  SCB->SHCSR |= SCB_SHCSR_MEMFAULTENA_Msk;
+""");
+}
+else
+{
+  out.print("""\n
+  /* Disable memory management fault */
+  SCB->SHCSR &= ~SCB_SHCSR_MEMFAULTENA_Msk;""");
+}
+if(obj.gcheck_busfault.value == true)
+{
+  out.print("""\n
+  /* Set priority of bus fault */
+  NVIC_SetPriority((IRQn_Type)BusFault_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),${obj.ginterruptprio_bus.priorityValue},${obj.ginterruptprio_bus.subPriorityValue}));
+  /* Enable bus fault */
+  SCB->SHCSR |= SCB_SHCSR_BUSFAULTENA_Msk;
+ """);
+}
+else
+{
+out.print("""\n
+  /* Disable bus fault */
+  SCB->SHCSR &= ~SCB_SHCSR_BUSFAULTENA_Msk;""");
+}
+if(obj.gcheck_usage.value == true)
+{
+out.print("""\n
+  /* Set priority of usage fault */
+  NVIC_SetPriority((IRQn_Type)UsageFault_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(),${obj.ginterruptprio_usage.priorityValue},${obj.ginterruptprio_usage.subPriorityValue}));
+  /* Enable usage fault */
+  SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk;
+  """);
+}
+else
+{
+out.print("""\n
+  /* Disable usage fault */
+  SCB->SHCSR &= ~SCB_SHCSR_USGFAULTENA_Msk;""");
+}
+if(obj.gcheck_disable_wr_buffer.value == true)
+{
+out.print("""\n
+  /* Disable write buffer */
+  SCnSCB->ACTLR |= SCnSCB_ACTLR_DISDEFWBUF_Msk; """)	
+}
+if(obj.gcombo_debuginterface.value == "SWD+ETM")
+{
+out.print("""\n
+  XMC_GPIO_SetOutputStrength(P${traceclk_PortNo}_${traceclk_PinNo}, XMC_GPIO_OUTPUT_STRENGTH_STRONG_SHARP_EDGE);
+  XMC_GPIO_SetHardwareControl(P${traceclk_PortNo}_${traceclk_PinNo}, P${traceclk_PortNo}_${traceclk_PinNo}_HWCTRL_DB_ETM_TRACECLK);
+
+  XMC_GPIO_SetOutputStrength(P${tracedata0_PortNo}_${tracedata0_PinNo}, XMC_GPIO_OUTPUT_STRENGTH_STRONG_SHARP_EDGE);
+  XMC_GPIO_SetHardwareControl(P${tracedata0_PortNo}_${tracedata0_PinNo}, P${tracedata0_PortNo}_${tracedata0_PinNo}_HWCTRL_DB_ETM_TRACEDATA0);
+
+  XMC_GPIO_SetOutputStrength(P${tracedata1_PortNo}_${tracedata1_PinNo}, XMC_GPIO_OUTPUT_STRENGTH_STRONG_SHARP_EDGE);
+  XMC_GPIO_SetHardwareControl(P${tracedata1_PortNo}_${tracedata1_PinNo}, P${tracedata1_PortNo}_${tracedata1_PinNo}_HWCTRL_DB_ETM_TRACEDATA1);
+
+  XMC_GPIO_SetOutputStrength(P${tracedata2_PortNo}_${tracedata2_PinNo}, XMC_GPIO_OUTPUT_STRENGTH_STRONG_SHARP_EDGE);
+  XMC_GPIO_SetHardwareControl(P${tracedata2_PortNo}_${tracedata2_PinNo}, P${tracedata2_PortNo}_${tracedata2_PinNo}_HWCTRL_DB_ETM_TRACEDATA2);
+
+  XMC_GPIO_SetOutputStrength(P${tracedata3_PortNo}_${tracedata3_PinNo}, XMC_GPIO_OUTPUT_STRENGTH_STRONG_SHARP_EDGE);
+  XMC_GPIO_SetHardwareControl(P${tracedata3_PortNo}_${tracedata3_PinNo}, P${tracedata3_PortNo}_${tracedata3_PinNo}_HWCTRL_DB_ETM_TRACEDATA3);
+""");
+}
+if(obj.gcheck_mpu.value == true)
+{
+out.print("""\n
+__DMB();
+MPU->CTRL = 0;
+for(uint8_t i= 0; i<8; i++)
+{
+ MPU->RBAR = mpu_table[i*2];
+ MPU->RASR = mpu_table[(i*2) + 1];
+}
+MPU->CTRL = MPU_CTRL_ENABLE_Msk""");
+if(obj.gcheck_bgmemory.value == true)
+{
+out.print(""" | MPU_CTRL_PRIVDEFENA_Msk""");
+}
+if(obj.gcheck_enablempu_nmi.value == true)
+{
+out.print(""" | MPU_CTRL_HFNMIENA_Msk""");
+}
+out.print(""";
+__DSB();
+__ISB();
+""");
+}
+out.print("""\n}""");
+}
+
+

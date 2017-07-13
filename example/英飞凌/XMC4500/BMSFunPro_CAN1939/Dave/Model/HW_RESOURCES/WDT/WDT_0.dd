@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ResourceModel:Peripheral xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ResourceModel="http://www.infineon.com/Davex/Resource.ecore" URI="http://resources/0.1.28/peripheral/wdt/0" description="Watch Dog Timer (WDT)" baseAddress="0x50008000">
+  <provided xsi:type="ResourceModel:ResourceGroup" name="wdt" URI="http://resources/0.1.28/peripheral/wdt/0/wdt">
+    <resourcesList name="id" requiredResourceUri="http://resources/0.1.28/peripheral/wdt/0/id"/>
+    <resourcesList name="ctr" requiredResourceUri="http://resources/0.1.28/peripheral/wdt/0/ctr"/>
+    <resourcesList name="srv" requiredResourceUri="http://resources/0.1.28/peripheral/wdt/0/srv"/>
+    <resourcesList name="tim" requiredResourceUri="http://resources/0.1.28/peripheral/wdt/0/tim"/>
+    <resourcesList name="wlb" requiredResourceUri="http://resources/0.1.28/peripheral/wdt/0/wlb"/>
+    <resourcesList name="wub" requiredResourceUri="http://resources/0.1.28/peripheral/wdt/0/wub"/>
+    <resourcesList name="sts" requiredResourceUri="http://resources/0.1.28/peripheral/wdt/0/wdtsts"/>
+    <resourcesList name="clr" requiredResourceUri="http://resources/0.1.28/peripheral/wdt/0/wdtclr"/>
+    <resourcesList name="wdt_srv_request" requiredResourceUri="http://resources/0.1.28/peripheral/wdt/0/wdt_srv_request"/>
+    <resourcesList name="wdt_pre_warn" requiredResourceUri="http://resources/0.1.28/peripheral/wdt/0/wdt_pre_warn"/>
+  </provided>
+  <addressBlock offset="0x0" size="0x4000" usage="registers"/>
+</ResourceModel:Peripheral>

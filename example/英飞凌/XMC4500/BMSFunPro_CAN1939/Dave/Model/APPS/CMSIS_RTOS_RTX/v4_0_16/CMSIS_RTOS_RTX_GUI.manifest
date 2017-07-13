@@ -1,0 +1,63 @@
+package Model.APPS.CMSIS_RTOS_RTX.v4_0_16;
+
+/* Import statements */
+import ifx.davex.app.manifest.*
+
+abstract class CMSIS_RTOS_RTX_GUI extends AppManifest {
+	/* Begin : UI variable section */
+	 public GInteger ginteger_taskcnt;
+	 public GInteger ginteger_stksize;
+	 public GInteger ginteger_privcnt;
+	 public GInteger ginteger_privstksize;
+	 public GInteger ginteger_tick;
+	 public GInteger ginteger_robintout;
+	 public GInteger ginteger_timerstksz;
+	 public GInteger ginteger_timercbqs;
+	 public GCombo gcombo_runpriv;
+	 public GCombo gcombo_timerprio;
+	 public GCombo gcombo_fifosz;
+	 public GCheck gcheck_stkcheck;
+	 public GCheck gcheck_stkinit;
+	 public GCheck gcheck_enable_debug;
+	 public GCheck gcheck_systick;
+	 public GCheck gcheck_robin;
+	 public GCheck gcheck_timers;
+	 public GLabel glabel_timerprio;
+	 public GLabel glabel_timerstksz;
+	 public GLabel glabel_timercbqs;
+	 public GGroup ggroup_4;
+	 public GGroup ggroup_3;
+	 public GMessage gmessage_valid_stack_size;
+	 public GMessage gmessage_valid_timer_stack_size;
+
+	 public CMSIS_RTOS_RTX_GUI(DaveEnv daveEnv){
+
+	 ginteger_taskcnt = GInteger(widgetName:"ginteger_taskcnt", value:4, minValue:1, maxValue:250, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_stksize = GInteger(widgetName:"ginteger_stksize", value:300, minValue:64, maxValue:4096, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_privcnt = GInteger(widgetName:"ginteger_privcnt", value:0, minValue:0, maxValue:250, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_privstksize = GInteger(widgetName:"ginteger_privstksize", value:2048, minValue:0, maxValue:1048576, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_tick = GInteger(widgetName:"ginteger_tick", value:10000, minValue:1, maxValue:Long.MAX_VALUE, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_robintout = GInteger(widgetName:"ginteger_robintout", value:5, minValue:1, maxValue:1000, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_timerstksz = GInteger(widgetName:"ginteger_timerstksz", value:200, minValue:64, maxValue:4096, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_timercbqs = GInteger(widgetName:"ginteger_timercbqs", value:4, minValue:1, maxValue:32, enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_runpriv = GCombo(widgetName:"gcombo_runpriv", options:["Unprivileged Mode","Privileged Mode"], value:"Privileged Mode", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_timerprio = GCombo(widgetName:"gcombo_timerprio", options:["Low","Below Normal","Normal","Above Normal","High","Realtime (highest)"], value:"High", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_fifosz = GCombo(widgetName:"gcombo_fifosz", options:["4 entries","8 entries","12 entries","16 entries","24 entries","32 entries","48 entries","64 entries","96 entries"], value:"16 entries", enabled:true, visible:true, isMandatoryValue:false)
+	 gcheck_stkcheck = GCheck(widgetName:"gcheck_stkcheck", value:true, enabled:true, visible:true)
+	 gcheck_stkinit = GCheck(widgetName:"gcheck_stkinit", value:false, enabled:true, visible:true)
+	 gcheck_enable_debug = GCheck(widgetName:"gcheck_enable_debug", value:false, enabled:true, visible:true)
+	 gcheck_systick = GCheck(widgetName:"gcheck_systick", value:true, enabled:true, visible:true)
+	 gcheck_robin = GCheck(widgetName:"gcheck_robin", value:true, enabled:true, visible:true)
+	 gcheck_timers = GCheck(widgetName:"gcheck_timers", value:true, enabled:true, visible:true)
+	 glabel_timerprio = GLabel(widgetName:"glabel_timerprio", text:"      Timer thread priority:", enabled:true, visible:true)
+	 glabel_timerstksz = GLabel(widgetName:"glabel_timerstksz", text:"      Timer thread stack size [bytes]:", enabled:true, visible:true)
+	 glabel_timercbqs = GLabel(widgetName:"glabel_timercbqs", text:"      Callback queue size:", enabled:true, visible:true)
+	 ggroup_4 = GGroup(widgetName:"ggroup_4", text:"Round-Robin", enabled:true, visible:true)
+	 ggroup_3 = GGroup(widgetName:"ggroup_3", text:"User Timers", enabled:true, visible:true)
+	 gmessage_valid_stack_size = GMessage(widgetName:"gmessage_valid_stack_size", text:"Stack size value need to be a multiple of 4.", isError:false, visible:true)
+	 gmessage_valid_timer_stack_size = GMessage(widgetName:"gmessage_valid_timer_stack_size", text:"Stack size value need to be a multiple of 4.", isError:false, visible:true)
+
+
+	 }
+	/* End : UI variable section */
+}

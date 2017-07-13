@@ -1,0 +1,102 @@
+package Model.APPS.CMSIS_DSP.v4_0_10;
+
+
+/*
+Copyright (c) 2015, Infineon Technologies AG
+All rights reserved.                       
+                                           
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:  
+                                                                            
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+disclaimer.                       
+ 
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.                      
+ 
+Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote
+products derived from this software without specific prior written permission.                                          
+                                                                            
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                                                 
+                                                                            
+To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes with 
+Infineon Technologies AG: dave@infineon.com. */
+
+/*************** Revision History **********************************************
+ Version      Date          Description
+
+  4.0.2       25-Jun-2015   Initial version for DAVEv4.<br>
+  4.0.4       09-Oct-2015   Added support for XMC1400 and XMC4800.<br>
+  4.0.6       15-Dec-2015   Added support for XMC4300.<br> 
+  4.0.8       22-Mar-2016   APP help documentation improved.<br>
+  4.0.10      21-Apr-2016   License info updated in help documentation <br>
+*******************************************************************************/
+
+// Import statements
+import ifx.davex.app.manifest.*
+
+class  CMSIS_DSP extends CMSIS_DSP_GUI {
+	
+	// APP version	
+	def version = '4.0.10'
+	
+	// Categories description
+	def categoriesDescription = ["System"]
+	
+	// Minimum version of DAVE required 
+	def minDaveVersion = '4.0.0'
+
+	// Keywords used by search feature in APPs selection view
+	def keywords = ['CMSIS_DSP', 'DSP', 'Filters', 'Fast math', 'Matrix', 'Transforms', 'Statistical', 'all']
+	
+    // Software IDs
+	def softwareIDs = [  
+						"XMC4.*.*.*.*":"1.0.0",	 
+						"XMC1.*.*.*.*":"1.0.0"
+					  ]
+	
+	def singleton = true
+	def initProvider = false
+	def deprecated = false
+	def sharable = true
+
+	// APP description
+	def description = "This APP provides the CMSIS DSP software library, a suite of common signal\nprocessing functions for use on Cortex-M processor based devices."
+	
+	// Required to read from CPU if unalignment access will lead to an exception
+	//
+	// For future use
+	//
+	//MRequiredApp appres_cpu
+
+	// APP constructor
+	public CMSIS_DSP (DaveEnv daveEnv) {
+
+	}
+	
+	// File Generation
+	def generateFiles () {
+		copy("BasicMathFunctions", "BasicMathFunctions")
+		copy("CommonTables", "CommonTables")
+		copy("ComplexMathFunctions", "ComplexMathFunctions")
+		copy("ControllerFunctions", "ControllerFunctions")
+		copy("FastMathFunctions", "FastMathFunctions")
+		copy("FilteringFunctions", "FilteringFunctions")
+		copy("MatrixFunctions", "MatrixFunctions")
+		copy("StatisticsFunctions", "StatisticsFunctions")
+		copy("SupportFunctions", "SupportFunctions")
+		copy("TransformFunctions", "TransformFunctions")
+		copy("arm_common_tables.h", "arm_common_tables.h")
+		copy("arm_const_structs.h", "arm_const_structs.h")
+		copy("arm_math.h", "arm_math.h")
+		copy("cmsis_dsp.h", "cmsis_dsp.h")
+		copy("cmsis_dsp.c", "cmsis_dsp.c")
+		generate("cmsis_dsp_confh.tmpl", "cmsis_dsp_conf.h")
+	}
+}

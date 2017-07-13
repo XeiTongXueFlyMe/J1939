@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ResourceModel:Port xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ResourceModel="http://www.infineon.com/Davex/Resource.ecore" URI="http://resources/0.1.30/port/p/15" description="Port 15" baseAddress="0x48028F00">
+  <provided xsi:type="ResourceModel:ResourceGroup" name="P15.2 / #30" URI="http://resources/0.1.30/port/p/15/pad/2">
+    <resourcesList name="out_p" requiredResourceUri="http://resources/0.1.30/port/p/15/out/p2"/>
+    <resourcesList name="omr_ps" requiredResourceUri="http://resources/0.1.30/port/p/15/omr/ps2"/>
+    <resourcesList name="omr_pr" requiredResourceUri="http://resources/0.1.30/port/p/15/omr/pr2"/>
+    <resourcesList name="in_p" requiredResourceUri="http://resources/0.1.30/port/p/15/in/p2"/>
+    <resourcesList name="pps_pps" requiredResourceUri="http://resources/0.1.30/port/p/15/pps/pps2"/>
+    <resourcesList name="pdisc_pdis" requiredResourceUri="http://resources/0.1.30/port/p/15/pdisc/pdis2"/>
+    <resourcesList name="iocr_oe" requiredResourceUri="http://resources/0.1.30/port/p/15/iocr0/pc2_4"/>
+    <resourcesList name="iocr_pcr" requiredResourceUri="http://resources/0.1.30/port/p/15/iocr0/pc2_2_0"/>
+    <resourcesList name="analogout" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_2/analogout"/>
+    <resourcesList name="analogin" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_2/analogin"/>
+    <resourcesList name="hw_o" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_2/hw_o"/>
+    <resourcesList name="hw0_p" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_2/hw0_p"/>
+    <resourcesList name="hw1_p" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_2/hw1_p"/>
+    <resourcesList name="hw_p" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_2/hw_p"/>
+    <resourcesList name="altin" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_2/altin"/>
+    <resourcesList name="pad" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_2/pad"/>
+  </provided>
+  <provided xsi:type="ResourceModel:RegisterParameter" name="IOCR0" URI="http://resources/0.1.30/port/p/15/iocr0" value="00000000" toolTipHelpDescription="Port 15 Input/Output Control Register 0" defaultValue="00000000" accessPermission="rw" addressOffset="0x0010" resetValue="00000000" resetMask="0xFFFFFFFF">
+    <bitFields name="PC0_2_0" URI="http://resources/0.1.30/port/p/15/iocr0/pc0_2_0" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="3" stopPos="5" accessPermission="rw" maxValue="7" minValue="0"/>
+    <bitFields name="PC0_3" URI="http://resources/0.1.30/port/p/15/iocr0/pc0_3" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="6" stopPos="6" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC0_4" URI="http://resources/0.1.30/port/p/15/iocr0/pc0_4" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="7" stopPos="7" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC1_2_0" URI="http://resources/0.1.30/port/p/15/iocr0/pc1_2_0" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="11" stopPos="13" accessPermission="rw" maxValue="7" minValue="0"/>
+    <bitFields name="PC1_3" URI="http://resources/0.1.30/port/p/15/iocr0/pc1_3" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="14" stopPos="14" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC1_4" URI="http://resources/0.1.30/port/p/15/iocr0/pc1_4" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="15" stopPos="15" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC2_2_0" URI="http://resources/0.1.30/port/p/15/iocr0/pc2_2_0" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="19" stopPos="21" accessPermission="rw" maxValue="7" minValue="0"/>
+    <bitFields name="PC2_3" URI="http://resources/0.1.30/port/p/15/iocr0/pc2_3" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="22" stopPos="22" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC2_4" URI="http://resources/0.1.30/port/p/15/iocr0/pc2_4" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="23" stopPos="23" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC3_2_0" URI="http://resources/0.1.30/port/p/15/iocr0/pc3_2_0" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="27" stopPos="29" accessPermission="rw" maxValue="7" minValue="0"/>
+    <bitFields name="PC3_3" URI="http://resources/0.1.30/port/p/15/iocr0/pc3_3" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="30" stopPos="30" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC3_4" URI="http://resources/0.1.30/port/p/15/iocr0/pc3_4" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="31" stopPos="31" accessPermission="rw" maxValue="1" minValue="0"/>
+  </provided>
+  <provided xsi:type="ResourceModel:BitField" name="PC2_4" URI="http://resources/0.1.30/port/p/15/iocr0/pc2_4" value="0" toolTipHelpDescription="Port Control for Port n Pin 0 to 3" defaultValue="0" startPos="23" stopPos="23" accessPermission="rw" maxValue="1" minValue="0"/>
+  <provided xsi:type="ResourceModel:RegisterParameter" name="PDISC" URI="http://resources/0.1.30/port/p/15/pdisc" value="0000F3FC" toolTipHelpDescription="Port 15 Pin Function Decision Control Register" defaultValue="0000F3FC" accessPermission="rw" addressOffset="0x0060" resetValue="0000F3FC" resetMask="0xFFFF0000">
+    <bitFields name="PDIS2" URI="http://resources/0.1.30/port/p/15/pdisc/pdis2" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 2" defaultValue="1" startPos="2" stopPos="2" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 2 analog input 2."/>
+    </bitFields>
+    <bitFields name="PDIS3" URI="http://resources/0.1.30/port/p/15/pdisc/pdis3" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 3" defaultValue="1" startPos="3" stopPos="3" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 2 analog input 3."/>
+    </bitFields>
+    <bitFields name="PDIS4" URI="http://resources/0.1.30/port/p/15/pdisc/pdis4" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 4" defaultValue="1" startPos="4" stopPos="4" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 2 analog input 4."/>
+    </bitFields>
+    <bitFields name="PDIS5" URI="http://resources/0.1.30/port/p/15/pdisc/pdis5" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 5" defaultValue="1" startPos="5" stopPos="5" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 2 analog input 5."/>
+    </bitFields>
+    <bitFields name="PDIS6" URI="http://resources/0.1.30/port/p/15/pdisc/pdis6" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 6" defaultValue="1" startPos="6" stopPos="6" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 2 analog input 6."/>
+    </bitFields>
+    <bitFields name="PDIS7" URI="http://resources/0.1.30/port/p/15/pdisc/pdis7" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 7" defaultValue="1" startPos="7" stopPos="7" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 2 analog input 7."/>
+    </bitFields>
+    <bitFields name="PDIS8" URI="http://resources/0.1.30/port/p/15/pdisc/pdis8" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 8" defaultValue="1" startPos="8" stopPos="8" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 3 analog input 0."/>
+    </bitFields>
+    <bitFields name="PDIS9" URI="http://resources/0.1.30/port/p/15/pdisc/pdis9" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 9" defaultValue="1" startPos="9" stopPos="9" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 3 analog input 1."/>
+    </bitFields>
+    <bitFields name="PDIS12" URI="http://resources/0.1.30/port/p/15/pdisc/pdis12" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 12" defaultValue="1" startPos="12" stopPos="12" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 3 analog input 4."/>
+    </bitFields>
+    <bitFields name="PDIS13" URI="http://resources/0.1.30/port/p/15/pdisc/pdis13" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 13" defaultValue="1" startPos="13" stopPos="13" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 3 analog input 5."/>
+    </bitFields>
+    <bitFields name="PDIS14" URI="http://resources/0.1.30/port/p/15/pdisc/pdis14" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 14" defaultValue="1" startPos="14" stopPos="14" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 3 analog input 6."/>
+    </bitFields>
+    <bitFields name="PDIS15" URI="http://resources/0.1.30/port/p/15/pdisc/pdis15" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 15" defaultValue="1" startPos="15" stopPos="15" accessPermission="rw" maxValue="1" minValue="0">
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+      <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 3 analog input 7."/>
+    </bitFields>
+  </provided>
+  <provided xsi:type="ResourceModel:BitField" name="PDIS2" URI="http://resources/0.1.30/port/p/15/pdisc/pdis2" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 2" defaultValue="1" startPos="2" stopPos="2" accessPermission="rw" maxValue="1" minValue="0">
+    <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+    <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 2 analog input 2."/>
+  </provided>
+  <provided xsi:type="ResourceModel:ResourceGroup" name="P15.7 / #25" URI="http://resources/0.1.30/port/p/15/pad/7">
+    <resourcesList name="out_p" requiredResourceUri="http://resources/0.1.30/port/p/15/out/p7"/>
+    <resourcesList name="omr_ps" requiredResourceUri="http://resources/0.1.30/port/p/15/omr/ps7"/>
+    <resourcesList name="omr_pr" requiredResourceUri="http://resources/0.1.30/port/p/15/omr/pr7"/>
+    <resourcesList name="in_p" requiredResourceUri="http://resources/0.1.30/port/p/15/in/p7"/>
+    <resourcesList name="pps_pps" requiredResourceUri="http://resources/0.1.30/port/p/15/pps/pps7"/>
+    <resourcesList name="pdisc_pdis" requiredResourceUri="http://resources/0.1.30/port/p/15/pdisc/pdis7"/>
+    <resourcesList name="iocr_oe" requiredResourceUri="http://resources/0.1.30/port/p/15/iocr4/pc7_4"/>
+    <resourcesList name="iocr_pcr" requiredResourceUri="http://resources/0.1.30/port/p/15/iocr4/pc7_2_0"/>
+    <resourcesList name="analogout" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_7/analogout"/>
+    <resourcesList name="analogin" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_7/analogin"/>
+    <resourcesList name="hw_o" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_7/hw_o"/>
+    <resourcesList name="hw0_p" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_7/hw0_p"/>
+    <resourcesList name="hw1_p" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_7/hw1_p"/>
+    <resourcesList name="hw_p" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_7/hw_p"/>
+    <resourcesList name="altin" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_7/altin"/>
+    <resourcesList name="pad" requiredResourceUri="http://resources/0.1.30/port/p/15/pad_7/pad"/>
+  </provided>
+  <provided xsi:type="ResourceModel:RegisterParameter" name="IOCR4" URI="http://resources/0.1.30/port/p/15/iocr4" value="00000000" toolTipHelpDescription="Port 15 Input/Output Control Register 4" defaultValue="00000000" accessPermission="rw" addressOffset="0x0014" resetValue="00000000" resetMask="0xFFFFFFFF">
+    <bitFields name="PC4_2_0" URI="http://resources/0.1.30/port/p/15/iocr4/pc4_2_0" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="3" stopPos="5" accessPermission="rw" maxValue="7" minValue="0"/>
+    <bitFields name="PC4_3" URI="http://resources/0.1.30/port/p/15/iocr4/pc4_3" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="6" stopPos="6" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC4_4" URI="http://resources/0.1.30/port/p/15/iocr4/pc4_4" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="7" stopPos="7" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC5_2_0" URI="http://resources/0.1.30/port/p/15/iocr4/pc5_2_0" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="11" stopPos="13" accessPermission="rw" maxValue="7" minValue="0"/>
+    <bitFields name="PC5_3" URI="http://resources/0.1.30/port/p/15/iocr4/pc5_3" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="14" stopPos="14" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC5_4" URI="http://resources/0.1.30/port/p/15/iocr4/pc5_4" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="15" stopPos="15" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC6_2_0" URI="http://resources/0.1.30/port/p/15/iocr4/pc6_2_0" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="19" stopPos="21" accessPermission="rw" maxValue="7" minValue="0"/>
+    <bitFields name="PC6_3" URI="http://resources/0.1.30/port/p/15/iocr4/pc6_3" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="22" stopPos="22" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC6_4" URI="http://resources/0.1.30/port/p/15/iocr4/pc6_4" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="23" stopPos="23" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC7_2_0" URI="http://resources/0.1.30/port/p/15/iocr4/pc7_2_0" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="27" stopPos="29" accessPermission="rw" maxValue="7" minValue="0"/>
+    <bitFields name="PC7_3" URI="http://resources/0.1.30/port/p/15/iocr4/pc7_3" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="30" stopPos="30" accessPermission="rw" maxValue="1" minValue="0"/>
+    <bitFields name="PC7_4" URI="http://resources/0.1.30/port/p/15/iocr4/pc7_4" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="31" stopPos="31" accessPermission="rw" maxValue="1" minValue="0"/>
+  </provided>
+  <provided xsi:type="ResourceModel:BitField" name="PC7_4" URI="http://resources/0.1.30/port/p/15/iocr4/pc7_4" value="0" toolTipHelpDescription="Port Control for Port n Pin 4 to 7" defaultValue="0" startPos="31" stopPos="31" accessPermission="rw" maxValue="1" minValue="0"/>
+  <provided xsi:type="ResourceModel:BitField" name="PDIS7" URI="http://resources/0.1.30/port/p/15/pdisc/pdis7" value="1" toolTipHelpDescription="Pad Disable for Port 15 Pin 7" defaultValue="1" startPos="7" stopPos="7" accessPermission="rw" maxValue="1" minValue="0">
+    <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b0" description="Pad is enabled, digital input selected."/>
+    <enumValues xsi:type="ResourceModel:RegEnumValue" value="0b1" description="Pad is disabled, ADC 2 analog input 7."/>
+  </provided>
+  <addressBlock offset="0x0" size="0x0100" usage="registers"/>
+</ResourceModel:Port>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ResourceModel:Port xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ResourceModel="http://www.infineon.com/Davex/Resource.ecore" URI="http://resources/0.0.0/port/debug_port/0" description="DEBUG Port" baseAddress="0x00000000">
+  <provided xsi:type="ResourceModel:ResourceGroup" name="TMS" URI="http://resources/0.0.0/port/debug_port/0/pad/1">
+    <upwardMapList xsi:type="ResourceModel:HWResource" href="../../APPS/CPU_CTRL_XMC4/v4_0_12/CPU_CTRL_XMC4_0.app#//@hwResources.12"/>
+    <resourcesList name="pad" requiredResourceUri="http://resources/0.0.0/port/debug_port/0/TMS/TMS_pad"/>
+  </provided>
+  <provided xsi:type="ResourceModel:ResourceGroup" name="TCK" URI="http://resources/0.0.0/port/debug_port/0/pad/0">
+    <upwardMapList xsi:type="ResourceModel:HWResource" href="../../APPS/CPU_CTRL_XMC4/v4_0_12/CPU_CTRL_XMC4_0.app#//@hwResources.13"/>
+    <resourcesList name="pad" requiredResourceUri="http://resources/0.0.0/port/debug_port/0/TCK/TCK_pad"/>
+  </provided>
+  <addressBlock offset="0x0" size="0x0000" usage="registers"/>
+</ResourceModel:Port>

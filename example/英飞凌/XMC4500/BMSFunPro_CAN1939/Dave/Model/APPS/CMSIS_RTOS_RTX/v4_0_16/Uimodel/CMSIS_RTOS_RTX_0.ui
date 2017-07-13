@@ -1,0 +1,144 @@
+<p1:Tab  xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:com.ifx.davex.ui.controls.app" x:Class="e" layout="{x:Null}">
+	<p1:TabFolder bounds="5, 5, 600, 500">
+		<p1:GTab text="Thread Settings" widgetName="tab_thread_settings" visible="true" enabled="true">
+			<p1:GTab.control>
+				<p1:Tab>
+					<p1:Tab.layout>
+						<GridLayout numColumns="2"/>
+					</p1:Tab.layout>
+					<p1:GLabel text="Number of concurrent running user threads:" visible="true" widgetName="glabel_taskcnt"/>
+					<p1:GInteger x:Style="NONE" minValue="1" maxValue="250" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_taskcnt" value="4" toolTipText="Defines max. number of user threads that will run at the same time." description="Defines maximum number of user threads that will run at the same time.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="138"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GLabel text="Default thread stack size [bytes]:" visible="true" widgetName="glabel_stksize"/>
+					<p1:GInteger x:Style="NONE" minValue="64" maxValue="4096" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_stksize" value="300" toolTipText="Defines default stack size for threads with osThreadDef stacksz = 0." description="Defines default stack size for threads with osThreadDef stacksz = 0.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="138"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GLabel text="Number of threads with user-provided stack size:" visible="true" widgetName="glabel_privcnt"/>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="250" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_privcnt" toolTipText="Defines the number of threads with user-provided stack size." value="0" description="Defines the number of threads with user-provided stack size.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="138"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GLabel text="Total stack size for threads with user-provided stack size [bytes]:" visible="true" widgetName="glabel_privstksize"/>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="1048576" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_privstksize" toolTipText="Defines the combined stack size for threads with user-provided stack size." value="2048" description="Defines the combined stack size for threads with user-provided stack size.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="138"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GLabel text="Processor mode for thread execution:" visible="true" widgetName="glabel_runpriv"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_runpriv" options="Unprivileged Mode&#13;&#10;Privileged Mode" value="Privileged Mode" description="This selection allows to choose processor mode for thread execution.">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="135"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCheck text="Enable stack overflow checking" manifestObj="true" widgetName="gcheck_stkcheck" value="true" toolTipText="Enable stack overflow checks at thread switch." description="Enable stack overflow checks at thread switch. &#13;&#10;Enabling this option slightly increases the execution time of a thread switch."/>
+					<Label/>
+					<p1:GCheck text="Enable stack usage watermark" manifestObj="true" widgetName="gcheck_stkinit" toolTipText="Initialize thread stack with watermark pattern for analyzing&#13;&#10;stack usage (current/maximum) in System and Thread Viewer." description="Initialize thread stack with watermark pattern for analyzing stack usage (current/maximum) in system and thread viewer. Enabling this option significantly increases the execution time of osThreadCreate."/>
+					<Label/>
+					<p1:GCheck text="Enable thread debugging messages" manifestObj="true" widgetName="gcheck_enable_debug" description="This selection allows you to debug thread messages."/>
+					<Label/>
+					<p1:GMessage text="Stack size value need to be a multiple of 4." visible="true" manifestObj="true" isError="false" widgetName="gmessage_valid_stack_size">
+						<p1:GMessage.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
+						</p1:GMessage.layoutData>
+					</p1:GMessage>
+					<Label/>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab visible="true" enabled="true" widgetName="gtab_rtx_kernel_settings" text="RTX Kernel Timer Tick Settings">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite_1">
+					<p1:Tab.layout>
+						<GridLayout numColumns="2"/>
+					</p1:Tab.layout>
+					<p1:GCheck text="Use Cortex-M SysTick timer as RTX kernel timer" manifestObj="true" widgetName="gcheck_systick" value="true" toolTipText="It is possible to use a different timer by unchecking this option." description="The default timer is the SysTick timer. The input to the Systick timer is the CPU clock. It is possible to use a different timer by unchecking this option. If you do so you need to implement the os_tick_init, os_tick_val,  os_tick_ovf, os_tick_irqack and define OS_Tick_Handler as the IRQ name of timer."/>
+					<Label/>
+					<p1:GLabel text="RTX timer tick interval value [us]:" visible="true" widgetName="glabel_tick"/>
+					<p1:GInteger x:Style="NONE" minValue="1" maxValue="MAX_VALUE" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_tick" value="10000" toolTipText="The RTX Timer tick interval value is used to calculate timeout values." description="Defines the RTX timer tick interval value, given in microseconds. MAX_VALUE is calculated based on configured CPU clock in CLOCK_XMC1/4 APP using following formula pow(2,24) *(1/fCPU) * 1E6, where fCPU is in hertz. ">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="78"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab text="System Settings" visible="true" enabled="true" widgetName="gtab_system_settings">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite_3">
+					<p1:Tab.layout>
+						<GridLayout numColumns="2"/>
+					</p1:Tab.layout>
+					<p1:GGroup text="Round-Robin" manifestObj="true" widgetName="ggroup_4">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="3"/>
+						</p1:GGroup.layout>
+						<p1:GGroup.layoutData>
+							<GridData horizontalSpan="2" horizontalAlignment="FILL"/>
+						</p1:GGroup.layoutData>
+						<p1:GCheck text="Enable Round-Robin thread switching." manifestObj="true" widgetName="gcheck_robin" value="true" description="This selection allows you to enable thread switching in a round robin manner.">
+							<p1:GCheck.layoutData>
+								<GridData horizontalSpan="3"/>
+							</p1:GCheck.layoutData>
+						</p1:GCheck>
+						<p1:GLabel text="      Round-Robin timeout [ticks]:    " visible="true" widgetName="glabel_robintout"/>
+						<p1:GInteger x:Style="NONE" minValue="1" maxValue="1000" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_robintout" location="164, 35" value="5" toolTipText="Defines how long a thread will execute before a thread switch." description="Defines how long a thread will execute before a thread switch.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="119"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<Label/>
+					</p1:GGroup>
+					<p1:GGroup text="User Timers" manifestObj="true" widgetName="ggroup_3">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="2"/>
+						</p1:GGroup.layout>
+						<p1:GGroup.layoutData>
+							<GridData horizontalSpan="2" horizontalAlignment="FILL"/>
+						</p1:GGroup.layoutData>
+						<p1:GCheck text="Enable user timers" manifestObj="true" widgetName="gcheck_timers" value="true" description="This selection allows user to enable user timers.">
+							<p1:GCheck.layoutData>
+								<GridData horizontalSpan="2"/>
+							</p1:GCheck.layoutData>
+						</p1:GCheck>
+						<p1:GLabel text="      Timer thread priority:" visible="true" manifestObj="true" widgetName="glabel_timerprio"/>
+						<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_timerprio" options="Low&#13;&#10;Below Normal&#13;&#10;Normal&#13;&#10;Above Normal&#13;&#10;High&#13;&#10;Realtime (highest)" value="High" toolTipText="Defines priority for Timer Thread." description="Defines priority for timer thread."/>
+						<p1:GLabel text="      Timer thread stack size [bytes]:" visible="true" manifestObj="true" widgetName="glabel_timerstksz"/>
+						<p1:GInteger x:Style="NONE" minValue="64" maxValue="4096" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_timerstksz" value="200" toolTipText="Defines stack size for Timer thread." description="Defines stack size for timer thread.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="118"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<p1:GLabel text="      Callback queue size:" visible="true" manifestObj="true" widgetName="glabel_timercbqs"/>
+						<p1:GInteger x:Style="NONE" minValue="1" maxValue="32" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_timercbqs" value="4" toolTipText="Number of concurrent active timer callback functions." description="Number of concurrent active timer callback functions.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="118"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+					</p1:GGroup>
+					<p1:GLabel text="ISR FIFO queue size:" visible="true" widgetName="glabel_fifosz">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="108"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_fifosz" options="4 entries&#13;&#10;8 entries&#13;&#10;12 entries&#13;&#10;16 entries&#13;&#10;24 entries&#13;&#10;32 entries&#13;&#10;48 entries&#13;&#10;64 entries&#13;&#10;96 entries" value="16 entries" description="ISR functions store requests in this buffer when they are called from the interrupt handler.">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GMessage isError="false" manifestObj="true" text="Stack size value need to be a multiple of 4." widgetName="gmessage_valid_timer_stack_size">
+						<p1:GMessage.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="2"/>
+						</p1:GMessage.layoutData>
+					</p1:GMessage>
+					<Label/>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+	</p1:TabFolder>
+</p1:Tab>

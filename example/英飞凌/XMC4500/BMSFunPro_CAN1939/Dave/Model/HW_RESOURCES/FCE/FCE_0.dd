@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ResourceModel:Peripheral xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ResourceModel="http://www.infineon.com/Davex/Resource.ecore" URI="http://resources/0.1.28/peripheral/fce/0" description="Flexible CRC Engine" baseAddress="0x50020000">
+  <provided xsi:type="ResourceModel:ResourceGroup" name="0" URI="http://resources/0.1.28/peripheral/fce/0/kernel/0">
+    <resourcesList name="ir" requiredResourceUri="http://resources/0.1.28/peripheral/fce/0/ir0"/>
+    <resourcesList name="res" requiredResourceUri="http://resources/0.1.28/peripheral/fce/0/res0"/>
+    <resourcesList name="cfg" requiredResourceUri="http://resources/0.1.28/peripheral/fce/0/cfg0"/>
+    <resourcesList name="sts" requiredResourceUri="http://resources/0.1.28/peripheral/fce/0/sts0"/>
+    <resourcesList name="length" requiredResourceUri="http://resources/0.1.28/peripheral/fce/0/length0"/>
+    <resourcesList name="check" requiredResourceUri="http://resources/0.1.28/peripheral/fce/0/check0"/>
+    <resourcesList name="crc" requiredResourceUri="http://resources/0.1.28/peripheral/fce/0/crc0"/>
+    <resourcesList name="ctr" requiredResourceUri="http://resources/0.1.28/peripheral/fce/0/ctr0"/>
+    <resourcesList name="int" requiredResourceUri="http://resources/0.1.28/peripheral/fce/0/int0"/>
+    <resourcesList name="global_signal" requiredResourceUri="http://resources/0.1.28/peripheral/fce/0/global_signal0"/>
+  </provided>
+  <addressBlock offset="0x0" size="0x4000" usage="registers"/>
+</ResourceModel:Peripheral>

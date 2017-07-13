@@ -1,0 +1,15 @@
+<p1:Tab  xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:com.ifx.davex.ui.controls.app" x:Class="e" layout="{x:Null}">
+	<p1:TabFolder bounds="5, 5, 600, 174">
+		<p1:GTab text="General Settings" widgetName="gtab_general_settings" visible="true" enabled="true" manifestObj="true">
+			<p1:GTab.control>
+				<p1:Tab>
+					<p1:Tab.layout>
+						<GridLayout horizontalSpacing="10" marginBottom="5" marginLeft="5" marginRight="5" marginTop="5" verticalSpacing="10"/>
+					</p1:Tab.layout>
+					<p1:GCheck text="Enable checking on the input and output sizes of matrices" manifestObj="true" widgetName="gcheck_matrices_sizes" description="When enabled, the check on input and output sizes of matrices is enabled. &lt;br&gt;" value="true"/>
+					<p1:GCheck text="Enable rounding on support functions" manifestObj="true" widgetName="gcheck_rounding" description="When enabled, rounding on support functions is enabled. &lt;br&gt;" value="true"/>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+	</p1:TabFolder>
+</p1:Tab>

@@ -1,0 +1,862 @@
+package Model.APPS.CAN_NODE.v4_1_10;
+
+/**
+ *  Copyright (c) 2015, Infineon Technologies AG
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,are permitted provided that the
+ * following conditions are met:
+ *
+ *   Redistributions of source code must retain the above copyright notice, this list of conditions and the  following
+ *   disclaimer.
+ *
+ *   Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+ *   following disclaimer in the documentation and/or other materials provided with the distribution.
+ *
+ *   Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote
+ *   products derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes
+ * with Infineon Technologies AG (dave@infineon.com).
+ */
+/*************** Revision History **********************************************
+Version        Date          Description 
+
+4.0.0        16-Feb-2015    Initial version for DAVEv4.<br>
+
+4.0.1        20-Feb-2015    Help document improved.<br>
+
+4.1.0        19-May-2015    1. CAN_NODE_EnableEvent() and CAN_NODE_ConfigBaudrate()
+                              API are included with additional arguments.<br>
+                            2. Manifest optimization done. <br>
+                            3. New APIs are added: CAN_NODE_MO_ReceiveData(),CAN_NODE_MO_ClearStatus(),
+                              CAN_NODE_ClearStatus().<br>
+
+4.1.2        18-Jun-2015    1. Help document improved.<br>
+                            2. LLD version check is removed.<br>
+                            3. Version check added for XMCLib dependency.<br>
+
+4.1.4        30-Jun-2015    New APIs are added: CAN_NODE_Enable() and CAN_NODE_Disable() to enable and 
+                                disable CAN node from participating CAN traffic. <br>
+
+4.1.6        08-Jul-2015    Help document improved.<br>
+
+4.1.7        28-Aug-2015    Added support for XMC1400 devices.<br>
+
+4.1.8        23-Sep-2015    Added support for XMC4800 devices.<br>
+4.1.10       18-Dec-2015    Added support for XMC4300 devices.<br>                               
+*******************************************************************************/
+
+/* Import statements */
+import ifx.davex.app.manifest.*
+
+class  CAN_NODE extends CAN_NODE_GUI {
+
+/**
+*  Note  : Following APP properties are mandatory and important
+* Begin : APP property section
+*/
+  /**
+* APP version
+* Format: a string with three digit separated by a dot.
+*/
+  def version            = '4.1.10'
+
+/**
+* APP categories declaration.
+* It is list of strings. Sub categories are separated by slash.
+* No limits on number of categories and sub categories depth.
+*/
+  def categoriesDescription = ["Communication/CAN"] 
+
+/** 
+* Minimum DAVE version required for this APP.
+* 
+* It is string with three digit separated by a dot.
+*/
+  def minDaveVersion           = '4.0.0'
+
+/** 
+* Keywords used by search feature in APPs selection view
+* 
+* It is a list of string.
+*/
+  def keywords      = ["Communication", "Serial", "CAN_NODE", "CAN", "MultiCAN", "ALL"]
+
+/**
+* softwareIDs is used to declare which devices are compatible with this APP.
+* It is a map with key a string containing a pattern that shall match the SW id of
+* the device and as value the minimal version of the APP.
+*
+*
+*/
+  def softwareIDs       = [
+	  
+	  "XMC4.8.*.*.*":"1.0.0",
+	  "XMC4.7.*.*.*":"1.0.0",
+	  
+      "XMC4.5.00.(E144|F144|F100).*":"1.0.0",
+      "XMC4.5.02.F100.*":"1.0.0",
+	  
+      "XMC4.4.00.(F100|F64).*":"1.0.0",
+      "XMC4.4.02.(F100|F64).*":"1.0.0",
+	  "XMC4.3.*.*.*":"1.0.0",
+      "XMC4.2.00.(F64|Q48).*":"1.0.0",
+	  
+      "XMC4.1.00.(F64|Q48).*":"1.0.0",
+      "XMC4.1.08.(F64|Q48).*":"1.0.0",
+	
+      "XMC1.4.03.(Q048|Q064).*":"1.0.0",
+	
+      "XMC1.4.04.(F064|Q048|Q064).*":"1.0.0"
+	  
+	]
+
+/**
+* Singleton property:
+* When it is true the APP can be instantiated only once.
+*/
+  def singleton     = false
+/**
+* initProvider property
+* It shall be true to add a call to <AppName>_Init()
+*/
+  def initProvider  = true
+/**
+* Deprecated APP
+* Set it to true to indicate that the APP shall be not used for new projects.
+*/
+  def deprecated    = false
+/**
+* Sharable property.
+* It shall be true to allows multiple APPs to require the same instance of this APP.
+*/
+  def sharable      = false
+
+/**
+*  APP function description.
+*/
+  def description = "The CAN_NODE APP configures a node and MO registers \nof MultiCAN module. \nIt provides run-time functions to change the node baud rate \nand to enable/disable node and MO events."
+  /* End   : APP property section */
+
+  /* Required APP consumption for CAN_NODE */
+  MRequiredApp can_global /* can global APP consumption for XMC4xxx device  */
+
+  /* Begin : User variable section */
+
+  /* Variable to hold actual system clock frequency value */
+  GFloat gactualclock = GFloat(widgetName:"gclock" )
+
+  MVirtualResourceGroup hwres_port_pad_can_rx
+  MVirtualResourceGroup hwres_port_pad_can_tx
+
+  MVirtualResourceGroup hwres_can_list
+  MVirtualResourceGroup hwres_can_node
+
+  /*MO Configuration */
+  
+  MVirtualResourceGroup hwres_can_mobj1 = null;
+  MVirtualResourceGroup hwres_can_mobj2 = null;
+  MVirtualResourceGroup hwres_can_mobj3 = null;
+  MVirtualResourceGroup hwres_can_mobj4 = null;
+  MVirtualResourceGroup hwres_can_mobj5 = null;
+  MVirtualResourceGroup hwres_can_mobj6 = null;
+  MVirtualResourceGroup hwres_can_mobj7 = null;
+  MVirtualResourceGroup hwres_can_mobj8 = null;
+  MVirtualResourceGroup hwres_can_mobj9 = null;
+  MVirtualResourceGroup hwres_can_mobj10 = null;
+  MVirtualResourceGroup hwres_can_mobj11 = null;
+  MVirtualResourceGroup hwres_can_mobj12 = null;
+  MVirtualResourceGroup hwres_can_mobj13 = null;
+  MVirtualResourceGroup hwres_can_mobj14 = null;
+  MVirtualResourceGroup hwres_can_mobj15 = null;
+  MVirtualResourceGroup hwres_can_mobj16 = null;
+  MVirtualResourceGroup hwres_can_mobj17 = null;
+  MVirtualResourceGroup hwres_can_mobj18 = null;
+  MVirtualResourceGroup hwres_can_mobj19 = null;
+  MVirtualResourceGroup hwres_can_mobj20 = null;
+  MVirtualResourceGroup hwres_can_mobj21 = null;
+  MVirtualResourceGroup hwres_can_mobj22 = null;
+  MVirtualResourceGroup hwres_can_mobj23 = null;
+  MVirtualResourceGroup hwres_can_mobj24 = null;
+  MVirtualResourceGroup hwres_can_mobj25 = null;
+  MVirtualResourceGroup hwres_can_mobj26 = null;
+  MVirtualResourceGroup hwres_can_mobj27 = null;
+  MVirtualResourceGroup hwres_can_mobj28 = null;
+  MVirtualResourceGroup hwres_can_mobj29 = null;
+  MVirtualResourceGroup hwres_can_mobj30 = null;
+  MVirtualResourceGroup hwres_can_mobj31 = null;
+  MVirtualResourceGroup hwres_can_mobj32 = null;
+
+  /* virtual resource for CAN tx and rx */
+  MVirtualSignal vs_can_rxd
+  MVirtualSignal vs_can_txd
+  MVirtualSignal vs_can_rxpin
+  MVirtualSignal vs_can_txpin
+
+  /* virtual resource for CAN node events */
+  MVirtualSignal vs_can_alinp
+  MVirtualSignal vs_can_lecinp
+  MVirtualSignal vs_can_trinp
+  MVirtualSignal vs_can_cfcinp
+
+  /* virtual resource for CAN MO tx and MO rx events*/
+  
+  MVirtualSignal vs_message_txinp_1
+  MVirtualSignal vs_message_rxinp_1
+  
+  
+  MVirtualSignal vs_message1_txinp
+  MVirtualSignal vs_message1_rxinp
+  MVirtualSignal vs_message2_txinp
+  MVirtualSignal vs_message2_rxinp
+  MVirtualSignal vs_message3_txinp
+  MVirtualSignal vs_message3_rxinp
+  MVirtualSignal vs_message4_txinp
+  MVirtualSignal vs_message4_rxinp
+  MVirtualSignal vs_message5_txinp
+  MVirtualSignal vs_message5_rxinp
+  MVirtualSignal vs_message6_txinp
+  MVirtualSignal vs_message6_rxinp
+  MVirtualSignal vs_message7_txinp
+  MVirtualSignal vs_message7_rxinp
+  MVirtualSignal vs_message8_txinp
+  MVirtualSignal vs_message8_rxinp
+  MVirtualSignal vs_message9_txinp
+  MVirtualSignal vs_message9_rxinp
+  MVirtualSignal vs_message10_txinp
+  MVirtualSignal vs_message10_rxinp
+  MVirtualSignal vs_message11_txinp
+  MVirtualSignal vs_message11_rxinp
+  MVirtualSignal vs_message12_txinp
+  MVirtualSignal vs_message12_rxinp
+  MVirtualSignal vs_message13_txinp
+  MVirtualSignal vs_message13_rxinp
+  MVirtualSignal vs_message14_txinp
+  MVirtualSignal vs_message14_rxinp
+  MVirtualSignal vs_message15_txinp
+  MVirtualSignal vs_message15_rxinp
+  MVirtualSignal vs_message16_txinp
+  MVirtualSignal vs_message16_rxinp
+  MVirtualSignal vs_message17_txinp
+  MVirtualSignal vs_message17_rxinp
+  MVirtualSignal vs_message18_txinp
+  MVirtualSignal vs_message18_rxinp
+  MVirtualSignal vs_message19_txinp
+  MVirtualSignal vs_message19_rxinp
+  MVirtualSignal vs_message20_txinp
+  MVirtualSignal vs_message20_rxinp
+  MVirtualSignal vs_message21_txinp
+  MVirtualSignal vs_message21_rxinp
+  MVirtualSignal vs_message22_txinp
+  MVirtualSignal vs_message22_rxinp
+  MVirtualSignal vs_message23_txinp
+  MVirtualSignal vs_message23_rxinp
+  MVirtualSignal vs_message24_txinp
+  MVirtualSignal vs_message24_rxinp
+  MVirtualSignal vs_message25_txinp
+  MVirtualSignal vs_message25_rxinp
+  MVirtualSignal vs_message26_txinp
+  MVirtualSignal vs_message26_rxinp
+  MVirtualSignal vs_message27_txinp
+  MVirtualSignal vs_message27_rxinp
+  MVirtualSignal vs_message28_txinp
+  MVirtualSignal vs_message28_rxinp
+  MVirtualSignal vs_message29_txinp
+  MVirtualSignal vs_message29_rxinp
+  MVirtualSignal vs_message30_txinp
+  MVirtualSignal vs_message30_rxinp
+  MVirtualSignal vs_message31_txinp
+  MVirtualSignal vs_message31_rxinp
+  MVirtualSignal vs_message32_txinp
+  MVirtualSignal vs_message32_rxinp
+
+  /* Index */
+  RArray <GLabel> glabel_mo_arr = RArray(33)
+  RArray <GCombo> gcombo_msgType_arr = RArray(33)
+  RArray <GCombo> gcombo_identifierType_arr = RArray(33)
+  RArray <GInteger> gint_MaskVal_arr = RArray(33)
+  RArray <GInteger> gint_IdntfVal_arr = RArray(33)
+  RArray <GCombo> gcombo_aceptMask_arr = RArray(33)
+  RArray <GInteger> gint_data_length_arr = RArray(33)
+  RArray <GInteger> gint_data_high_arr = RArray(33)
+  RArray <GInteger> gint_data_low_arr = RArray(33)
+  RArray <GCheck> gcheck_txinterrupt_arr = RArray(33)
+  RArray <GCheck> gcheck_rxinterrupt_arr = RArray(33)
+
+  RArray <MVirtualResourceGroup> gvresource_msg_obj_arr = RArray(33)
+  
+
+  /* APP Constructor */
+  public CAN_NODE(DaveEnv daveEnv) {
+    
+    can_global = MRequiredApp("GLOBAL_CAN","GLOBAL_CAN APP", RSHARABLE, "4.0.2")
+    gactualclock.value = MF({can_global.getVal(["gfloat_desired_can_freq", "value"])}, Float)
+
+    /* Label for LMO */
+    glabel_mo_arr[0] = glabel_lmo_01
+    glabel_mo_arr[1] = glabel_lmo_02
+    glabel_mo_arr[2] = glabel_lmo_03
+    glabel_mo_arr[3] = glabel_lmo_04
+    glabel_mo_arr[4] = glabel_lmo_05
+    glabel_mo_arr[5] = glabel_lmo_06
+    glabel_mo_arr[6] = glabel_lmo_07
+    glabel_mo_arr[7] = glabel_lmo_08
+    glabel_mo_arr[8] = glabel_lmo_09
+    glabel_mo_arr[9] = glabel_lmo_10
+    glabel_mo_arr[10] = glabel_lmo_11
+    glabel_mo_arr[11] = glabel_lmo_12
+    glabel_mo_arr[12] = glabel_lmo_13
+    glabel_mo_arr[13] = glabel_lmo_14
+    glabel_mo_arr[14] = glabel_lmo_15
+    glabel_mo_arr[15] = glabel_lmo_16
+    glabel_mo_arr[16] = glabel_lmo_17
+    glabel_mo_arr[17] = glabel_lmo_18
+    glabel_mo_arr[18] = glabel_lmo_19
+    glabel_mo_arr[19] = glabel_lmo_20
+    glabel_mo_arr[20] = glabel_lmo_21
+    glabel_mo_arr[21] = glabel_lmo_22
+    glabel_mo_arr[22] = glabel_lmo_23
+    glabel_mo_arr[23] = glabel_lmo_24
+    glabel_mo_arr[24] = glabel_lmo_25
+    glabel_mo_arr[25] = glabel_lmo_26
+    glabel_mo_arr[26] = glabel_lmo_27
+    glabel_mo_arr[27] = glabel_lmo_28
+    glabel_mo_arr[28] = glabel_lmo_29
+    glabel_mo_arr[29] = glabel_lmo_30
+    glabel_mo_arr[30] = glabel_lmo_31
+    glabel_mo_arr[31] = glabel_lmo_32
+
+    /* Message type array */
+    gcombo_msgType_arr[0] = gcombo_msgtyp_01
+    gcombo_msgType_arr[1] = gcombo_msgtyp_02
+    gcombo_msgType_arr[2] = gcombo_msgtyp_03
+    gcombo_msgType_arr[3] = gcombo_msgtyp_04
+    gcombo_msgType_arr[4] = gcombo_msgtyp_05
+    gcombo_msgType_arr[5] = gcombo_msgtyp_06
+    gcombo_msgType_arr[6] = gcombo_msgtyp_07
+    gcombo_msgType_arr[7] = gcombo_msgtyp_08
+    gcombo_msgType_arr[8] = gcombo_msgtyp_09
+    gcombo_msgType_arr[9] = gcombo_msgtyp_10
+    gcombo_msgType_arr[10] = gcombo_msgtyp_11
+    gcombo_msgType_arr[11] = gcombo_msgtyp_12
+    gcombo_msgType_arr[12] = gcombo_msgtyp_13
+    gcombo_msgType_arr[13] = gcombo_msgtyp_14
+    gcombo_msgType_arr[14] = gcombo_msgtyp_15
+    gcombo_msgType_arr[15] = gcombo_msgtyp_16
+    gcombo_msgType_arr[16] = gcombo_msgtyp_17
+    gcombo_msgType_arr[17] = gcombo_msgtyp_18
+    gcombo_msgType_arr[18] = gcombo_msgtyp_19
+    gcombo_msgType_arr[19] = gcombo_msgtyp_20
+    gcombo_msgType_arr[20] = gcombo_msgtyp_21
+    gcombo_msgType_arr[21] = gcombo_msgtyp_22
+    gcombo_msgType_arr[22] = gcombo_msgtyp_23
+    gcombo_msgType_arr[23] = gcombo_msgtyp_24
+    gcombo_msgType_arr[24] = gcombo_msgtyp_25
+    gcombo_msgType_arr[25] = gcombo_msgtyp_26
+    gcombo_msgType_arr[26] = gcombo_msgtyp_27
+    gcombo_msgType_arr[27] = gcombo_msgtyp_28
+    gcombo_msgType_arr[28] = gcombo_msgtyp_29
+    gcombo_msgType_arr[29] = gcombo_msgtyp_30
+    gcombo_msgType_arr[30] = gcombo_msgtyp_31
+    gcombo_msgType_arr[31] = gcombo_msgtyp_32
+
+    /* identifier type array */
+    gcombo_identifierType_arr[0] = gcombo_idntftyp_01
+    gcombo_identifierType_arr[1] = gcombo_idntftyp_02
+    gcombo_identifierType_arr[2] = gcombo_idntftyp_03
+    gcombo_identifierType_arr[3] = gcombo_idntftyp_04
+    gcombo_identifierType_arr[4] = gcombo_idntftyp_05
+    gcombo_identifierType_arr[5] = gcombo_idntftyp_06
+    gcombo_identifierType_arr[6] = gcombo_idntftyp_07
+    gcombo_identifierType_arr[7] = gcombo_idntftyp_08
+    gcombo_identifierType_arr[8] = gcombo_idntftyp_09
+    gcombo_identifierType_arr[9] = gcombo_idntftyp_10
+    gcombo_identifierType_arr[10] = gcombo_idntftyp_11
+    gcombo_identifierType_arr[11] = gcombo_idntftyp_12
+    gcombo_identifierType_arr[12] = gcombo_idntftyp_13
+    gcombo_identifierType_arr[13] = gcombo_idntftyp_14
+    gcombo_identifierType_arr[14] = gcombo_idntftyp_15
+    gcombo_identifierType_arr[15] = gcombo_idntftyp_16
+    gcombo_identifierType_arr[16] = gcombo_idntftyp_17
+    gcombo_identifierType_arr[17] = gcombo_idntftyp_18
+    gcombo_identifierType_arr[18] = gcombo_idntftyp_19
+    gcombo_identifierType_arr[19] = gcombo_idntftyp_20
+    gcombo_identifierType_arr[20] = gcombo_idntftyp_21
+    gcombo_identifierType_arr[21] = gcombo_idntftyp_22
+    gcombo_identifierType_arr[22] = gcombo_idntftyp_23
+    gcombo_identifierType_arr[23] = gcombo_idntftyp_24
+    gcombo_identifierType_arr[24] = gcombo_idntftyp_25
+    gcombo_identifierType_arr[25] = gcombo_idntftyp_26
+    gcombo_identifierType_arr[26] = gcombo_idntftyp_27
+    gcombo_identifierType_arr[27] = gcombo_idntftyp_28
+    gcombo_identifierType_arr[28] = gcombo_idntftyp_29
+    gcombo_identifierType_arr[29] = gcombo_idntftyp_30
+    gcombo_identifierType_arr[30] = gcombo_idntftyp_31
+    gcombo_identifierType_arr[31] = gcombo_idntftyp_32
+
+    /* array of mask value */
+    gint_MaskVal_arr[0] = ginteger_maskval_01
+    gint_MaskVal_arr[1] = ginteger_maskval_02
+    gint_MaskVal_arr[2] = ginteger_maskval_03
+    gint_MaskVal_arr[3] = ginteger_maskval_04
+    gint_MaskVal_arr[4] = ginteger_maskval_05
+    gint_MaskVal_arr[5] = ginteger_maskval_06
+    gint_MaskVal_arr[6] = ginteger_maskval_07
+    gint_MaskVal_arr[7] = ginteger_maskval_08
+    gint_MaskVal_arr[8] = ginteger_maskval_09
+    gint_MaskVal_arr[9] = ginteger_maskval_10
+    gint_MaskVal_arr[10] = ginteger_maskval_11
+    gint_MaskVal_arr[11] = ginteger_maskval_12
+    gint_MaskVal_arr[12] = ginteger_maskval_13
+    gint_MaskVal_arr[13] = ginteger_maskval_14
+    gint_MaskVal_arr[14] = ginteger_maskval_15
+    gint_MaskVal_arr[15] = ginteger_maskval_16
+    gint_MaskVal_arr[16] = ginteger_maskval_17
+    gint_MaskVal_arr[17] = ginteger_maskval_18
+    gint_MaskVal_arr[18] = ginteger_maskval_19
+    gint_MaskVal_arr[19] = ginteger_maskval_20
+    gint_MaskVal_arr[20] = ginteger_maskval_21
+    gint_MaskVal_arr[21] = ginteger_maskval_22
+    gint_MaskVal_arr[22] = ginteger_maskval_23
+    gint_MaskVal_arr[23] = ginteger_maskval_24
+    gint_MaskVal_arr[24] = ginteger_maskval_25
+    gint_MaskVal_arr[25] = ginteger_maskval_26
+    gint_MaskVal_arr[26] = ginteger_maskval_27
+    gint_MaskVal_arr[27] = ginteger_maskval_28
+    gint_MaskVal_arr[28] = ginteger_maskval_29
+    gint_MaskVal_arr[29] = ginteger_maskval_30
+    gint_MaskVal_arr[30] = ginteger_maskval_31
+    gint_MaskVal_arr[31] = ginteger_maskval_32
+
+    /* array of identifier value */
+    gint_IdntfVal_arr[0] = ginteger_idntfval_01
+    gint_IdntfVal_arr[1] = ginteger_idntfval_02
+    gint_IdntfVal_arr[2] = ginteger_idntfval_03
+    gint_IdntfVal_arr[3] = ginteger_idntfval_04
+    gint_IdntfVal_arr[4] = ginteger_idntfval_05
+    gint_IdntfVal_arr[5] = ginteger_idntfval_06
+    gint_IdntfVal_arr[6] = ginteger_idntfval_07
+    gint_IdntfVal_arr[7] = ginteger_idntfval_08
+    gint_IdntfVal_arr[8] = ginteger_idntfval_09
+    gint_IdntfVal_arr[9] = ginteger_idntfval_10
+    gint_IdntfVal_arr[10] = ginteger_idntfval_11
+    gint_IdntfVal_arr[11] = ginteger_idntfval_12
+    gint_IdntfVal_arr[12] = ginteger_idntfval_13
+    gint_IdntfVal_arr[13] = ginteger_idntfval_14
+    gint_IdntfVal_arr[14] = ginteger_idntfval_15
+    gint_IdntfVal_arr[15] = ginteger_idntfval_16
+    gint_IdntfVal_arr[16] = ginteger_idntfval_17
+    gint_IdntfVal_arr[17] = ginteger_idntfval_18
+    gint_IdntfVal_arr[18] = ginteger_idntfval_19
+    gint_IdntfVal_arr[19] = ginteger_idntfval_20
+    gint_IdntfVal_arr[20] = ginteger_idntfval_21
+    gint_IdntfVal_arr[21] = ginteger_idntfval_22
+    gint_IdntfVal_arr[22] = ginteger_idntfval_23
+    gint_IdntfVal_arr[23] = ginteger_idntfval_24
+    gint_IdntfVal_arr[24] = ginteger_idntfval_25
+    gint_IdntfVal_arr[25] = ginteger_idntfval_26
+    gint_IdntfVal_arr[26] = ginteger_idntfval_27
+    gint_IdntfVal_arr[27] = ginteger_idntfval_28
+    gint_IdntfVal_arr[28] = ginteger_idntfval_29
+    gint_IdntfVal_arr[29] = ginteger_idntfval_30
+    gint_IdntfVal_arr[30] = ginteger_idntfval_31
+    gint_IdntfVal_arr[31] = ginteger_idntfval_32
+
+    /* gcomob acceptance mask array */
+    gcombo_aceptMask_arr[0] = gcombo_aceptmask_01
+    gcombo_aceptMask_arr[1] = gcombo_aceptmask_02
+    gcombo_aceptMask_arr[2] = gcombo_aceptmask_03
+    gcombo_aceptMask_arr[3] = gcombo_aceptmask_04
+    gcombo_aceptMask_arr[4] = gcombo_aceptmask_05
+    gcombo_aceptMask_arr[5] = gcombo_aceptmask_06
+    gcombo_aceptMask_arr[6] = gcombo_aceptmask_07
+    gcombo_aceptMask_arr[7] = gcombo_aceptmask_08
+    gcombo_aceptMask_arr[8] = gcombo_aceptmask_09
+    gcombo_aceptMask_arr[9] = gcombo_aceptmask_10
+    gcombo_aceptMask_arr[10] = gcombo_aceptmask_11
+    gcombo_aceptMask_arr[11] = gcombo_aceptmask_12
+    gcombo_aceptMask_arr[12] = gcombo_aceptmask_13
+    gcombo_aceptMask_arr[13] = gcombo_aceptmask_14
+    gcombo_aceptMask_arr[14] = gcombo_aceptmask_15
+    gcombo_aceptMask_arr[15] = gcombo_aceptmask_16
+    gcombo_aceptMask_arr[16] = gcombo_aceptmask_17
+    gcombo_aceptMask_arr[17] = gcombo_aceptmask_18
+    gcombo_aceptMask_arr[18] = gcombo_aceptmask_19
+    gcombo_aceptMask_arr[19] = gcombo_aceptmask_20
+    gcombo_aceptMask_arr[20] = gcombo_aceptmask_21
+    gcombo_aceptMask_arr[21] = gcombo_aceptmask_22
+    gcombo_aceptMask_arr[22] = gcombo_aceptmask_23
+    gcombo_aceptMask_arr[23] = gcombo_aceptmask_24
+    gcombo_aceptMask_arr[24] = gcombo_aceptmask_25
+    gcombo_aceptMask_arr[25] = gcombo_aceptmask_26
+    gcombo_aceptMask_arr[26] = gcombo_aceptmask_27
+    gcombo_aceptMask_arr[27] = gcombo_aceptmask_28
+    gcombo_aceptMask_arr[28] = gcombo_aceptmask_29
+    gcombo_aceptMask_arr[29] = gcombo_aceptmask_30
+    gcombo_aceptMask_arr[30] = gcombo_aceptmask_31
+    gcombo_aceptMask_arr[31] = gcombo_aceptmask_32
+
+    /* can message object array */
+    Map msg_objarr = [
+
+      0: hwres_can_mobj1,
+      1: hwres_can_mobj2,
+      2: hwres_can_mobj3,
+      3: hwres_can_mobj4,
+      4: hwres_can_mobj5,
+      5: hwres_can_mobj6,
+      6: hwres_can_mobj7,
+      7: hwres_can_mobj8,
+      8: hwres_can_mobj9,
+      9: hwres_can_mobj10,
+      10: hwres_can_mobj11,
+      11: hwres_can_mobj12,
+      12: hwres_can_mobj13,
+      13: hwres_can_mobj14,
+      14: hwres_can_mobj15,
+      15: hwres_can_mobj16,
+      16: hwres_can_mobj17,
+      17: hwres_can_mobj18,
+      18: hwres_can_mobj19,
+      19: hwres_can_mobj20,
+      20: hwres_can_mobj21,
+      21: hwres_can_mobj22,
+      22: hwres_can_mobj23,
+      23: hwres_can_mobj24,
+      24: hwres_can_mobj25,
+      25: hwres_can_mobj26,
+      26: hwres_can_mobj27,
+      27: hwres_can_mobj28,
+      28: hwres_can_mobj29,
+      29: hwres_can_mobj30,
+      30: hwres_can_mobj31,
+      31: hwres_can_mobj32
+    ]
+    /*  gint_data_length_array */
+    gint_data_length_arr[0] = ginteger_dlc_01
+    gint_data_length_arr[1] = ginteger_dlc_02
+    gint_data_length_arr[2] = ginteger_dlc_03
+    gint_data_length_arr[3] = ginteger_dlc_04
+    gint_data_length_arr[4] = ginteger_dlc_05
+    gint_data_length_arr[5] = ginteger_dlc_06
+    gint_data_length_arr[6] = ginteger_dlc_07
+    gint_data_length_arr[7] = ginteger_dlc_08
+    gint_data_length_arr[8] = ginteger_dlc_09
+    gint_data_length_arr[9] = ginteger_dlc_10
+    gint_data_length_arr[10] = ginteger_dlc_11
+    gint_data_length_arr[11] = ginteger_dlc_12
+    gint_data_length_arr[12] = ginteger_dlc_13
+    gint_data_length_arr[13] = ginteger_dlc_14
+    gint_data_length_arr[14] = ginteger_dlc_15
+    gint_data_length_arr[15] = ginteger_dlc_16
+    gint_data_length_arr[16] = ginteger_dlc_17
+    gint_data_length_arr[17] = ginteger_dlc_18
+    gint_data_length_arr[18] = ginteger_dlc_19
+    gint_data_length_arr[19] = ginteger_dlc_20
+    gint_data_length_arr[20] = ginteger_dlc_21
+    gint_data_length_arr[21] = ginteger_dlc_22
+    gint_data_length_arr[22] = ginteger_dlc_23
+    gint_data_length_arr[23] = ginteger_dlc_24
+    gint_data_length_arr[24] = ginteger_dlc_25
+    gint_data_length_arr[25] = ginteger_dlc_26
+    gint_data_length_arr[26] = ginteger_dlc_27
+    gint_data_length_arr[27] = ginteger_dlc_28
+    gint_data_length_arr[28] = ginteger_dlc_29
+    gint_data_length_arr[29] = ginteger_dlc_30
+    gint_data_length_arr[30] = ginteger_dlc_31
+    gint_data_length_arr[31] = ginteger_dlc_32
+
+    /*  gint_data_bytes_High_array */
+    gint_data_high_arr[0] = ginteger_datah_01
+    gint_data_high_arr[1] = ginteger_datah_02
+    gint_data_high_arr[2] = ginteger_datah_03
+    gint_data_high_arr[3] = ginteger_datah_04
+    gint_data_high_arr[4] = ginteger_datah_05
+    gint_data_high_arr[5] = ginteger_datah_06
+    gint_data_high_arr[6] = ginteger_datah_07
+    gint_data_high_arr[7] = ginteger_datah_08
+    gint_data_high_arr[8] = ginteger_datah_09
+    gint_data_high_arr[9] = ginteger_datah_10
+    gint_data_high_arr[10] = ginteger_datah_11
+    gint_data_high_arr[11] = ginteger_datah_12
+    gint_data_high_arr[12] = ginteger_datah_13
+    gint_data_high_arr[13] = ginteger_datah_14
+    gint_data_high_arr[14] = ginteger_datah_15
+    gint_data_high_arr[15] = ginteger_datah_16
+    gint_data_high_arr[16] = ginteger_datah_17
+    gint_data_high_arr[17] = ginteger_datah_18
+    gint_data_high_arr[18] = ginteger_datah_19
+    gint_data_high_arr[19] = ginteger_datah_20
+    gint_data_high_arr[20] = ginteger_datah_21
+    gint_data_high_arr[21] = ginteger_datah_22
+    gint_data_high_arr[22] = ginteger_datah_23
+    gint_data_high_arr[23] = ginteger_datah_24
+    gint_data_high_arr[24] = ginteger_datah_25
+    gint_data_high_arr[25] = ginteger_datah_26
+    gint_data_high_arr[26] = ginteger_datah_27
+    gint_data_high_arr[27] = ginteger_datah_28
+    gint_data_high_arr[28] = ginteger_datah_29
+    gint_data_high_arr[29] = ginteger_datah_30
+    gint_data_high_arr[30] = ginteger_datah_31
+    gint_data_high_arr[31] = ginteger_datah_32
+
+    /*  gint_data_bytes_low_array */
+    gint_data_low_arr[0] = ginteger_datal_01
+    gint_data_low_arr[1] = ginteger_datal_02
+    gint_data_low_arr[2] = ginteger_datal_03
+    gint_data_low_arr[3] = ginteger_datal_04
+    gint_data_low_arr[4] = ginteger_datal_05
+    gint_data_low_arr[5] = ginteger_datal_06
+    gint_data_low_arr[6] = ginteger_datal_07
+    gint_data_low_arr[7] = ginteger_datal_08
+    gint_data_low_arr[8] = ginteger_datal_09
+    gint_data_low_arr[9] = ginteger_datal_10
+    gint_data_low_arr[10] = ginteger_datal_11
+    gint_data_low_arr[11] = ginteger_datal_12
+    gint_data_low_arr[12] = ginteger_datal_13
+    gint_data_low_arr[13] = ginteger_datal_14
+    gint_data_low_arr[14] = ginteger_datal_15
+    gint_data_low_arr[15] = ginteger_datal_16
+    gint_data_low_arr[16] = ginteger_datal_17
+    gint_data_low_arr[17] = ginteger_datal_18
+    gint_data_low_arr[18] = ginteger_datal_19
+    gint_data_low_arr[19] = ginteger_datal_20
+    gint_data_low_arr[20] = ginteger_datal_21
+    gint_data_low_arr[21] = ginteger_datal_22
+    gint_data_low_arr[22] = ginteger_datal_23
+    gint_data_low_arr[23] = ginteger_datal_24
+    gint_data_low_arr[24] = ginteger_datal_25
+    gint_data_low_arr[25] = ginteger_datal_26
+    gint_data_low_arr[26] = ginteger_datal_27
+    gint_data_low_arr[27] = ginteger_datal_28
+    gint_data_low_arr[28] = ginteger_datal_29
+    gint_data_low_arr[29] = ginteger_datal_30
+    gint_data_low_arr[30] = ginteger_datal_31
+    gint_data_low_arr[31] = ginteger_datal_32
+
+    /*  gcheck_txinterrupt_array */
+    gcheck_txinterrupt_arr[0] = gcheck_tx_01
+    gcheck_txinterrupt_arr[1] = gcheck_tx_02
+    gcheck_txinterrupt_arr[2] = gcheck_tx_03
+    gcheck_txinterrupt_arr[3] = gcheck_tx_04
+    gcheck_txinterrupt_arr[4] = gcheck_tx_05
+    gcheck_txinterrupt_arr[5] = gcheck_tx_06
+    gcheck_txinterrupt_arr[6] = gcheck_tx_07
+    gcheck_txinterrupt_arr[7] = gcheck_tx_08
+    gcheck_txinterrupt_arr[8] = gcheck_tx_09
+    gcheck_txinterrupt_arr[9] = gcheck_tx_10
+    gcheck_txinterrupt_arr[10] = gcheck_tx_11
+    gcheck_txinterrupt_arr[11] = gcheck_tx_12
+    gcheck_txinterrupt_arr[12] = gcheck_tx_13
+    gcheck_txinterrupt_arr[13] = gcheck_tx_14
+    gcheck_txinterrupt_arr[14] = gcheck_tx_15
+    gcheck_txinterrupt_arr[15] = gcheck_tx_16
+    gcheck_txinterrupt_arr[16] = gcheck_tx_17
+    gcheck_txinterrupt_arr[17] = gcheck_tx_18
+    gcheck_txinterrupt_arr[18] = gcheck_tx_19
+    gcheck_txinterrupt_arr[19] = gcheck_tx_20
+    gcheck_txinterrupt_arr[20] = gcheck_tx_21
+    gcheck_txinterrupt_arr[21] = gcheck_tx_22
+    gcheck_txinterrupt_arr[22] = gcheck_tx_23
+    gcheck_txinterrupt_arr[23] = gcheck_tx_24
+    gcheck_txinterrupt_arr[24] = gcheck_tx_25
+    gcheck_txinterrupt_arr[25] = gcheck_tx_26
+    gcheck_txinterrupt_arr[26] = gcheck_tx_27
+    gcheck_txinterrupt_arr[27] = gcheck_tx_28
+    gcheck_txinterrupt_arr[28] = gcheck_tx_29
+    gcheck_txinterrupt_arr[29] = gcheck_tx_30
+    gcheck_txinterrupt_arr[30] = gcheck_tx_31
+    gcheck_txinterrupt_arr[31] = gcheck_tx_32
+
+    /*  gint_data_bytes_low_array */
+    gcheck_rxinterrupt_arr[0] = gcheck_rx_01
+    gcheck_rxinterrupt_arr[1] = gcheck_rx_02
+    gcheck_rxinterrupt_arr[2] = gcheck_rx_03
+    gcheck_rxinterrupt_arr[3] = gcheck_rx_04
+    gcheck_rxinterrupt_arr[4] = gcheck_rx_05
+    gcheck_rxinterrupt_arr[5] = gcheck_rx_06
+    gcheck_rxinterrupt_arr[6] = gcheck_rx_07
+    gcheck_rxinterrupt_arr[7] = gcheck_rx_08
+    gcheck_rxinterrupt_arr[8] = gcheck_rx_09
+    gcheck_rxinterrupt_arr[9] = gcheck_rx_10
+    gcheck_rxinterrupt_arr[10] = gcheck_rx_11
+    gcheck_rxinterrupt_arr[11] = gcheck_rx_12
+    gcheck_rxinterrupt_arr[12] = gcheck_rx_13
+    gcheck_rxinterrupt_arr[13] = gcheck_rx_14
+    gcheck_rxinterrupt_arr[14] = gcheck_rx_15
+    gcheck_rxinterrupt_arr[15] = gcheck_rx_16
+    gcheck_rxinterrupt_arr[16] = gcheck_rx_17
+    gcheck_rxinterrupt_arr[17] = gcheck_rx_18
+    gcheck_rxinterrupt_arr[18] = gcheck_rx_19
+    gcheck_rxinterrupt_arr[19] = gcheck_rx_20
+    gcheck_rxinterrupt_arr[20] = gcheck_rx_21
+    gcheck_rxinterrupt_arr[21] = gcheck_rx_22
+    gcheck_rxinterrupt_arr[22] = gcheck_rx_23
+    gcheck_rxinterrupt_arr[23] = gcheck_rx_24
+    gcheck_rxinterrupt_arr[24] = gcheck_rx_25
+    gcheck_rxinterrupt_arr[25] = gcheck_rx_26
+    gcheck_rxinterrupt_arr[26] = gcheck_rx_27
+    gcheck_rxinterrupt_arr[27] = gcheck_rx_28
+    gcheck_rxinterrupt_arr[28] = gcheck_rx_29
+    gcheck_rxinterrupt_arr[29] = gcheck_rx_30
+    gcheck_rxinterrupt_arr[30] = gcheck_rx_31
+    gcheck_rxinterrupt_arr[31] = gcheck_rx_32
+
+
+    MF is_loop_back_mode_enabled = MF({!(gcheck_loopback_mode.value)}, Boolean)
+
+    /* -------------------------------------------------------------- */
+    /* ------------ Hardware resource consumption block ------------- */
+    /* -------------------------------------------------------------- */
+
+    hwres_port_pad_can_rx =  MVirtualResourceGroup("CAN Receive Pin", ["port", "p", "*", "pad", "*"], is_loop_back_mode_enabled)
+    hwres_port_pad_can_tx =  MVirtualResourceGroup("CAN Transmit Pin", ["port", "p", "*", "pad", "*"], is_loop_back_mode_enabled)
+    hwres_can_node        =  MVirtualResourceGroup("NODE", ["peripheral","can", "*", "node", "*"],true)
+
+  for(int index in 1..32)
+  {
+    int loop_count = index;
+    this."hwres_can_mobj${index}"=
+      MVirtualResourceGroup("MO_${index}",["peripheral", "can", "*", "mo","*"],MF({ginteger_num_msg_obj.value >= loop_count}, Boolean))
+  }
+  
+  for(int index1 in 1..32) 
+  {
+      int loop_count1 = index1;
+    
+    MF is_msg_obj_enabled = MF({(ginteger_num_msg_obj.value >= loop_count1)}, Boolean)
+	//MF is_tx_mobj_intrpt_enabled = MF({(gcheck_txinterrupt_arr[index1].value == true)}, Boolean) gcheck_rxinterrupt_arr
+    if(index1 < 10)
+    {
+    this."vs_message${loop_count1}_rxinp" =
+    MVirtualSignal(this."hwres_can_mobj${index1}", "event_lmo_0${loop_count1}_rxinp", "rxinp", MF({(gcheck_rxinterrupt_arr[loop_count1 -1].value)}, Boolean), true)
+    this."vs_message${loop_count1}_txinp" = 
+    MVirtualSignal( this."hwres_can_mobj${index1}","event_lmo_0${loop_count1}_txinp", "txinp", MF({(gcheck_txinterrupt_arr[loop_count1-1].value)}, Boolean), true)
+
+    }
+    else
+    {
+    this."vs_message${loop_count1}_rxinp" =
+    MVirtualSignal(this."hwres_can_mobj${index1}", "event_lmo_${loop_count1}_rxinp", "rxinp", MF({(gcheck_rxinterrupt_arr[loop_count1-1].value)}, Boolean), true)
+    this."vs_message${loop_count1}_txinp" =
+    MVirtualSignal( this."hwres_can_mobj${index1}", "event_lmo_${loop_count1}_txinp", "txinp", MF({(gcheck_txinterrupt_arr[loop_count1-1].value)}, Boolean), true)
+      
+    }
+    }
+  
+    /* -------------------------------------------------------------- */
+    /* -------------- APP IO Signals -------------------------------- */
+    /* -------------------------------------------------------------- */
+    vs_can_rxd    = MVirtualSignal( hwres_can_node, "receive_pin", "rxd", is_loop_back_mode_enabled, false)
+    vs_can_txd    = MVirtualSignal( hwres_can_node, "transmit_pin", "txd", is_loop_back_mode_enabled, false)
+
+    @AddPin
+    vs_can_rxpin  =  MVirtualSignal( hwres_port_pad_can_rx, "receive_pad",  "pad", is_loop_back_mode_enabled, false)
+    @AddPin
+    vs_can_txpin  =  MVirtualSignal( hwres_port_pad_can_tx, "transmit_pad", "pad", is_loop_back_mode_enabled, false)
+
+    vs_can_alinp   = MVirtualSignal( hwres_can_node, "event_node_alert", "alinp", MF({(gcheck_node_alert_event.value)}, Boolean), true)
+    vs_can_lecinp  = MVirtualSignal( hwres_can_node, "event_node_lec_error", "lecinp",  MF({(gcheck_last_err_code_event.value)}, Boolean), true)
+    vs_can_trinp   = MVirtualSignal( hwres_can_node, "event_node_transfer_ok", "trinp", MF({(gcheck_transfer_ok_event.value)}, Boolean), true)
+    vs_can_cfcinp  = MVirtualSignal( hwres_can_node, "event_node_frame_count", "cfcinp", MF({(gcheck_frame_counter_event.value)}, Boolean), true)
+
+
+    /* -------------------------------------------------------------- */
+    /* ---------------- APP IO Connections -------------------------- */
+    /* -------------------------------------------------------------- */
+    addConnectionConstraint( vs_can_rxpin, vs_can_rxd, true)
+    addConnectionConstraint( vs_can_txd, vs_can_txpin, true)
+
+    /* ---------------------------------------------------------- ----*/
+    /* ------------------------- APP consumption Block -------------- */
+    /* ---------------------------------------------------------------*/
+
+    /* ------------ APP Configuration ------------------------------ */
+    /* ------------------------------------------------------------- */
+    /* ------ TAB : Message Object Tab  visibility configuration ----*/
+    gtab_MOConfig2.visible = MF({(ginteger_num_msg_obj.value >= 9)}, Boolean)
+    gtab_MOConfig3.visible = MF({(ginteger_num_msg_obj.value >= 17)}, Boolean)
+    gtab_MOConfig4.visible = MF({(ginteger_num_msg_obj.value >= 25)}, Boolean)
+
+    /* MO GUI configuration */
+    for(int loop_count = 0; loop_count < 32;loop_count++)
+    {
+      int lcount_store = loop_count;
+    
+      MF is_msg_obj_type_tx                           = MF({(gcombo_msgType_arr[lcount_store].value == "Tx")}, Boolean)
+    
+      MF is_msg_obj_enabled                           = MF({(ginteger_num_msg_obj.value > lcount_store)}, Boolean)
+
+      glabel_mo_arr[loop_count].visible               =  is_msg_obj_enabled 
+      gcombo_msgType_arr[loop_count].visible          =  is_msg_obj_enabled 
+      gcombo_identifierType_arr[loop_count].visible   =  is_msg_obj_enabled 
+
+      gint_IdntfVal_arr[loop_count].maxValue          =  MF({ 
+                                                     if(gcombo_identifierType_arr[lcount_store].value == "Std_11bit")
+                                                     { 
+                                                       return(0x7FF)
+                                                     }
+                                                     else
+                                                     {
+                                                       return(0x1FFFFFFF)
+                                                     }
+                                                       },Integer)
+      gint_IdntfVal_arr[loop_count].visible           = is_msg_obj_enabled 
+
+      gint_MaskVal_arr[loop_count].visible            = is_msg_obj_enabled 
+
+
+      gint_MaskVal_arr[loop_count].maxValue           = MF({ 
+                                                       if((gcombo_aceptMask_arr[lcount_store].value == "Matching_IDE") && 
+                                                              (gcombo_identifierType_arr[lcount_store].value == "Std_11bit"))
+                                                       {    
+                                                         return(0x7FF)
+                                                       }
+                                                       else
+                                                       {
+                                                         return( 0x1FFFFFFF)
+                                                       }
+                                                        },Integer)
+      gcombo_aceptMask_arr[loop_count].visible        = is_msg_obj_enabled 
+
+      gint_data_length_arr[loop_count].enabled        = is_msg_obj_type_tx
+      gint_data_high_arr[loop_count].enabled          = is_msg_obj_type_tx
+      gint_data_low_arr[loop_count].enabled           = is_msg_obj_type_tx
+
+      gint_data_length_arr[loop_count].visible        = is_msg_obj_enabled 
+      gint_data_high_arr[loop_count].visible          = is_msg_obj_enabled 
+      gint_data_low_arr[loop_count].visible           = is_msg_obj_enabled 
+      gcheck_txinterrupt_arr[loop_count].visible      = is_msg_obj_enabled 
+      gcheck_rxinterrupt_arr[loop_count].visible      = is_msg_obj_enabled 
+    }
+  
+  }
+
+
+  /* File Generation */
+  def generateFiles(){
+
+    /* Copy can_node.c static file as it is */
+    copy("can_node.c", "can_node.c")
+    /* Copy can_node.h static file as it is */
+    copy("can_node.h", "can_node.h")
+    /* generate can_node_conf.h file dynamically according to user configuration */
+    generate("can_node_confh.tmpl", "can_node_conf.h")
+    /* generate can_node_conf.c file dynamically according to user configuration */
+    generate("can_node_confc.tmpl", "can_node_conf.c")
+    /* generate can_node_extern.h file for extern declaration*/
+    generate("can_node_externh.tmpl", "can_node_extern.h")
+  }
+
+  
+}

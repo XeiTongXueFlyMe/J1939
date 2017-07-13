@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<com.ifx.xmc4000.appDebug_memory>
+<details IMemento.internal.id="0" enable="Yes" endAddress="0x080FFFFF" memModelType="ROM" modelName="FLASH 1 (cached)" startAddress="0x08000000"/>
+<details IMemento.internal.id="1" enable="Yes" endAddress="0x0C0FFFFF" memModelType="ROM" modelName="FLASH 1 (uncached)" startAddress="0x0C000000"/>
+<details IMemento.internal.id="2" enable="Yes" endAddress="0x1000FFFF" memModelType="RAM" modelName="PSRAM 1" startAddress="0x10000000"/>
+<details IMemento.internal.id="3" enable="Yes" endAddress="0x2000FFFF" memModelType="RAM" modelName="DSRAM 1 (system)" startAddress="0x20000000"/>
+<details IMemento.internal.id="4" enable="Yes" endAddress="0x30007FFF" memModelType="RAM" modelName="DSRAM 2 (comm)" startAddress="0x30000000"/>
+</com.ifx.xmc4000.appDebug_memory>

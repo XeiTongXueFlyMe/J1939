@@ -1,0 +1,131 @@
+package Model.APPS.INTERRUPT.v4_0_8.Templates;
+
+import Model.APPS.INTERRUPT.v4_0_8.INTERRUPT
+
+out.print("""
+/**
+ * @cond
+ ***********************************************************************************************************************
+ *
+ * Copyright (c) 2015, Infineon Technologies AG
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,are permitted provided that the
+ * following conditions are met:
+ *
+ *   Redistributions of source code must retain the above copyright notice, this list of conditions and the  following
+ *   disclaimer.
+ *
+ *   Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+ *   following disclaimer in the documentation and/or other materials provided with the distribution.
+ *
+ *   Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote
+ *   products derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes
+ * with Infineon Technologies AG (dave@infineon.com).
+ ***********************************************************************************************************************
+ *
+ * Change History
+ * --------------
+ *
+ * 2015-02-16:
+ *     - Initial version<br>
+ *
+ * 2015-05-08:
+ *     - subpriority field is biased based on xmc4 family<br>
+ *
+ * 2015-07-30:
+ *     - Interrupt source is added in config structure
+ *
+ * 2015-09-18:
+ *     - Moved config structure elements to APP structure
+ * @endcond
+ *
+ */
+
+/***********************************************************************************************************************
+ * HEADER FILES
+ **********************************************************************************************************************/
+
+#include "interrupt.h"
+
+/***********************************************************************************************************************
+ * DATA STRUCTURES
+ **********************************************************************************************************************/
+""");
+
+/* Extract the Node ID for each instance
+ * as well as the UI elements to assign 
+ * for INTERRUPT_HandleType structure elements
+ * */
+String family = daveEnv.project.selectedDevice.deviceId.family
+String series = daveEnv.project.selectedDevice.deviceId.series
+
+for (Object obj : appInstancesList )
+{
+	Integer interruptsource = 0
+	String objLabel = obj.getInstanceLabel()
+	List mappedUri = obj.hwres_nvicnode.getSolverUri()
+
+	if (mappedUri)
+	{		
+		String enableAtInit;
+		
+		if(obj.gcheck_enable_at_init.value == true )
+		{
+			enableAtInit = "true";
+		}
+		else
+		{
+			enableAtInit = "false";
+		}
+		
+		String nodeID = mappedUri[-1]
+		if(family+series == "XMC14" )
+		{
+		   interruptsource = obj.hwres_nvicnode.getRegValue("","intcr_insel")
+		}
+		interrupt_enable = obj.hwres_nvicnode.getRegValue("","iser_setena")
+out.print("""
+const INTERRUPT_t ${objLabel} =
+{
+#if(UC_SERIES == XMC14)
+ .irqctrl = (XMC_SCU_IRQCTRL_t)${interruptsource}U,
+#endif
+  .node = (IRQn_Type)${nodeID},
+  .priority = ${obj.ginterruptprio_priority.priorityValue},  
+#if(UC_FAMILY == XMC4)  
+  .subpriority = ${obj.ginterruptprio_priority.subPriorityValue},
+#endif  
+""");
+if(interrupt_enable == 1)
+{
+out.print("""
+  .enable_at_init = ${enableAtInit}
+""");
+}
+else
+{
+out.print("""
+/* sr_irq signal is not connected to any peripheral */
+  .enable_at_init = false """);
+}
+out.print("""\n};""");
+}
+else 
+{
+	out.print("""
+/*INTERRUPT APP is not mapped for app instant: ${objLabel} */
+		""");
+	break;
+}
+}
