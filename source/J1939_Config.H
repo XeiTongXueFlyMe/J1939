@@ -184,42 +184,78 @@ int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 		return 0;//没有消息
 	}
 }
+/*
+*输入：
+*输出： 
+*说明：地址竞争重新估算，设备在总线上要重新申请的地址。
+	  设备是固定地址的，不需要移植此函数。
+	  函数为各个厂家想申请的地址，如果默认地址没有申请成功
+	  则调用此函数，重新申请一个希望得到的地址，当然可能再一次
+	  申请不成功，所以函数可以返回多个不同的地址，一次返回一个
+*/
+BOOL ECU_RecalculateAddress( unsigned char * Address)
+{
+	return 0;//没有生成新的地址，返回0
+}
+/*不使用中断模式，不对下面的函数进行移植*/
 #if J1939_POLL_ECAN == J1939_FALSE
+/*
+*输入：
+*输出： 
+*说明：使能接受中断
+*/
 	void J1939_RXinterruptEnable()
 	{
 		;
 	}
-
+/*
+*输入：
+*输出： 
+*说明：使能接受中断
+*/
 	void J1939_RXinterruptDisable()
 	{
 		;
 	}
+/*
+*输入：
+*输出： 
+*说明：使能发送中断
+*/
 	void J1939_TXinterruptEnable()
 	{
 		;
 	}
-
+/*
+*输入：
+*输出： 
+*说明：使能发送中断
+*/
 	void J1939_TXinterruptDisable()
 	{
 		;
 	}
+/*
+*输入：
+*输出： 
+*说明：触发发送中断标致位，当协议栈在中断模式下，要发送消息，将调用此函数
+	CAN驱动函数，就将直接把消息发送出去，不需要协议在调用任何can驱动函数
+*/
 	void J1939_TXinterruptOk()
 	{
 		;
 	}
+/*
+*输入：
+*输出： 
+*说明：清除CAN驱动相关的中断产生标识位，包括（发送中断标志位，接受中断标
+	志位，can总线错误标识位）
+*/
 	void CAN_identifier_clc()
 	{
 		;
 	}
 #endif
-//地址竞争重新估算，设备在总线上要申请的地址,设备是固定地址的，不需要移植此函数
-BOOL ECU_RecalculateAddress( unsigned char * Address)
-{
-	return 0;//没有生成新的地址，返回0
-}
-
-
-
 
 
 #endif
