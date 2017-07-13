@@ -122,47 +122,104 @@ void ChangeGroupIDofLMO(const CAN_NODE_LMO_t *lmo_ptr,J1939_MESSAGE *MsgPtr)
 {
 	;
 }
+/*
+*输入： J1939_MESSAGE *MsgPtr ，协议要发送的消息，
+*输出： 
+*说明：从MsgPtr加载到CAN驱动自带的结构体中
+		将和ChangeGroupIDofLMO（）联合移植（可不这样设计）
+		先将传入函数的MsgPtr中的数据写到CAN的结构体（加载），调用CAN驱动的发送函数
+*/
 
-/*从MsgPtr加载到CAN自带的结构体中*/
 void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 {
+	/*加载29位ID*/
+	ChangeGroupIDofLMO(can驱动的结构体，MsgPtr);
+	/*加载数据长度*/
+	;
+	/*加载数据*/
+	;
+	/*加载RTR*/
+	;
+	/*开始发送数据，调用CAN驱动的发送函数*/
 	;
 }
-//将设备CAN中的数据取出，存入J1939_MESSAGE结构体中
+/*
+*输入：J1939_MESSAGE *MsgPtr 数据要存入的内存的指针
+*输出： 
+*说明：读取CAN驱动的数据，如果没有数据，返回0
+		将设备CAN中的数据取出，存入J1939_MESSAGE结构体中
+*/
+
 int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 {
-	;
-}
+	if ( ) //判断有没有新的数据
+	{
+	  // 清除接受标识位
+	  ;
+	  // 读取数据
+	  ;
+	  //将29位标志位（can_identifier）写入J1939的结构中
+	  _id = XXX; //假如_id等于读取CAN驱动中的ID
+	  MsgPtr->Array[0] = _id>>(8*3);
+	  MsgPtr->Array[1] = _id>>(8*2);
+	  MsgPtr->Array[2] = _id>>(8*1);
+	  MsgPtr->Array[3] = _id>>(8*0);
+	  //读取数据长度
+	  MsgPtr->Mxe.DataLength = XXXXXXX;
+	  if (MsgPtr->Mxe.DataLength > 8)
+		  MsgPtr->Mxe.DataLength = 8;
+	  //读取数据
+	  MsgPtr->Mxe.Data[0] = XXXXXX;
+	  MsgPtr->Mxe.Data[1] = XXXXXX;
+	  MsgPtr->Mxe.Data[2] = XXXXXX;
+	  MsgPtr->Mxe.Data[3] = XXXXXX;
+	  MsgPtr->Mxe.Data[4] = XXXXXX;
+	  MsgPtr->Mxe.Data[5] = XXXXXX;
+	  MsgPtr->Mxe.Data[6] = XXXXXX;
+	  MsgPtr->Mxe.Data[7] = XXXXXX;
 
-void J1939_RXinterruptEnable()
-{
-	;
+	  return 1;
+	}else
+	{
+		return 0;//没有消息
+	}
 }
+#if J1939_POLL_ECAN == J1939_FALSE
+	void J1939_RXinterruptEnable()
+	{
+		;
+	}
 
-void J1939_RXinterruptDisable()
-{
-	;
-}
-void J1939_TXinterruptEnable()
-{
-	;
-}
+	void J1939_RXinterruptDisable()
+	{
+		;
+	}
+	void J1939_TXinterruptEnable()
+	{
+		;
+	}
 
-void J1939_TXinterruptDisable()
-{
-	;
-}
-void J1939_TXinterruptOk()
-{
-	;
-}
-void CAN_identifier_clc()
-{
-	;
-}
-//地址竞争重新估算，设备在总线上要申请的地址
+	void J1939_TXinterruptDisable()
+	{
+		;
+	}
+	void J1939_TXinterruptOk()
+	{
+		;
+	}
+	void CAN_identifier_clc()
+	{
+		;
+	}
+#endif
+//地址竞争重新估算，设备在总线上要申请的地址,设备是固定地址的，不需要移植此函数
 BOOL ECU_RecalculateAddress( unsigned char * Address)
 {
 	return 0;//没有生成新的地址，返回0
 }
+
+
+
+
+
 #endif
