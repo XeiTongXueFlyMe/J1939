@@ -1,0 +1,24 @@
+package Model.APPS.CMSIS_RTOS.v4_0_4;
+
+// Import statements
+import ifx.davex.app.manifest.*
+
+abstract class CMSIS_RTOS_GUI extends AppManifest {
+
+    /* IMPORTANT NOTE: This is an auto generated file, please do not edit manually. */
+    /* User modifications in the GUI editor will be updated here automatically.     */
+    /* Manually editing the contents of this file will corrupt the APP SDK project. */
+
+	/* Begin : UI variable section */
+	 public GTab tab_generalSettings;
+	 public GCombo gcombo_rtosSelection;
+
+	 public CMSIS_RTOS_GUI(DaveEnv daveEnv){
+
+	 tab_generalSettings = GTab(widgetName:"tab_generalSettings", text:"General Settings", enabled:true, visible:true)
+	 gcombo_rtosSelection = GCombo(widgetName:"gcombo_rtosSelection", options:["Keil RTX"], value:"Keil RTX", enabled:true, visible:true, isMandatoryValue:false)
+
+
+	 }
+	/* End : UI variable section */
+}

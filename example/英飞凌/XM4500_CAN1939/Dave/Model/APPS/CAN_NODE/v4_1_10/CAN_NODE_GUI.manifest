@@ -1,0 +1,747 @@
+package Model.APPS.CAN_NODE.v4_1_10;
+
+/* Import statements */
+import ifx.davex.app.manifest.*
+
+abstract class CAN_NODE_GUI extends AppManifest {
+	/* Begin : UI variable section */
+	 public GTab gtab_general;
+	 public GTab gtab_advanced;
+	 public GTab gtab_MOConfig2;
+	 public GTab gtab_MOConfig3;
+	 public GTab gtab_MOConfig4;
+	 public GInteger ginteger_num_msg_obj;
+	 public GInteger ginteger_required_baudrate;
+	 public GInteger ginteger_sync_jump_width;
+	 public GInteger ginteger_next_bit_time_percent;
+	 public GInteger ginteger_idntfval_01;
+	 public GInteger ginteger_maskval_01;
+	 public GInteger ginteger_dlc_01;
+	 public GInteger ginteger_datah_01;
+	 public GInteger ginteger_datal_01;
+	 public GInteger ginteger_idntfval_02;
+	 public GInteger ginteger_maskval_02;
+	 public GInteger ginteger_dlc_02;
+	 public GInteger ginteger_datah_02;
+	 public GInteger ginteger_datal_02;
+	 public GInteger ginteger_idntfval_03;
+	 public GInteger ginteger_maskval_03;
+	 public GInteger ginteger_dlc_03;
+	 public GInteger ginteger_datah_03;
+	 public GInteger ginteger_datal_03;
+	 public GInteger ginteger_idntfval_04;
+	 public GInteger ginteger_maskval_04;
+	 public GInteger ginteger_dlc_04;
+	 public GInteger ginteger_datah_04;
+	 public GInteger ginteger_datal_04;
+	 public GInteger ginteger_idntfval_05;
+	 public GInteger ginteger_maskval_05;
+	 public GInteger ginteger_dlc_05;
+	 public GInteger ginteger_datah_05;
+	 public GInteger ginteger_datal_05;
+	 public GInteger ginteger_idntfval_06;
+	 public GInteger ginteger_maskval_06;
+	 public GInteger ginteger_dlc_06;
+	 public GInteger ginteger_datah_06;
+	 public GInteger ginteger_datal_06;
+	 public GInteger ginteger_idntfval_07;
+	 public GInteger ginteger_maskval_07;
+	 public GInteger ginteger_dlc_07;
+	 public GInteger ginteger_datah_07;
+	 public GInteger ginteger_datal_07;
+	 public GInteger ginteger_idntfval_08;
+	 public GInteger ginteger_maskval_08;
+	 public GInteger ginteger_dlc_08;
+	 public GInteger ginteger_datah_08;
+	 public GInteger ginteger_datal_08;
+	 public GInteger ginteger_idntfval_09;
+	 public GInteger ginteger_maskval_09;
+	 public GInteger ginteger_dlc_09;
+	 public GInteger ginteger_datah_09;
+	 public GInteger ginteger_datal_09;
+	 public GInteger ginteger_idntfval_10;
+	 public GInteger ginteger_maskval_10;
+	 public GInteger ginteger_dlc_10;
+	 public GInteger ginteger_datah_10;
+	 public GInteger ginteger_datal_10;
+	 public GInteger ginteger_idntfval_11;
+	 public GInteger ginteger_maskval_11;
+	 public GInteger ginteger_dlc_11;
+	 public GInteger ginteger_datah_11;
+	 public GInteger ginteger_datal_11;
+	 public GInteger ginteger_idntfval_12;
+	 public GInteger ginteger_maskval_12;
+	 public GInteger ginteger_dlc_12;
+	 public GInteger ginteger_datah_12;
+	 public GInteger ginteger_datal_12;
+	 public GInteger ginteger_idntfval_13;
+	 public GInteger ginteger_maskval_13;
+	 public GInteger ginteger_dlc_13;
+	 public GInteger ginteger_datah_13;
+	 public GInteger ginteger_datal_13;
+	 public GInteger ginteger_idntfval_14;
+	 public GInteger ginteger_maskval_14;
+	 public GInteger ginteger_dlc_14;
+	 public GInteger ginteger_datah_14;
+	 public GInteger ginteger_datal_14;
+	 public GInteger ginteger_idntfval_15;
+	 public GInteger ginteger_maskval_15;
+	 public GInteger ginteger_dlc_15;
+	 public GInteger ginteger_datah_15;
+	 public GInteger ginteger_datal_15;
+	 public GInteger ginteger_idntfval_16;
+	 public GInteger ginteger_maskval_16;
+	 public GInteger ginteger_dlc_16;
+	 public GInteger ginteger_datah_16;
+	 public GInteger ginteger_datal_16;
+	 public GInteger ginteger_idntfval_17;
+	 public GInteger ginteger_maskval_17;
+	 public GInteger ginteger_dlc_17;
+	 public GInteger ginteger_datah_17;
+	 public GInteger ginteger_datal_17;
+	 public GInteger ginteger_idntfval_18;
+	 public GInteger ginteger_maskval_18;
+	 public GInteger ginteger_dlc_18;
+	 public GInteger ginteger_datah_18;
+	 public GInteger ginteger_datal_18;
+	 public GInteger ginteger_idntfval_19;
+	 public GInteger ginteger_maskval_19;
+	 public GInteger ginteger_dlc_19;
+	 public GInteger ginteger_datah_19;
+	 public GInteger ginteger_datal_19;
+	 public GInteger ginteger_idntfval_20;
+	 public GInteger ginteger_maskval_20;
+	 public GInteger ginteger_dlc_20;
+	 public GInteger ginteger_datah_20;
+	 public GInteger ginteger_datal_20;
+	 public GInteger ginteger_idntfval_21;
+	 public GInteger ginteger_maskval_21;
+	 public GInteger ginteger_dlc_21;
+	 public GInteger ginteger_datah_21;
+	 public GInteger ginteger_datal_21;
+	 public GInteger ginteger_idntfval_22;
+	 public GInteger ginteger_maskval_22;
+	 public GInteger ginteger_dlc_22;
+	 public GInteger ginteger_datah_22;
+	 public GInteger ginteger_datal_22;
+	 public GInteger ginteger_idntfval_23;
+	 public GInteger ginteger_maskval_23;
+	 public GInteger ginteger_dlc_23;
+	 public GInteger ginteger_datah_23;
+	 public GInteger ginteger_datal_23;
+	 public GInteger ginteger_idntfval_24;
+	 public GInteger ginteger_maskval_24;
+	 public GInteger ginteger_dlc_24;
+	 public GInteger ginteger_datah_24;
+	 public GInteger ginteger_datal_24;
+	 public GInteger ginteger_idntfval_25;
+	 public GInteger ginteger_maskval_25;
+	 public GInteger ginteger_dlc_25;
+	 public GInteger ginteger_datah_25;
+	 public GInteger ginteger_datal_25;
+	 public GInteger ginteger_idntfval_26;
+	 public GInteger ginteger_maskval_26;
+	 public GInteger ginteger_dlc_26;
+	 public GInteger ginteger_datah_26;
+	 public GInteger ginteger_datal_26;
+	 public GInteger ginteger_idntfval_27;
+	 public GInteger ginteger_maskval_27;
+	 public GInteger ginteger_dlc_27;
+	 public GInteger ginteger_datah_27;
+	 public GInteger ginteger_datal_27;
+	 public GInteger ginteger_idntfval_28;
+	 public GInteger ginteger_maskval_28;
+	 public GInteger ginteger_dlc_28;
+	 public GInteger ginteger_datah_28;
+	 public GInteger ginteger_datal_28;
+	 public GInteger ginteger_idntfval_29;
+	 public GInteger ginteger_maskval_29;
+	 public GInteger ginteger_dlc_29;
+	 public GInteger ginteger_datah_29;
+	 public GInteger ginteger_datal_29;
+	 public GInteger ginteger_idntfval_30;
+	 public GInteger ginteger_maskval_30;
+	 public GInteger ginteger_dlc_30;
+	 public GInteger ginteger_datah_30;
+	 public GInteger ginteger_datal_30;
+	 public GInteger ginteger_idntfval_31;
+	 public GInteger ginteger_maskval_31;
+	 public GInteger ginteger_dlc_31;
+	 public GInteger ginteger_datah_31;
+	 public GInteger ginteger_datal_31;
+	 public GInteger ginteger_idntfval_32;
+	 public GInteger ginteger_maskval_32;
+	 public GInteger ginteger_dlc_32;
+	 public GInteger ginteger_datah_32;
+	 public GInteger ginteger_datal_32;
+	 public GCombo gcombo_msgtyp_01;
+	 public GCombo gcombo_idntftyp_01;
+	 public GCombo gcombo_aceptmask_01;
+	 public GCombo gcombo_msgtyp_02;
+	 public GCombo gcombo_idntftyp_02;
+	 public GCombo gcombo_aceptmask_02;
+	 public GCombo gcombo_msgtyp_03;
+	 public GCombo gcombo_idntftyp_03;
+	 public GCombo gcombo_aceptmask_03;
+	 public GCombo gcombo_msgtyp_04;
+	 public GCombo gcombo_idntftyp_04;
+	 public GCombo gcombo_aceptmask_04;
+	 public GCombo gcombo_msgtyp_05;
+	 public GCombo gcombo_idntftyp_05;
+	 public GCombo gcombo_aceptmask_05;
+	 public GCombo gcombo_msgtyp_06;
+	 public GCombo gcombo_idntftyp_06;
+	 public GCombo gcombo_aceptmask_06;
+	 public GCombo gcombo_msgtyp_07;
+	 public GCombo gcombo_idntftyp_07;
+	 public GCombo gcombo_aceptmask_07;
+	 public GCombo gcombo_msgtyp_08;
+	 public GCombo gcombo_idntftyp_08;
+	 public GCombo gcombo_aceptmask_08;
+	 public GCombo gcombo_msgtyp_09;
+	 public GCombo gcombo_idntftyp_09;
+	 public GCombo gcombo_aceptmask_09;
+	 public GCombo gcombo_msgtyp_10;
+	 public GCombo gcombo_idntftyp_10;
+	 public GCombo gcombo_aceptmask_10;
+	 public GCombo gcombo_msgtyp_11;
+	 public GCombo gcombo_idntftyp_11;
+	 public GCombo gcombo_aceptmask_11;
+	 public GCombo gcombo_msgtyp_12;
+	 public GCombo gcombo_idntftyp_12;
+	 public GCombo gcombo_aceptmask_12;
+	 public GCombo gcombo_msgtyp_13;
+	 public GCombo gcombo_idntftyp_13;
+	 public GCombo gcombo_aceptmask_13;
+	 public GCombo gcombo_msgtyp_14;
+	 public GCombo gcombo_idntftyp_14;
+	 public GCombo gcombo_aceptmask_14;
+	 public GCombo gcombo_msgtyp_15;
+	 public GCombo gcombo_idntftyp_15;
+	 public GCombo gcombo_aceptmask_15;
+	 public GCombo gcombo_msgtyp_16;
+	 public GCombo gcombo_idntftyp_16;
+	 public GCombo gcombo_aceptmask_16;
+	 public GCombo gcombo_msgtyp_17;
+	 public GCombo gcombo_idntftyp_17;
+	 public GCombo gcombo_aceptmask_17;
+	 public GCombo gcombo_msgtyp_18;
+	 public GCombo gcombo_idntftyp_18;
+	 public GCombo gcombo_aceptmask_18;
+	 public GCombo gcombo_msgtyp_19;
+	 public GCombo gcombo_idntftyp_19;
+	 public GCombo gcombo_aceptmask_19;
+	 public GCombo gcombo_msgtyp_20;
+	 public GCombo gcombo_idntftyp_20;
+	 public GCombo gcombo_aceptmask_20;
+	 public GCombo gcombo_msgtyp_21;
+	 public GCombo gcombo_idntftyp_21;
+	 public GCombo gcombo_aceptmask_21;
+	 public GCombo gcombo_msgtyp_22;
+	 public GCombo gcombo_idntftyp_22;
+	 public GCombo gcombo_aceptmask_22;
+	 public GCombo gcombo_msgtyp_23;
+	 public GCombo gcombo_idntftyp_23;
+	 public GCombo gcombo_aceptmask_23;
+	 public GCombo gcombo_msgtyp_24;
+	 public GCombo gcombo_idntftyp_24;
+	 public GCombo gcombo_aceptmask_24;
+	 public GCombo gcombo_msgtyp_25;
+	 public GCombo gcombo_idntftyp_25;
+	 public GCombo gcombo_aceptmask_25;
+	 public GCombo gcombo_msgtyp_26;
+	 public GCombo gcombo_idntftyp_26;
+	 public GCombo gcombo_aceptmask_26;
+	 public GCombo gcombo_msgtyp_27;
+	 public GCombo gcombo_idntftyp_27;
+	 public GCombo gcombo_aceptmask_27;
+	 public GCombo gcombo_msgtyp_28;
+	 public GCombo gcombo_idntftyp_28;
+	 public GCombo gcombo_aceptmask_28;
+	 public GCombo gcombo_msgtyp_29;
+	 public GCombo gcombo_idntftyp_29;
+	 public GCombo gcombo_aceptmask_29;
+	 public GCombo gcombo_msgtyp_30;
+	 public GCombo gcombo_idntftyp_30;
+	 public GCombo gcombo_aceptmask_30;
+	 public GCombo gcombo_msgtyp_31;
+	 public GCombo gcombo_idntftyp_31;
+	 public GCombo gcombo_aceptmask_31;
+	 public GCombo gcombo_msgtyp_32;
+	 public GCombo gcombo_idntftyp_32;
+	 public GCombo gcombo_aceptmask_32;
+	 public GCheck gcheck_loopback_mode;
+	 public GCheck gcheck_node_alert_event;
+	 public GCheck gcheck_last_err_code_event;
+	 public GCheck gcheck_transfer_ok_event;
+	 public GCheck gcheck_frame_counter_event;
+	 public GCheck gcheck_tx_01;
+	 public GCheck gcheck_rx_01;
+	 public GCheck gcheck_tx_02;
+	 public GCheck gcheck_rx_02;
+	 public GCheck gcheck_tx_03;
+	 public GCheck gcheck_rx_03;
+	 public GCheck gcheck_tx_04;
+	 public GCheck gcheck_rx_04;
+	 public GCheck gcheck_tx_05;
+	 public GCheck gcheck_rx_05;
+	 public GCheck gcheck_tx_06;
+	 public GCheck gcheck_rx_06;
+	 public GCheck gcheck_tx_07;
+	 public GCheck gcheck_rx_07;
+	 public GCheck gcheck_tx_08;
+	 public GCheck gcheck_rx_08;
+	 public GCheck gcheck_tx_09;
+	 public GCheck gcheck_rx_09;
+	 public GCheck gcheck_tx_10;
+	 public GCheck gcheck_rx_10;
+	 public GCheck gcheck_tx_11;
+	 public GCheck gcheck_rx_11;
+	 public GCheck gcheck_tx_12;
+	 public GCheck gcheck_rx_12;
+	 public GCheck gcheck_tx_13;
+	 public GCheck gcheck_rx_13;
+	 public GCheck gcheck_tx_14;
+	 public GCheck gcheck_rx_14;
+	 public GCheck gcheck_tx_15;
+	 public GCheck gcheck_rx_15;
+	 public GCheck gcheck_tx_16;
+	 public GCheck gcheck_rx_16;
+	 public GCheck gcheck_tx_17;
+	 public GCheck gcheck_rx_17;
+	 public GCheck gcheck_tx_18;
+	 public GCheck gcheck_rx_18;
+	 public GCheck gcheck_tx_19;
+	 public GCheck gcheck_rx_19;
+	 public GCheck gcheck_tx_20;
+	 public GCheck gcheck_rx_20;
+	 public GCheck gcheck_tx_21;
+	 public GCheck gcheck_rx_21;
+	 public GCheck gcheck_tx_22;
+	 public GCheck gcheck_rx_22;
+	 public GCheck gcheck_tx_23;
+	 public GCheck gcheck_rx_23;
+	 public GCheck gcheck_tx_24;
+	 public GCheck gcheck_rx_24;
+	 public GCheck gcheck_tx_25;
+	 public GCheck gcheck_rx_25;
+	 public GCheck gcheck_tx_26;
+	 public GCheck gcheck_rx_26;
+	 public GCheck gcheck_tx_27;
+	 public GCheck gcheck_rx_27;
+	 public GCheck gcheck_tx_28;
+	 public GCheck gcheck_rx_28;
+	 public GCheck gcheck_tx_29;
+	 public GCheck gcheck_rx_29;
+	 public GCheck gcheck_tx_30;
+	 public GCheck gcheck_rx_30;
+	 public GCheck gcheck_tx_31;
+	 public GCheck gcheck_rx_31;
+	 public GCheck gcheck_tx_32;
+	 public GCheck gcheck_rx_32;
+	 public GLabel glabel_lmo_01;
+	 public GLabel glabel_lmo_02;
+	 public GLabel glabel_lmo_03;
+	 public GLabel glabel_lmo_04;
+	 public GLabel glabel_lmo_05;
+	 public GLabel glabel_lmo_06;
+	 public GLabel glabel_lmo_07;
+	 public GLabel glabel_lmo_08;
+	 public GLabel glabel_lmo_09;
+	 public GLabel glabel_lmo_10;
+	 public GLabel glabel_lmo_11;
+	 public GLabel glabel_lmo_12;
+	 public GLabel glabel_lmo_13;
+	 public GLabel glabel_lmo_14;
+	 public GLabel glabel_lmo_15;
+	 public GLabel glabel_lmo_16;
+	 public GLabel glabel_lmo_17;
+	 public GLabel glabel_lmo_18;
+	 public GLabel glabel_lmo_19;
+	 public GLabel glabel_lmo_20;
+	 public GLabel glabel_lmo_21;
+	 public GLabel glabel_lmo_22;
+	 public GLabel glabel_lmo_23;
+	 public GLabel glabel_lmo_24;
+	 public GLabel glabel_lmo_25;
+	 public GLabel glabel_lmo_26;
+	 public GLabel glabel_lmo_27;
+	 public GLabel glabel_lmo_28;
+	 public GLabel glabel_lmo_29;
+	 public GLabel glabel_lmo_30;
+	 public GLabel glabel_lmo_31;
+	 public GLabel glabel_lmo_32;
+
+	 public CAN_NODE_GUI(DaveEnv daveEnv){
+
+	 gtab_general = GTab(widgetName:"gtab_general", text:"General Settings", enabled:true, visible:true)
+	 gtab_advanced = GTab(widgetName:"gtab_advanced", text:"Advanced Settings", enabled:true, visible:true)
+	 gtab_MOConfig2 = GTab(widgetName:"gtab_MOConfig2", text:"MO Settings_Page2", enabled:true, visible:true)
+	 gtab_MOConfig3 = GTab(widgetName:"gtab_MOConfig3", text:"MO Settings_Page3", enabled:true, visible:true)
+	 gtab_MOConfig4 = GTab(widgetName:"gtab_MOConfig4", text:"MO Settings_Page4", enabled:true, visible:true)
+	 ginteger_num_msg_obj = GInteger(widgetName:"ginteger_num_msg_obj", value:1, minValue:1, maxValue:32, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_required_baudrate = GInteger(widgetName:"ginteger_required_baudrate", value:500, minValue:100, maxValue:1000, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_sync_jump_width = GInteger(widgetName:"ginteger_sync_jump_width", value:1, minValue:0, maxValue:3, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_next_bit_time_percent = GInteger(widgetName:"ginteger_next_bit_time_percent", value:80, minValue:0, maxValue:100, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_01 = GInteger(widgetName:"ginteger_idntfval_01", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_01 = GInteger(widgetName:"ginteger_maskval_01", value:2047, minValue:0X0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_01 = GInteger(widgetName:"ginteger_dlc_01", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_01 = GInteger(widgetName:"ginteger_datah_01", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_01 = GInteger(widgetName:"ginteger_datal_01", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_02 = GInteger(widgetName:"ginteger_idntfval_02", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_02 = GInteger(widgetName:"ginteger_maskval_02", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_02 = GInteger(widgetName:"ginteger_dlc_02", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_02 = GInteger(widgetName:"ginteger_datah_02", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_02 = GInteger(widgetName:"ginteger_datal_02", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_03 = GInteger(widgetName:"ginteger_idntfval_03", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_03 = GInteger(widgetName:"ginteger_maskval_03", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_03 = GInteger(widgetName:"ginteger_dlc_03", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_03 = GInteger(widgetName:"ginteger_datah_03", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_03 = GInteger(widgetName:"ginteger_datal_03", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_04 = GInteger(widgetName:"ginteger_idntfval_04", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_04 = GInteger(widgetName:"ginteger_maskval_04", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_04 = GInteger(widgetName:"ginteger_dlc_04", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_04 = GInteger(widgetName:"ginteger_datah_04", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_04 = GInteger(widgetName:"ginteger_datal_04", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_05 = GInteger(widgetName:"ginteger_idntfval_05", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_05 = GInteger(widgetName:"ginteger_maskval_05", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_05 = GInteger(widgetName:"ginteger_dlc_05", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_05 = GInteger(widgetName:"ginteger_datah_05", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_05 = GInteger(widgetName:"ginteger_datal_05", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_06 = GInteger(widgetName:"ginteger_idntfval_06", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_06 = GInteger(widgetName:"ginteger_maskval_06", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_06 = GInteger(widgetName:"ginteger_dlc_06", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_06 = GInteger(widgetName:"ginteger_datah_06", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_06 = GInteger(widgetName:"ginteger_datal_06", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_07 = GInteger(widgetName:"ginteger_idntfval_07", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_07 = GInteger(widgetName:"ginteger_maskval_07", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_07 = GInteger(widgetName:"ginteger_dlc_07", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_07 = GInteger(widgetName:"ginteger_datah_07", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_07 = GInteger(widgetName:"ginteger_datal_07", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_08 = GInteger(widgetName:"ginteger_idntfval_08", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_08 = GInteger(widgetName:"ginteger_maskval_08", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_08 = GInteger(widgetName:"ginteger_dlc_08", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_08 = GInteger(widgetName:"ginteger_datah_08", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_08 = GInteger(widgetName:"ginteger_datal_08", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_09 = GInteger(widgetName:"ginteger_idntfval_09", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_09 = GInteger(widgetName:"ginteger_maskval_09", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_09 = GInteger(widgetName:"ginteger_dlc_09", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_09 = GInteger(widgetName:"ginteger_datah_09", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_09 = GInteger(widgetName:"ginteger_datal_09", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_10 = GInteger(widgetName:"ginteger_idntfval_10", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_10 = GInteger(widgetName:"ginteger_maskval_10", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_10 = GInteger(widgetName:"ginteger_dlc_10", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_10 = GInteger(widgetName:"ginteger_datah_10", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_10 = GInteger(widgetName:"ginteger_datal_10", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_11 = GInteger(widgetName:"ginteger_idntfval_11", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_11 = GInteger(widgetName:"ginteger_maskval_11", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_11 = GInteger(widgetName:"ginteger_dlc_11", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_11 = GInteger(widgetName:"ginteger_datah_11", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_11 = GInteger(widgetName:"ginteger_datal_11", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_12 = GInteger(widgetName:"ginteger_idntfval_12", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_12 = GInteger(widgetName:"ginteger_maskval_12", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_12 = GInteger(widgetName:"ginteger_dlc_12", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_12 = GInteger(widgetName:"ginteger_datah_12", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_12 = GInteger(widgetName:"ginteger_datal_12", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_13 = GInteger(widgetName:"ginteger_idntfval_13", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_13 = GInteger(widgetName:"ginteger_maskval_13", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_13 = GInteger(widgetName:"ginteger_dlc_13", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_13 = GInteger(widgetName:"ginteger_datah_13", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_13 = GInteger(widgetName:"ginteger_datal_13", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_14 = GInteger(widgetName:"ginteger_idntfval_14", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_14 = GInteger(widgetName:"ginteger_maskval_14", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_14 = GInteger(widgetName:"ginteger_dlc_14", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_14 = GInteger(widgetName:"ginteger_datah_14", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_14 = GInteger(widgetName:"ginteger_datal_14", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_15 = GInteger(widgetName:"ginteger_idntfval_15", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_15 = GInteger(widgetName:"ginteger_maskval_15", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_15 = GInteger(widgetName:"ginteger_dlc_15", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_15 = GInteger(widgetName:"ginteger_datah_15", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_15 = GInteger(widgetName:"ginteger_datal_15", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_16 = GInteger(widgetName:"ginteger_idntfval_16", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_16 = GInteger(widgetName:"ginteger_maskval_16", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_16 = GInteger(widgetName:"ginteger_dlc_16", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_16 = GInteger(widgetName:"ginteger_datah_16", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_16 = GInteger(widgetName:"ginteger_datal_16", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_17 = GInteger(widgetName:"ginteger_idntfval_17", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_17 = GInteger(widgetName:"ginteger_maskval_17", value:2047, minValue:0X0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_17 = GInteger(widgetName:"ginteger_dlc_17", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_17 = GInteger(widgetName:"ginteger_datah_17", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_17 = GInteger(widgetName:"ginteger_datal_17", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_18 = GInteger(widgetName:"ginteger_idntfval_18", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_18 = GInteger(widgetName:"ginteger_maskval_18", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_18 = GInteger(widgetName:"ginteger_dlc_18", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_18 = GInteger(widgetName:"ginteger_datah_18", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_18 = GInteger(widgetName:"ginteger_datal_18", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_19 = GInteger(widgetName:"ginteger_idntfval_19", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_19 = GInteger(widgetName:"ginteger_maskval_19", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_19 = GInteger(widgetName:"ginteger_dlc_19", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_19 = GInteger(widgetName:"ginteger_datah_19", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_19 = GInteger(widgetName:"ginteger_datal_19", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_20 = GInteger(widgetName:"ginteger_idntfval_20", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_20 = GInteger(widgetName:"ginteger_maskval_20", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_20 = GInteger(widgetName:"ginteger_dlc_20", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_20 = GInteger(widgetName:"ginteger_datah_20", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_20 = GInteger(widgetName:"ginteger_datal_20", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_21 = GInteger(widgetName:"ginteger_idntfval_21", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_21 = GInteger(widgetName:"ginteger_maskval_21", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_21 = GInteger(widgetName:"ginteger_dlc_21", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_21 = GInteger(widgetName:"ginteger_datah_21", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_21 = GInteger(widgetName:"ginteger_datal_21", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_22 = GInteger(widgetName:"ginteger_idntfval_22", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_22 = GInteger(widgetName:"ginteger_maskval_22", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_22 = GInteger(widgetName:"ginteger_dlc_22", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_22 = GInteger(widgetName:"ginteger_datah_22", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_22 = GInteger(widgetName:"ginteger_datal_22", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_23 = GInteger(widgetName:"ginteger_idntfval_23", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_23 = GInteger(widgetName:"ginteger_maskval_23", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_23 = GInteger(widgetName:"ginteger_dlc_23", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_23 = GInteger(widgetName:"ginteger_datah_23", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_23 = GInteger(widgetName:"ginteger_datal_23", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_24 = GInteger(widgetName:"ginteger_idntfval_24", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_24 = GInteger(widgetName:"ginteger_maskval_24", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_24 = GInteger(widgetName:"ginteger_dlc_24", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_24 = GInteger(widgetName:"ginteger_datah_24", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_24 = GInteger(widgetName:"ginteger_datal_24", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_25 = GInteger(widgetName:"ginteger_idntfval_25", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_25 = GInteger(widgetName:"ginteger_maskval_25", value:2047, minValue:0X0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_25 = GInteger(widgetName:"ginteger_dlc_25", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_25 = GInteger(widgetName:"ginteger_datah_25", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_25 = GInteger(widgetName:"ginteger_datal_25", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_26 = GInteger(widgetName:"ginteger_idntfval_26", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_26 = GInteger(widgetName:"ginteger_maskval_26", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_26 = GInteger(widgetName:"ginteger_dlc_26", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_26 = GInteger(widgetName:"ginteger_datah_26", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_26 = GInteger(widgetName:"ginteger_datal_26", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_27 = GInteger(widgetName:"ginteger_idntfval_27", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_27 = GInteger(widgetName:"ginteger_maskval_27", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_27 = GInteger(widgetName:"ginteger_dlc_27", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_27 = GInteger(widgetName:"ginteger_datah_27", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_27 = GInteger(widgetName:"ginteger_datal_27", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_28 = GInteger(widgetName:"ginteger_idntfval_28", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_28 = GInteger(widgetName:"ginteger_maskval_28", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_28 = GInteger(widgetName:"ginteger_dlc_28", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_28 = GInteger(widgetName:"ginteger_datah_28", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_28 = GInteger(widgetName:"ginteger_datal_28", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_29 = GInteger(widgetName:"ginteger_idntfval_29", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_29 = GInteger(widgetName:"ginteger_maskval_29", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_29 = GInteger(widgetName:"ginteger_dlc_29", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_29 = GInteger(widgetName:"ginteger_datah_29", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_29 = GInteger(widgetName:"ginteger_datal_29", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_30 = GInteger(widgetName:"ginteger_idntfval_30", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_30 = GInteger(widgetName:"ginteger_maskval_30", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_30 = GInteger(widgetName:"ginteger_dlc_30", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_30 = GInteger(widgetName:"ginteger_datah_30", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_30 = GInteger(widgetName:"ginteger_datal_30", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_31 = GInteger(widgetName:"ginteger_idntfval_31", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_31 = GInteger(widgetName:"ginteger_maskval_31", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_31 = GInteger(widgetName:"ginteger_dlc_31", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_31 = GInteger(widgetName:"ginteger_datah_31", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_31 = GInteger(widgetName:"ginteger_datal_31", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_idntfval_32 = GInteger(widgetName:"ginteger_idntfval_32", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_maskval_32 = GInteger(widgetName:"ginteger_maskval_32", value:2047, minValue:0, maxValue:0X1FFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_dlc_32 = GInteger(widgetName:"ginteger_dlc_32", value:8, minValue:0, maxValue:8, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datah_32 = GInteger(widgetName:"ginteger_datah_32", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 ginteger_datal_32 = GInteger(widgetName:"ginteger_datal_32", value:0, minValue:0, maxValue:0XFFFFFFFF, enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_01 = GCombo(widgetName:"gcombo_msgtyp_01", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_01 = GCombo(widgetName:"gcombo_idntftyp_01", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_01 = GCombo(widgetName:"gcombo_aceptmask_01", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_02 = GCombo(widgetName:"gcombo_msgtyp_02", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_02 = GCombo(widgetName:"gcombo_idntftyp_02", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_02 = GCombo(widgetName:"gcombo_aceptmask_02", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_03 = GCombo(widgetName:"gcombo_msgtyp_03", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_03 = GCombo(widgetName:"gcombo_idntftyp_03", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_03 = GCombo(widgetName:"gcombo_aceptmask_03", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_04 = GCombo(widgetName:"gcombo_msgtyp_04", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_04 = GCombo(widgetName:"gcombo_idntftyp_04", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_04 = GCombo(widgetName:"gcombo_aceptmask_04", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_05 = GCombo(widgetName:"gcombo_msgtyp_05", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_05 = GCombo(widgetName:"gcombo_idntftyp_05", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_05 = GCombo(widgetName:"gcombo_aceptmask_05", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_06 = GCombo(widgetName:"gcombo_msgtyp_06", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_06 = GCombo(widgetName:"gcombo_idntftyp_06", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_06 = GCombo(widgetName:"gcombo_aceptmask_06", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_07 = GCombo(widgetName:"gcombo_msgtyp_07", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_07 = GCombo(widgetName:"gcombo_idntftyp_07", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_07 = GCombo(widgetName:"gcombo_aceptmask_07", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_08 = GCombo(widgetName:"gcombo_msgtyp_08", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_08 = GCombo(widgetName:"gcombo_idntftyp_08", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_08 = GCombo(widgetName:"gcombo_aceptmask_08", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_09 = GCombo(widgetName:"gcombo_msgtyp_09", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_09 = GCombo(widgetName:"gcombo_idntftyp_09", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_09 = GCombo(widgetName:"gcombo_aceptmask_09", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_10 = GCombo(widgetName:"gcombo_msgtyp_10", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_10 = GCombo(widgetName:"gcombo_idntftyp_10", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_10 = GCombo(widgetName:"gcombo_aceptmask_10", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_11 = GCombo(widgetName:"gcombo_msgtyp_11", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_11 = GCombo(widgetName:"gcombo_idntftyp_11", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_11 = GCombo(widgetName:"gcombo_aceptmask_11", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_12 = GCombo(widgetName:"gcombo_msgtyp_12", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_12 = GCombo(widgetName:"gcombo_idntftyp_12", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_12 = GCombo(widgetName:"gcombo_aceptmask_12", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_13 = GCombo(widgetName:"gcombo_msgtyp_13", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_13 = GCombo(widgetName:"gcombo_idntftyp_13", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_13 = GCombo(widgetName:"gcombo_aceptmask_13", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_14 = GCombo(widgetName:"gcombo_msgtyp_14", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_14 = GCombo(widgetName:"gcombo_idntftyp_14", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_14 = GCombo(widgetName:"gcombo_aceptmask_14", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_15 = GCombo(widgetName:"gcombo_msgtyp_15", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_15 = GCombo(widgetName:"gcombo_idntftyp_15", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_15 = GCombo(widgetName:"gcombo_aceptmask_15", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_16 = GCombo(widgetName:"gcombo_msgtyp_16", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_16 = GCombo(widgetName:"gcombo_idntftyp_16", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_16 = GCombo(widgetName:"gcombo_aceptmask_16", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_17 = GCombo(widgetName:"gcombo_msgtyp_17", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_17 = GCombo(widgetName:"gcombo_idntftyp_17", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_17 = GCombo(widgetName:"gcombo_aceptmask_17", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_18 = GCombo(widgetName:"gcombo_msgtyp_18", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_18 = GCombo(widgetName:"gcombo_idntftyp_18", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_18 = GCombo(widgetName:"gcombo_aceptmask_18", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_19 = GCombo(widgetName:"gcombo_msgtyp_19", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_19 = GCombo(widgetName:"gcombo_idntftyp_19", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_19 = GCombo(widgetName:"gcombo_aceptmask_19", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_20 = GCombo(widgetName:"gcombo_msgtyp_20", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_20 = GCombo(widgetName:"gcombo_idntftyp_20", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_20 = GCombo(widgetName:"gcombo_aceptmask_20", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_21 = GCombo(widgetName:"gcombo_msgtyp_21", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_21 = GCombo(widgetName:"gcombo_idntftyp_21", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_21 = GCombo(widgetName:"gcombo_aceptmask_21", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_22 = GCombo(widgetName:"gcombo_msgtyp_22", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_22 = GCombo(widgetName:"gcombo_idntftyp_22", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_22 = GCombo(widgetName:"gcombo_aceptmask_22", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_23 = GCombo(widgetName:"gcombo_msgtyp_23", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_23 = GCombo(widgetName:"gcombo_idntftyp_23", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_23 = GCombo(widgetName:"gcombo_aceptmask_23", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_24 = GCombo(widgetName:"gcombo_msgtyp_24", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_24 = GCombo(widgetName:"gcombo_idntftyp_24", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_24 = GCombo(widgetName:"gcombo_aceptmask_24", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_25 = GCombo(widgetName:"gcombo_msgtyp_25", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_25 = GCombo(widgetName:"gcombo_idntftyp_25", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_25 = GCombo(widgetName:"gcombo_aceptmask_25", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_26 = GCombo(widgetName:"gcombo_msgtyp_26", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_26 = GCombo(widgetName:"gcombo_idntftyp_26", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_26 = GCombo(widgetName:"gcombo_aceptmask_26", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_27 = GCombo(widgetName:"gcombo_msgtyp_27", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_27 = GCombo(widgetName:"gcombo_idntftyp_27", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_27 = GCombo(widgetName:"gcombo_aceptmask_27", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_28 = GCombo(widgetName:"gcombo_msgtyp_28", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_28 = GCombo(widgetName:"gcombo_idntftyp_28", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_28 = GCombo(widgetName:"gcombo_aceptmask_28", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_29 = GCombo(widgetName:"gcombo_msgtyp_29", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_29 = GCombo(widgetName:"gcombo_idntftyp_29", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_29 = GCombo(widgetName:"gcombo_aceptmask_29", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_30 = GCombo(widgetName:"gcombo_msgtyp_30", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_30 = GCombo(widgetName:"gcombo_idntftyp_30", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_30 = GCombo(widgetName:"gcombo_aceptmask_30", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_31 = GCombo(widgetName:"gcombo_msgtyp_31", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_31 = GCombo(widgetName:"gcombo_idntftyp_31", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_31 = GCombo(widgetName:"gcombo_aceptmask_31", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_msgtyp_32 = GCombo(widgetName:"gcombo_msgtyp_32", options:["Tx","Rx"], value:"Tx", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_idntftyp_32 = GCombo(widgetName:"gcombo_idntftyp_32", options:["Std_11bit","Ext_29bit"], value:"Std_11bit", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_aceptmask_32 = GCombo(widgetName:"gcombo_aceptmask_32", options:["Std_Ext","Matching_IDE"], value:"Matching_IDE", enabled:true, visible:true, isMandatoryValue:false)
+	 gcheck_loopback_mode = GCheck(widgetName:"gcheck_loopback_mode", value:false, enabled:true, visible:true)
+	 gcheck_node_alert_event = GCheck(widgetName:"gcheck_node_alert_event", value:false, enabled:true, visible:true)
+	 gcheck_last_err_code_event = GCheck(widgetName:"gcheck_last_err_code_event", value:false, enabled:true, visible:true)
+	 gcheck_transfer_ok_event = GCheck(widgetName:"gcheck_transfer_ok_event", value:false, enabled:true, visible:true)
+	 gcheck_frame_counter_event = GCheck(widgetName:"gcheck_frame_counter_event", value:false, enabled:true, visible:true)
+	 gcheck_tx_01 = GCheck(widgetName:"gcheck_tx_01", value:false, enabled:true, visible:true)
+	 gcheck_rx_01 = GCheck(widgetName:"gcheck_rx_01", value:false, enabled:true, visible:true)
+	 gcheck_tx_02 = GCheck(widgetName:"gcheck_tx_02", value:false, enabled:true, visible:true)
+	 gcheck_rx_02 = GCheck(widgetName:"gcheck_rx_02", value:false, enabled:true, visible:true)
+	 gcheck_tx_03 = GCheck(widgetName:"gcheck_tx_03", value:false, enabled:true, visible:true)
+	 gcheck_rx_03 = GCheck(widgetName:"gcheck_rx_03", value:false, enabled:true, visible:true)
+	 gcheck_tx_04 = GCheck(widgetName:"gcheck_tx_04", value:false, enabled:true, visible:true)
+	 gcheck_rx_04 = GCheck(widgetName:"gcheck_rx_04", value:false, enabled:true, visible:true)
+	 gcheck_tx_05 = GCheck(widgetName:"gcheck_tx_05", value:false, enabled:true, visible:true)
+	 gcheck_rx_05 = GCheck(widgetName:"gcheck_rx_05", value:false, enabled:true, visible:true)
+	 gcheck_tx_06 = GCheck(widgetName:"gcheck_tx_06", value:false, enabled:true, visible:true)
+	 gcheck_rx_06 = GCheck(widgetName:"gcheck_rx_06", value:false, enabled:true, visible:true)
+	 gcheck_tx_07 = GCheck(widgetName:"gcheck_tx_07", value:false, enabled:true, visible:true)
+	 gcheck_rx_07 = GCheck(widgetName:"gcheck_rx_07", value:false, enabled:true, visible:true)
+	 gcheck_tx_08 = GCheck(widgetName:"gcheck_tx_08", value:false, enabled:true, visible:true)
+	 gcheck_rx_08 = GCheck(widgetName:"gcheck_rx_08", value:false, enabled:true, visible:true)
+	 gcheck_tx_09 = GCheck(widgetName:"gcheck_tx_09", value:false, enabled:true, visible:true)
+	 gcheck_rx_09 = GCheck(widgetName:"gcheck_rx_09", value:false, enabled:true, visible:true)
+	 gcheck_tx_10 = GCheck(widgetName:"gcheck_tx_10", value:false, enabled:true, visible:true)
+	 gcheck_rx_10 = GCheck(widgetName:"gcheck_rx_10", value:false, enabled:true, visible:true)
+	 gcheck_tx_11 = GCheck(widgetName:"gcheck_tx_11", value:false, enabled:true, visible:true)
+	 gcheck_rx_11 = GCheck(widgetName:"gcheck_rx_11", value:false, enabled:true, visible:true)
+	 gcheck_tx_12 = GCheck(widgetName:"gcheck_tx_12", value:false, enabled:true, visible:true)
+	 gcheck_rx_12 = GCheck(widgetName:"gcheck_rx_12", value:false, enabled:true, visible:true)
+	 gcheck_tx_13 = GCheck(widgetName:"gcheck_tx_13", value:false, enabled:true, visible:true)
+	 gcheck_rx_13 = GCheck(widgetName:"gcheck_rx_13", value:false, enabled:true, visible:true)
+	 gcheck_tx_14 = GCheck(widgetName:"gcheck_tx_14", value:false, enabled:true, visible:true)
+	 gcheck_rx_14 = GCheck(widgetName:"gcheck_rx_14", value:false, enabled:true, visible:true)
+	 gcheck_tx_15 = GCheck(widgetName:"gcheck_tx_15", value:false, enabled:true, visible:true)
+	 gcheck_rx_15 = GCheck(widgetName:"gcheck_rx_15", value:false, enabled:true, visible:true)
+	 gcheck_tx_16 = GCheck(widgetName:"gcheck_tx_16", value:false, enabled:true, visible:true)
+	 gcheck_rx_16 = GCheck(widgetName:"gcheck_rx_16", value:false, enabled:true, visible:true)
+	 gcheck_tx_17 = GCheck(widgetName:"gcheck_tx_17", value:false, enabled:true, visible:true)
+	 gcheck_rx_17 = GCheck(widgetName:"gcheck_rx_17", value:false, enabled:true, visible:true)
+	 gcheck_tx_18 = GCheck(widgetName:"gcheck_tx_18", value:false, enabled:true, visible:true)
+	 gcheck_rx_18 = GCheck(widgetName:"gcheck_rx_18", value:false, enabled:true, visible:true)
+	 gcheck_tx_19 = GCheck(widgetName:"gcheck_tx_19", value:false, enabled:true, visible:true)
+	 gcheck_rx_19 = GCheck(widgetName:"gcheck_rx_19", value:false, enabled:true, visible:true)
+	 gcheck_tx_20 = GCheck(widgetName:"gcheck_tx_20", value:false, enabled:true, visible:true)
+	 gcheck_rx_20 = GCheck(widgetName:"gcheck_rx_20", value:false, enabled:true, visible:true)
+	 gcheck_tx_21 = GCheck(widgetName:"gcheck_tx_21", value:false, enabled:true, visible:true)
+	 gcheck_rx_21 = GCheck(widgetName:"gcheck_rx_21", value:false, enabled:true, visible:true)
+	 gcheck_tx_22 = GCheck(widgetName:"gcheck_tx_22", value:false, enabled:true, visible:true)
+	 gcheck_rx_22 = GCheck(widgetName:"gcheck_rx_22", value:false, enabled:true, visible:true)
+	 gcheck_tx_23 = GCheck(widgetName:"gcheck_tx_23", value:false, enabled:true, visible:true)
+	 gcheck_rx_23 = GCheck(widgetName:"gcheck_rx_23", value:false, enabled:true, visible:true)
+	 gcheck_tx_24 = GCheck(widgetName:"gcheck_tx_24", value:false, enabled:true, visible:true)
+	 gcheck_rx_24 = GCheck(widgetName:"gcheck_rx_24", value:false, enabled:true, visible:true)
+	 gcheck_tx_25 = GCheck(widgetName:"gcheck_tx_25", value:false, enabled:true, visible:true)
+	 gcheck_rx_25 = GCheck(widgetName:"gcheck_rx_25", value:false, enabled:true, visible:true)
+	 gcheck_tx_26 = GCheck(widgetName:"gcheck_tx_26", value:false, enabled:true, visible:true)
+	 gcheck_rx_26 = GCheck(widgetName:"gcheck_rx_26", value:false, enabled:true, visible:true)
+	 gcheck_tx_27 = GCheck(widgetName:"gcheck_tx_27", value:false, enabled:true, visible:true)
+	 gcheck_rx_27 = GCheck(widgetName:"gcheck_rx_27", value:false, enabled:true, visible:true)
+	 gcheck_tx_28 = GCheck(widgetName:"gcheck_tx_28", value:false, enabled:true, visible:true)
+	 gcheck_rx_28 = GCheck(widgetName:"gcheck_rx_28", value:false, enabled:true, visible:true)
+	 gcheck_tx_29 = GCheck(widgetName:"gcheck_tx_29", value:false, enabled:true, visible:true)
+	 gcheck_rx_29 = GCheck(widgetName:"gcheck_rx_29", value:false, enabled:true, visible:true)
+	 gcheck_tx_30 = GCheck(widgetName:"gcheck_tx_30", value:false, enabled:true, visible:true)
+	 gcheck_rx_30 = GCheck(widgetName:"gcheck_rx_30", value:false, enabled:true, visible:true)
+	 gcheck_tx_31 = GCheck(widgetName:"gcheck_tx_31", value:false, enabled:true, visible:true)
+	 gcheck_rx_31 = GCheck(widgetName:"gcheck_rx_31", value:false, enabled:true, visible:true)
+	 gcheck_tx_32 = GCheck(widgetName:"gcheck_tx_32", value:false, enabled:true, visible:true)
+	 gcheck_rx_32 = GCheck(widgetName:"gcheck_rx_32", value:false, enabled:true, visible:true)
+	 glabel_lmo_01 = GLabel(widgetName:"glabel_lmo_01", text:"LMO_01", enabled:true, visible:true)
+	 glabel_lmo_02 = GLabel(widgetName:"glabel_lmo_02", text:"LMO_02", enabled:true, visible:true)
+	 glabel_lmo_03 = GLabel(widgetName:"glabel_lmo_03", text:"LMO_03", enabled:true, visible:true)
+	 glabel_lmo_04 = GLabel(widgetName:"glabel_lmo_04", text:"LMO_04", enabled:true, visible:true)
+	 glabel_lmo_05 = GLabel(widgetName:"glabel_lmo_05", text:"LMO_05", enabled:true, visible:true)
+	 glabel_lmo_06 = GLabel(widgetName:"glabel_lmo_06", text:"LMO_06", enabled:true, visible:true)
+	 glabel_lmo_07 = GLabel(widgetName:"glabel_lmo_07", text:"LMO_07", enabled:true, visible:true)
+	 glabel_lmo_08 = GLabel(widgetName:"glabel_lmo_08", text:"LMO_08", enabled:true, visible:true)
+	 glabel_lmo_09 = GLabel(widgetName:"glabel_lmo_09", text:"LMO_09", enabled:true, visible:true)
+	 glabel_lmo_10 = GLabel(widgetName:"glabel_lmo_10", text:"LMO_10", enabled:true, visible:true)
+	 glabel_lmo_11 = GLabel(widgetName:"glabel_lmo_11", text:"LMO_11", enabled:true, visible:true)
+	 glabel_lmo_12 = GLabel(widgetName:"glabel_lmo_12", text:"LMO_12", enabled:true, visible:true)
+	 glabel_lmo_13 = GLabel(widgetName:"glabel_lmo_13", text:"LMO_13", enabled:true, visible:true)
+	 glabel_lmo_14 = GLabel(widgetName:"glabel_lmo_14", text:"LMO_14", enabled:true, visible:true)
+	 glabel_lmo_15 = GLabel(widgetName:"glabel_lmo_15", text:"LMO_15", enabled:true, visible:true)
+	 glabel_lmo_16 = GLabel(widgetName:"glabel_lmo_16", text:"LMO_16", enabled:true, visible:true)
+	 glabel_lmo_17 = GLabel(widgetName:"glabel_lmo_17", text:"LMO_17", enabled:true, visible:true)
+	 glabel_lmo_18 = GLabel(widgetName:"glabel_lmo_18", text:"LMO_18", enabled:true, visible:true)
+	 glabel_lmo_19 = GLabel(widgetName:"glabel_lmo_19", text:"LMO_19", enabled:true, visible:true)
+	 glabel_lmo_20 = GLabel(widgetName:"glabel_lmo_20", text:"LMO_20", enabled:true, visible:true)
+	 glabel_lmo_21 = GLabel(widgetName:"glabel_lmo_21", text:"LMO_21", enabled:true, visible:true)
+	 glabel_lmo_22 = GLabel(widgetName:"glabel_lmo_22", text:"LMO_22", enabled:true, visible:true)
+	 glabel_lmo_23 = GLabel(widgetName:"glabel_lmo_23", text:"LMO_23", enabled:true, visible:true)
+	 glabel_lmo_24 = GLabel(widgetName:"glabel_lmo_24", text:"LMO_24", enabled:true, visible:true)
+	 glabel_lmo_25 = GLabel(widgetName:"glabel_lmo_25", text:"LMO_25", enabled:true, visible:true)
+	 glabel_lmo_26 = GLabel(widgetName:"glabel_lmo_26", text:"LMO_26", enabled:true, visible:true)
+	 glabel_lmo_27 = GLabel(widgetName:"glabel_lmo_27", text:"LMO_27", enabled:true, visible:true)
+	 glabel_lmo_28 = GLabel(widgetName:"glabel_lmo_28", text:"LMO_28", enabled:true, visible:true)
+	 glabel_lmo_29 = GLabel(widgetName:"glabel_lmo_29", text:"LMO_29", enabled:true, visible:true)
+	 glabel_lmo_30 = GLabel(widgetName:"glabel_lmo_30", text:"LMO_30", enabled:true, visible:true)
+	 glabel_lmo_31 = GLabel(widgetName:"glabel_lmo_31", text:"LMO_31", enabled:true, visible:true)
+	 glabel_lmo_32 = GLabel(widgetName:"glabel_lmo_32", text:"LMO_32", enabled:true, visible:true)
+
+
+	 }
+	/* End : UI variable section */
+}

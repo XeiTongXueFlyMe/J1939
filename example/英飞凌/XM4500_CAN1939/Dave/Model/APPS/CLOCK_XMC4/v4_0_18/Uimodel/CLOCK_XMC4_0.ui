@@ -1,0 +1,557 @@
+<p1:Tab  xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:com.ifx.davex.ui.controls.app" x:Class="e" widgetName="composite1">
+	<p1:Tab.layout>
+		<GridLayout/>
+	</p1:Tab.layout>
+	<p1:TabFolder>
+		<p1:TabFolder.layoutData>
+			<GridData heightHint="1013" widthHint="730"/>
+		</p1:TabFolder.layoutData>
+		<p1:GTab text="Clock Control Settings" visible="true" enabled="true" widgetName="gtab_dia_clocktree">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite_2">
+					<p1:GImage visible="true" manifestObj="true" widgetName="gimage_1" bounds="4, 6, 708, 512" path="doc/ClockTree_xmc48.png" layout="{x:Null}">
+						<p1:GFloat x:Style="BORDER" minValue="0.0" maxValue="144.0" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="*,2" manifestObj="true" widgetName="gfloat_dia_cpuclkfreq" bounds="554, 56, 43, 21" value="120" enabled="false" description="Actual CPU clock"/>
+						<p1:GFloat bounds="554, 81, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.0" value="120" widgetName="gfloat_dia_dmaclkfreq" x:Style="BORDER" enabled="false" description="Actual DMA clock"/>
+						<p1:GFloat bounds="554, 105, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.0" value="120" widgetName="gfloat_dia_periphclkfreq" x:Style="BORDER" enabled="false" description="Actual peripheral clock"/>
+						<p1:GFloat bounds="554, 128, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.0" value="120" widgetName="gfloat_dia_ccuclkfreq" x:Style="BORDER" enabled="false" description="Actual CCU clock"/>
+						<p1:GFloat bounds="554, 152, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="288.0" minValue="0.0" value="120" widgetName="gfloat_dia_usbclkfreq" x:Style="BORDER" enabled="false" description="Actual USB clock"/>
+						<p1:GFloat bounds="554, 176, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="288.0" minValue="0.0" value="120" widgetName="gfloat_dia_sdmmcclkfreq" x:Style="BORDER" enabled="false" description="Actual SDMMC clock"/>
+						<p1:GFloat bounds="554, 200, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.0" value="120" widgetName="gfloat_dia_ethclkfreq" x:Style="BORDER" enabled="false" description="Actual ethernet clock"/>
+						<p1:GFloat bounds="554, 224, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="288.0" minValue="0.0" value="120" widgetName="gfloat_dia_ebuclkfreq" x:Style="BORDER" enabled="false" description="Actual EBU clock"/>
+						<p1:GFloat bounds="554, 247, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.0" value="120" widgetName="gfloat_dia_wdtclkfreq" x:Style="BORDER" enabled="false" description="Actual WDT clock"/>
+						<p1:GFloat bounds="554, 271, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.0" value="120" widgetName="gfloat_dia_extclkoutfreq" x:Style="BORDER" enabled="false" description="Actual external out clock"/>
+						<p1:GFloat bounds="340, 83, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="260.0" minValue="130.0" value="48" widgetName="gfloat_dia_usbpllclkfreq" x:Style="BORDER" enabled="false" description="Actual USBPLL clock"/>
+						<p1:GFloat bounds="341, 141, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="288.0" minValue="2.03125" value="120" widgetName="gfloat_dia_pllclkfreq" x:Style="BORDER" enabled="false" description="Actual PLL clock"/>
+						<p1:GFloat bounds="341, 193, 43, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" maxValue="24.0" minValue="24.0" value="24" widgetName="gfloat_dia_oficlkfreq" x:Style="BORDER" enabled="false" manifestObj="true" description="Actual backup clock"/>
+						<p1:GFloat bounds="223, 82, 31, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="40.0" minValue="4.0" value="12" widgetName="gfloat_dia_ohpclkfreq" x:Style="BORDER" enabled="false" description="Actual high speed oscillator clock"/>
+						<p1:GFloat bounds="223, 140, 31, 21" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="40.0" minValue="4.0" value="12" widgetName="gfloat_dia_oscclkfreq" x:Style="BORDER" enabled="false" description="Actual PLL input clock"/>
+						<p1:GFloat bounds="297, 279, 43, 21" format="*,3" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" maxValue="32.768" minValue="32.768" value="32.768" widgetName="gfloat_dia_stdbyclkfreq" x:Style="BORDER" enabled="false" description="Actual standby clock"/>
+						<p1:GFloat bounds="182, 369, 43, 21" format="*,3" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" maxValue="32.768" minValue="32.768" value="32.768" widgetName="gfloat_dia_ulpclkfreq" x:Style="BORDER" enabled="false" description="Actual low speed oscillator clock"/>
+						<p1:GFloat bounds="181, 442, 43, 21" format="*,3" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" maxValue="32.768" minValue="32.768" value="32.768" widgetName="gfloat_dia_osiclkfreq" x:Style="BORDER" enabled="false" description="Actual internal slow clock"/>
+						<p1:GFloat bounds="553, 445, 43, 21" format="*,3" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" maxValue="32.768" minValue="32.768" value="32.768" widgetName="gfloat_dia_rtcclkfreq" x:Style="BORDER" enabled="false" description="Actual RTC clock"/>
+						<p1:GLabel text="MHz" visible="true" widgetName="glabel_dia_cpuclkfreq" bounds="598, 62, 27, 15"/>
+						<p1:GLabel bounds="598, 87, 27, 15" text="MHz" widgetName="glabel_dia_dmaclkfreq"/>
+						<p1:GLabel bounds="598, 112, 27, 15" text="MHz" widgetName="glabel_dia_periphclkfreq"/>
+						<p1:GLabel bounds="598, 133, 27, 15" text="MHz" widgetName="glabel_dia_ccuclkfreq"/>
+						<p1:GLabel bounds="598, 159, 27, 15" text="MHz" widgetName="glabel_dia_usbclkfreq" manifestObj="true"/>
+						<p1:GLabel bounds="598, 182, 27, 15" text="MHz" widgetName="glabel_dia_sdmmcclkfreq" manifestObj="true"/>
+						<p1:GLabel bounds="597, 231, 27, 15" text="MHz" widgetName="glabel_dia_ebuclkfreq" manifestObj="true"/>
+						<p1:GLabel bounds="598, 206, 27, 15" text="MHz" widgetName="glabel_dia_ethclkfreq" manifestObj="true"/>
+						<p1:GLabel bounds="224, 448, 27, 15" text="kHz" widgetName="glabel_dia_osiclkfreq"/>
+						<p1:GLabel bounds="225, 375, 27, 15" text="kHz" widgetName="glabel_dia_ulpclkfreq"/>
+						<p1:GLabel bounds="384, 91, 27, 15" text="MHz" widgetName="glabel_dia_usbpllclkfreq" manifestObj="true"/>
+						<p1:GLabel bounds="385, 147, 27, 15" text="MHz" widgetName="glabel_dia_pllclkfreq"/>
+						<p1:GLabel bounds="385, 199, 27, 15" text="MHz" widgetName="glabel_dia_oficlkfreq"/>
+						<p1:GLabel bounds="341, 286, 27, 15" text="kHz" widgetName="glabel_dia_stdbyclkfreq"/>
+						<p1:GLabel bounds="597, 253, 27, 15" manifestObj="true" text="MHz" widgetName="glabel_dia_wdtclkfreq"/>
+						<p1:GLabel bounds="597, 277, 27, 15" manifestObj="true" text="MHz" widgetName="glabel_dia_extclkoutfreq"/>
+						<p1:GLabel bounds="596, 452, 27, 15" manifestObj="true" text="kHz" widgetName="glabel_dia_rtcclkfreq"/>
+						<p1:GLabel bounds="254, 87, 27, 15" manifestObj="true" text="MHz" widgetName="glabel_dia_ohpclkfreq"/>
+						<p1:GLabel bounds="254, 146, 27, 15" manifestObj="true" text="MHz" widgetName="glabel_dia_oscclkfreq"/>
+						<p1:GFloat bounds="554, 295, 43, 21" description="Actual external out clock" enabled="false" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="100.0" minValue="100.0" value="100" widgetName="gfloat_dia_ecatclkfreq" x:Style="BORDER"/>
+						<p1:GLabel bounds="597, 301, 27, 15" manifestObj="true" text="MHz" widgetName="glabel_dia_ecatclkfreq"/>
+					</p1:GImage>
+					<p1:GString x:Style="BORDER" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gstring_note" bounds="13, 523, 531, 21" value="Note: Modules shown in the image are static.  The availability of modules are specific to device" enabled="false"/>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab visible="true" enabled="true" text="Clock Generation Settings" widgetName="gtab_clockgeneration">
+			<p1:GTab.control>
+				<p1:Tab>
+					<p1:Tab.layout>
+						<GridLayout/>
+					</p1:Tab.layout>
+					<p1:GGroup text="High Precision Oscillator Settings" widgetName="ggroup_extclk" manifestObj="true">
+						<p1:GGroup.layoutData>
+							<GridData horizontalAlignment="FILL"/>
+						</p1:GGroup.layoutData>
+						<p1:GGroup.layout>
+							<GridLayout numColumns="2"/>
+						</p1:GGroup.layout>
+						<p1:GLabel manifestObj="true" text="Operating mode:" widgetName="glabel_extclkmode">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="LEFT" widthHint="200"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Disabled&#13;&#10;External Crystal Mode&#13;&#10;External Clock Input Mode" toolTipText="Select a source of external input to the PLL." value="External Crystal Mode" widgetName="gcombo_extclkmode" description="High precision oscillator derived from the following sources:&#13;&#10;&lt;OL&gt;&#13;&#10;&lt;LI&gt;External Crystal Mode: Used to generate a high precision clock via XTAL1 and XTAL2 pins.&lt;/LI&gt;&#13;&#10;&lt;LI&gt;External Clock Input Mode: An external clock is being supplied to Clock generation unit (CGU) from CLKIN pin, via the OSC_HP module, bypassing the oscillator circuit.&lt;/LI&gt;&#13;&#10;&lt;LI&gt;Disabled: High precision oscillator settings are disabled. Only Internal Fast Oscillator can be used to generate system and peripheral clocks.&lt;/LI&gt;&#13;&#10;&lt;/OL&gt;">
+							<p1:GCombo.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="LEFT" widthHint="170"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+						<p1:GLabel text="External clock frequency [MHz]:" widgetName="glabel_extclkoscfreq" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="LEFT" widthHint="177"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="The external clock using crystal oscillator or CLKIN pin is a source of main-PLL &amp; USBPLL clocks." format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="25.0" minValue="4.0" toolTipText="Desired external clock frequency." value="12" widgetName="gfloat_extclkoscfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="LEFT" widthHint="50"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GGroup text="Internal Fast Oscillator Settings" widgetName="ggroup_fofi">
+						<p1:GGroup.layoutData>
+							<GridData horizontalAlignment="FILL"/>
+						</p1:GGroup.layoutData>
+						<p1:GGroup.layout>
+							<GridLayout numColumns="2"/>
+						</p1:GGroup.layout>
+						<p1:GLabel text="Calibration:" widgetName="glabel_backupclktrim">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="RIGHT" widthHint="200"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GCombo description="The internal fast oscillator options are used to calibrate the backup clock by improving the accuracy. Following options are available:&#13;&#10;&lt;OL&gt;&lt;LI&gt;Factory Calibration: The factory calibration enabled with user software via bit field FOTR of the PLLCON0 register.&lt;/LI&gt;&#13;&#10;&lt;LI&gt;Automatic Calibration Using Standby Clock: Backup Clock adjustment based on the  high precision reference clock fSTDBY. The automatic calibration enabled with user software via bit field AOTREN of the PLLCON0 register.&lt;/LI&gt;&#13;&#10;&lt;/OL&gt;" manifestObj="true" options="Factory Calibration&#13;&#10;Automatic Calibration Using Standby Clock" toolTipText="Select a backup clock (fOFI) trimming option.&#13;&#10;" value="Factory Calibration" widgetName="gcombo_backupclktrim">
+							<p1:GCombo.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="LEFT" widthHint="255"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+					</p1:GGroup>
+					<p1:GGroup text="Main PLL Settings" widgetName="ggroup_mainpllset">
+						<p1:GGroup.layoutData>
+							<GridData horizontalAlignment="FILL"/>
+						</p1:GGroup.layoutData>
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GLabel text="PLL clock source:" widgetName="glabel_pllclksrc"/>
+						<p1:GCombo description="The main PLL converts a low-frequency external clock signal into a high-speed internal&#13;&#10;clock. And the main PLL clock is a main source of system frequency (fSYS) and it is derived from following sources:&#13;&#10;&lt;OL&gt;&#13;&#10;&lt;LI&gt;Internal Fast Oscillator: Slow internal 24MHz clock. Used during normal or low power operations after the startup.&lt;/LI&gt;&#13;&#10;&lt;LI&gt;External Crystal High Precision Oscillator: Used to generate a high precision clock via XTAL1 and XTAL2 pins. Alternatively, an external clock is being supplied to clock generation unit (CGU) from CLKIN pin, via the OSC_HP module, bypassing the oscillator circuit.&lt;/LI&gt;&lt;/OL&gt;" manifestObj="true" options="Internal Fast Oscillator&#13;&#10;External Crystal High Precision Oscillator" toolTipText="Select a source of main PLL clock." value="External Crystal High Precision Oscillator" widgetName="gcombo_pllclksrc">
+							<p1:GCombo.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="LEFT" widthHint="255" horizontalSpan="3"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+						<p1:GLabel text="PLL operating mode:" widgetName="glabel_mainpllset">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="177" horizontalAlignment="FILL"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GCombo description="The operating mode selection decides to bypass a VCO or not:&#13;&#10;&lt;OL&gt;&lt;LI&gt; Normal Mode: fPLL is a scaled version of VCO Clock&lt;BR&gt;&#13;&#10;   &#9;&#9;&#9;&#9;  &lt;B&gt;fPLL = (N * fSOC) / (P * K2)&lt;/LI&gt;&lt;/B&gt;&#13;&#10;&lt;LI&gt;Prescaler Mode: fPLL is running at external frequency fOSC (bypassing a VCO)&lt;BR&gt;&#13;&#10;&#9;&#9;&#9;&#9; &lt;B&gt;fPLL = fOSC / K1&lt;/B&gt;&lt;/LI&gt;&lt;/OL&gt;" manifestObj="true" options="Normal Mode&#13;&#10;Prescaler Mode" toolTipText="Select a desired mode to bypass a VCO or not." value="Normal Mode" widgetName="gcombo_mainpllset">
+							<p1:GCombo.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="LEFT" widthHint="255" horizontalSpan="3"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+						<p1:GLabel manifestObj="true" text="Requested PLL frequency [MHz]:" widgetName="glabel_mainplldesfreq">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="200" horizontalAlignment="FILL"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="The requested PLL frequency internally configures the PLL dividers: &#13;&#10;&lt;B&gt;NDIV, PDIV, K2DIV and K1DIV:&lt;/B&gt;&#13;&#10;&lt;OL&gt;&lt;LI&gt;In Normal Mode: fPLL is a scaled version of VCO clock&lt;BR&gt;&#13;&#10;   &#9;&#9;&#9;&#9;&#9;&lt;B&gt;fPLL = (N * fSOC) / (P * K2) &lt;/B&gt;&lt;/LI&gt;&#13;&#10;&lt;LI&gt;In Prescaler Mode: fPLL is running at external frequency fOSC (bypassing a VCO)&lt;BR&gt;&#13;&#10;   &#9;&#9;&#9;&#9;&#9;&lt;B&gt;fPLL = fOSC / K1&lt;/B&gt;&lt;/LI&gt;&lt;/OL&gt;" format="*,6" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="520.0" minValue="3.0" toolTipText="The requested PLL frequency internally configures the PLL dividers: NDIV, PDIV, K2DIV and K1DIV." value="120" widgetName="gfloat_mainplldesfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData horizontalAlignment="LEFT" widthHint="50"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+						<p1:GLabel manifestObj="true" text="Actual PLL frequency [MHz]:" widgetName="glabel_mainpllactfreq">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="LEFT" widthHint="180"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="The actual PLL frequency internally configures the PLL dividers: &#13;&#10;&lt;B&gt;NDIV, PDIV, K2DIV and K1DIV:&lt;/B&gt;&#13;&#10;&lt;OL&gt;&lt;LI&gt;In Normal Mode: fPLL is a scaled version of VCO Clock&lt;BR&gt;&#13;&#10;   &#9;&#9;&#9;&#9;&#9;&lt;B&gt;fPLL = (N * fSOC) / (P * K2) &lt;/B&gt;&lt;/LI&gt;&#13;&#10;&lt;LI&gt;In Prescaler Mode: fPLL is running at external frequency fOSC (bypassing a VCO)&lt;BR&gt;&#13;&#10;   &#9;&#9;&#9;&#9;&#9;&lt;B&gt;fPLL = fOSC / K1&lt;/B&gt;&lt;/LI&gt;&lt;/OL&gt;" enabled="false" format="*,6" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="520.0" minValue="3.0" value="120" widgetName="gfloat_mainpllactfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData horizontalAlignment="LEFT" widthHint="50" grabExcessHorizontalSpace="true"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GGroup manifestObj="true" text="USB PLL Settings" widgetName="ggroup_usb_pll_settings">
+						<p1:GGroup.layoutData>
+							<GridData horizontalAlignment="FILL"/>
+						</p1:GGroup.layoutData>
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GLabel manifestObj="true" text="Requested USB PLL frequency [MHz]:" widgetName="glabel_usbplldesfreq">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="200" horizontalAlignment="RIGHT"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="The requested USB PLL frequency internally configures the USB PLL dividers: &#13;&#10;&lt;B&gt;NDIV and PDIV:&lt;/B&gt;&#13;&#10;&lt;OL&gt;&lt;LI&gt;In Normal Mode: fUSBPLL is a scaled version of VCO Clock&lt;BR&gt;&#13;&#10;   &#9;&#9;&#9;&#9;&#9;&lt;B&gt;fUSBPLL  = (N * fSOC) / (P * 2) &lt;/B&gt;&lt;/LI&gt;" format="*,6" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="260.0" minValue="130.0" toolTipText="The requested USB PLL frequency internally configures the USB PLL dividers: NDIV and PDIV." value="192" widgetName="gfloat_usbplldesfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData horizontalAlignment="LEFT" widthHint="50"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+						<p1:GLabel manifestObj="true" text="Actual USB PLL frequency [MHz]:" widgetName="glabel_usbpllactfreq">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="180" horizontalAlignment="RIGHT"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="The actual PLL frequency internally configures the PLL dividers: &#13;&#10;&lt;B&gt;NDIV, PDIV, K2DIV and K1DIV:&lt;/B&gt;&#13;&#10;&lt;OL&gt;&lt;LI&gt;In Normal Mode: fPLL is a scaled version of VCO Clock&lt;BR&gt;&#13;&#10;   &#9;&#9;&#9;&#9;&#9;&lt;B&gt;fPLL = (N * fSOC) / (P * K2) &lt;/B&gt;&lt;/LI&gt;&#13;&#10;&lt;LI&gt;In Prescaler Mode: fPLL is running at external frequency fOSC (bypassing a VCO)&lt;BR&gt;&#13;&#10;   &#9;&#9;&#9;&#9;&#9;&lt;B&gt;fPLL = fOSC / K1&lt;/B&gt;&lt;/LI&gt;&lt;/OL&gt;" enabled="false" format="*,6" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="260.0" minValue="130.0" value="192" widgetName="gfloat_usbpllactfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData horizontalAlignment="LEFT" widthHint="46"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GMessage isError="false" manifestObj="true" text="Actual PLL frequency (fPLL) value is not as expected." widgetName="gmessage_clock_generation">
+						<p1:GMessage.layoutData>
+							<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL"/>
+						</p1:GMessage.layoutData>
+					</p1:GMessage>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab text="Standby Clock Generation Settings" visible="true" enabled="true" widgetName="gtab_standbyclkgeneration">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite11">
+					<p1:Tab.layout>
+						<GridLayout/>
+					</p1:Tab.layout>
+					<p1:GGroup manifestObj="true" text="Standby Clock (fSTDBY)" widgetName="ggroup_standbyclkfreq">
+						<p1:GGroup.layoutData>
+							<GridData widthHint="716" horizontalAlignment="FILL"/>
+						</p1:GGroup.layoutData>
+						<p1:GGroup.layout>
+							<GridLayout numColumns="2"/>
+						</p1:GGroup.layout>
+						<p1:GLabel text="Clock source:" widgetName="glabel_standbyclksrc">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="RIGHT"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GCombo description="The standby clock of 32.768kHz is generated in hibernate domain:&#13;&#10;&lt;OL&gt;&lt;LI&gt;External Crystal Ultra Low Power Oscillator: Precise and stable clock is propagated to Core domain as fSTDBY and used for continuos adjustments the fast internal backup clock source fOFI.&lt;/LI&gt;&#13;&#10;&lt;LI&gt; Internal Slow Oscillator: Used for independent clock source for WDT module and as the clock for periodic wakeup events in power saving modes, and for continuos adjustments the fast internal backup clock source fOFI.&lt;/LI&gt;&#13;&#10;&lt;/OL&gt;" manifestObj="true" options="External Crystal Ultra Low Power Oscillator&#13;&#10;Internal Slow Oscillator" toolTipText="Select a source of standby clock." value="Internal Slow Oscillator" widgetName="gcombo_standbyclksrc">
+							<p1:GCombo.layoutData>
+								<GridData grabExcessHorizontalSpace="true" widthHint="251"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+					</p1:GGroup>
+					<p1:GGroup manifestObj="true" text="RTC Clock (fRTC)" widgetName="ggroup_rtcclkfreq">
+						<p1:GGroup.layoutData>
+							<GridData widthHint="299" horizontalAlignment="FILL"/>
+						</p1:GGroup.layoutData>
+						<p1:GGroup.layout>
+							<GridLayout numColumns="2"/>
+						</p1:GGroup.layout>
+						<p1:GLabel text="Clock source:" widgetName="glabel_rtcclksrc">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="RIGHT"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GCombo description="The real-time clock 32.768kHz frequency (fRTC) is derived from:&#13;&#10;&lt;OL&gt;&#13;&#10;&lt;LI&gt;External Crystal Ultra Low Power Oscillator: Precise and stable clock is propagated to Core domain.&lt;/LI&gt;&#13;&#10;&lt;LI&gt; Internal Slow Oscillator: Used for independent clock source. When the external crystal failure the clock source switches automatically to the Internal Slow Clock Source.&lt;/LI&gt;&#13;&#10;&lt;/OL&gt;" manifestObj="true" options="External Crystal Ultra Low Power Oscillator&#13;&#10;Internal Slow Oscillator" toolTipText="Select a source of RTC clock." value="Internal Slow Oscillator" widgetName="gcombo_rtcclksrc">
+							<p1:GCombo.layoutData>
+								<GridData grabExcessHorizontalSpace="true" widthHint="251"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+					</p1:GGroup>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab text="Clock Selection Settings" visible="true" enabled="true" widgetName="gtab_clockselection" description="">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite_8" layout="{x:Null}">
+					<p1:GGroup text="System Clock (fSYS)" widgetName="ggroup_sysclkfreq" bounds="5, 5, 721, 81">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GLabel text="Clock source:" widgetName="glabel_sysclksrc"/>
+						<p1:GCombo description="The system frequency (fSYS) is used for CPU and all peripherals, and derived from:&#13;&#10;&lt;OL&gt;&#13;&#10;&lt;LI&gt;Main PLL Clock: Converts a low-frequency external clock signal to a high-speed internal clock. Triggers autonomously emergency action if it loses its lock on the external clock and switches to the Fast Internal Backup Clock.&lt;/LI&gt;&#13;&#10;&lt;LI&gt;Internal Fast Oscillator: Generated internally, it is a default clock after start-up. Used for bypassing the PLL in startup. Furthermore used as independent clock source for the watchdog module and system clock during normal operation. When prescaler mode the clock used as emergency clock if the external clock failure is detected.&lt;/LI&gt;&#13;&#10;&lt;/OL&gt;" manifestObj="true" options="Main PLL Clock&#13;&#10;Internal Fast Oscillator" toolTipText="Select a source of system frequency." value="Main PLL Clock" widgetName="gcombo_sysclksrc">
+							<p1:GCombo.layoutData>
+								<GridData horizontalSpan="2" widthHint="146"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+						<Label/>
+						<p1:GLabel text="Clock divider:" widgetName="glabel_sysclkdiv">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="256" minValue="1" value="1" widgetName="gint_sysclkdiv" toolTipText="Scale downs the system clock." description="Scale downs the system clock. The value of system clock divider is represented as SYSDIV + 1 in GUI.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="26"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<p1:GLabel text="Actual frequency [MHz]:" widgetName="glabel_actsysfreq"/>
+						<p1:GFloat description="This is an actual System frequency  (fSYS) derived from various sources." enabled="false" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.00001" value="120" widgetName="gfloat_actsysfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData grabExcessHorizontalSpace="true" widthHint="42"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GGroup text="CPU Clock (fCPU)" widgetName="ggroup_cpuclkfreq" bounds="5, 97, 721, 49">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GLabel text="Clock divider:" widgetName="glabel_cpuclkdiv">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="2" minValue="1" value="1" widgetName="gint_cpuclkdiv" toolTipText="Scale downs the CPU clock." description="Scale downs the CPU clock. The value of CPU clock divider is represented as CPUDIV + 1 in GUI.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="26"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<p1:GLabel text="Actual frequency [MHz]:" widgetName="glabel_cpuclkfreq">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="RIGHT"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="The Actual CPU frequency which is derived from System frequency" enabled="false" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.00001" value="120" widgetName="gfloat_cpuclkfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="LEFT" widthHint="42"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GGroup text="Peripheral Bus Clock (fPERIPH)" widgetName="ggroup_peribusfreq" bounds="5, 158, 721, 49">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GLabel text="Clock divider:" widgetName="glabel_peribusdiv">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="2" minValue="1" value="1" widgetName="gint_peribusdiv" toolTipText="Scale downs the peripheral clock." description="Scale downs the peripheral clock. The value of peripheral bus clock divider is represented as PBDIV + 1 in GUI.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="26"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<p1:GLabel text="Actual frequency [MHz]:" widgetName="glabel_peribusfreq">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="RIGHT"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="The Actual peripheral frequency is derived from CPU frequency" enabled="false" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.00001" value="120" widgetName="gfloat_peribusfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="LEFT" widthHint="42"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GGroup text="CCU Clock (fCCU)" widgetName="ggroup_ccufreq" bounds="5, 218, 721, 78">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GCheck text="Enable CCU clock" manifestObj="true" widgetName="gcheck_enable_ccu_clock" value="true" description="This selection enables the CCU divider settings." toolTipText="This selection enables the CCU divider settings."/>
+						<Label/>
+						<Label/>
+						<Label/>
+						<p1:GLabel text="Clock divider:" widgetName="glabel_ccufreqdiv" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="2" minValue="1" value="1" widgetName="gint_ccufreqdiv" toolTipText="Scale downs the CCU clock." description="Scale downs the CCU clock. The value of CCU clock divider is represented as CCUDIV + 1 in GUI.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="26"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<p1:GLabel text="Actual frequency [MHz]:" widgetName="glabel_ccufreq" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="RIGHT"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="The Actual CCU frequency is derived from System frequency" enabled="false" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.00001" value="120" widgetName="gfloat_ccufreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="LEFT" widthHint="42"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GGroup text="USB Clock (fUSB) and SDMMC Clock (fSDMMC)" widgetName="ggroup_usbfreq" bounds="5, 311, 721, 108" manifestObj="true">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GCheck text="Enable USB / SDMMC clock" manifestObj="true" widgetName="gcheck_enable_usb_clock" value="true" description="This selection enables the USB clock source and divider settings.">
+							<p1:GCheck.layoutData>
+								<GridData horizontalSpan="4" widthHint="175"/>
+							</p1:GCheck.layoutData>
+						</p1:GCheck>
+						<p1:GLabel text="Clock source:" widgetName="glabel_usbclksrc" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GCombo description="The USB / SDMMC Clock (fUSB / fSDMMC ) is a main source of USB and SDMMC modules, and it is derived from following two sources:&#13;&#10;&lt;OL&gt;&lt;LI&gt;USB PLL Clock: Provide an accurate clock for USB 2.0 fullspeed operation, the basic functionality of the USB PLL is similar to the main PLL.&lt;BR&gt;&#13;&#10;   &#9;&#9;&lt;B&gt;fUSBPLL = (N * fOHP) / (P * 2)&lt;/B&gt;&lt;/LI&gt;&#13;&#10;&lt;LI&gt;Main PLL Clock:  Converts a low-frequency external clock signal to a high-speed internal clock.&lt;/LI&gt;&#13;&#10;&lt;/OL&gt;" manifestObj="true" options="USB PLL Clock&#13;&#10;Main PLL Clock" toolTipText="Select a source of USB / SDMMC clock frequency." value="USB PLL Clock" widgetName="gcombo_usbclksrc">
+							<p1:GCombo.layoutData>
+								<GridData widthHint="146" horizontalSpan="2"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+						<Label/>
+						<p1:GLabel text="Clock divider:" widgetName="glabel_usbdiv" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GInteger description="Scale downs the fUSB / fSDMMC clock. The value of USB clock divider is represented as USBDIV + 1 in GUI.&#13;&#10;The Divider is dividing down the USB PLL or Main PLL&lt;BR&gt;&#13;&#10;   &#9;&#9;&lt;B&gt; fUSB = (fUSBPLL or fPLL) / Divider&lt;/B&gt;" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="8" minValue="1" value="4" widgetName="gint_usbdiv" toolTipText="Scale downs the USB / SDMMC clock.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="26"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<p1:GLabel text="Actual frequency [MHz]:" widgetName="glabel_usbactfreq" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="LEFT"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="This is an actual USB frequency  (fUSB) derived from various sources." enabled="false" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="260.0" minValue="0.00001" value="48" widgetName="gfloat_usbactfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData horizontalAlignment="FILL" widthHint="42"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GGroup text="Watchdog Clock (fWDT)" widgetName="ggroup_wdtclkfreq" bounds="5, 434, 721, 109">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GCheck text="Enable Watchdog clock" manifestObj="true" widgetName="gcheck_enable_wdt_clock" value="true" toolTipText="This selection enables the WDT clock source and divider settings." description="This selection enables the WDT clock source and divider settings.">
+							<p1:GCheck.layoutData>
+								<GridData horizontalSpan="2"/>
+							</p1:GCheck.layoutData>
+						</p1:GCheck>
+						<Label/>
+						<Label/>
+						<p1:GLabel text="Clock source:" widgetName="glabel_wdtclksrc" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GCombo description="The watch-dog clock frequency (fWDT) is used to ensure a corrective action in case of a system failure, and brings the microcontroller into a safe operation state. It derived from:&#13;&#10;&lt;OL&gt;&#13;&#10;&lt;LI&gt;Internal Fast Oscillator: Used during normal or low power operations after the startup. &lt;/LI&gt;&#13;&#10;&lt;LI&gt;Standby Clock: Calibrate the internal backup clock&lt;/LI&gt;&#13;&#10;&lt;LI&gt;Main PLL Clock: Converts a low-frequency external clock signal to a high-speed internal clock.&lt;/LI&gt;&#13;&#10;&lt;/OL&gt;" manifestObj="true" options="Internal Fast Oscillator&#13;&#10;Standby Clock&#13;&#10;Main PLL Clock" toolTipText="Select a source of watchdog clock." value="Internal Fast Oscillator" widgetName="gcombo_wdtclksrc">
+							<p1:GCombo.layoutData>
+								<GridData widthHint="146" horizontalSpan="2"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+						<Label/>
+						<p1:GLabel text="Clock divider:" widgetName="glabel_wdtclkdiv" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="256" minValue="1" value="1" widgetName="ginteger_wdtclkdiv" toolTipText="Scale downs the WDT clock." description="Scale downs the WDT clock. The value of WDT clock divider is represented as WDTDIV + 1 in GUI.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="26"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<p1:GLabel manifestObj="true" text="Actual frequency [MHz]:" widgetName="glabel_wdtactfreq" description="Scale downs the System Clock"/>
+						<p1:GFloat description="This is an actual USB frequency  (fUSB) derived from various sources." enabled="false" format="*,6" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.00001" value="24" widgetName="gfloat_wdtactfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData horizontalAlignment="FILL" widthHint="42"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GGroup manifestObj="true" text="EBU Clock (fEBU)" widgetName="ggroup_ebufreq" bounds="5, 559, 721, 76">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GCheck text="Enable EBU clock" manifestObj="true" widgetName="gcheck_enable_ebu_clock" value="true" toolTipText="This selection enables the EBU divider settings." description="This selection enables the EBU divider settings."/>
+						<Label/>
+						<Label/>
+						<Label/>
+						<p1:GLabel manifestObj="true" text="Clock divider:" widgetName="glabel_ebufreqdiv">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="64" minValue="1" value="1" widgetName="gint_ebufreqdiv" toolTipText="Scale downs the EBU clock." description="Scale downs the EBU clock. The value of EBU clock divider is represented as EBUDIV + 1 in GUI.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="26"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<p1:GLabel text="Actual frequency [MHz]:" widgetName="glabel_ebufreq" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="RIGHT"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="The Actual CCU frequency is derived from System frequency" enabled="false" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="520.0" minValue="0.00001" value="120" widgetName="gfloat_ebufreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="LEFT" widthHint="42"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GGroup text="External Clock (fEXT)" widgetName="ggroup_extclkoutfreq" bounds="5, 649, 721, 142" manifestObj="true">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GCheck description="Enable to monitor the following three clock sources via EXTCLK pin:&#13;&#10;- System Clock (fSYS)&#13;&#10;- Main PLL Clock (fPLL)&#13;&#10;- USB PLL Clock (fUSBPLL)" manifestObj="true" text="Enable external clock output" toolTipText="This selection enables the external clock output via EXTCLK pin." widgetName="gcheck_extclkout">
+							<p1:GCheck.layoutData>
+								<GridData horizontalSpan="4"/>
+							</p1:GCheck.layoutData>
+						</p1:GCheck>
+						<p1:GLabel text="Clock source:" widgetName="glabel_extclkoutsrc" enabled="false" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GCombo description="The external clockout frequency (fEXTCLK) is used to debug / monitor the following three clock sources via EXTCLK pin:&#13;&#10;&lt;OL&gt;&#13;&#10;&lt;LI&gt;System Clock: Used for CPU and all peripherals&lt;/LI&gt;&#13;&#10;&lt;LI&gt;USB PLL Clock: Provide an accurate clock for USB 2.0 fullspeed operation&lt;/LI&gt;&#13;&#10;&lt;LI&gt;Main PLL Clock: Converts a low-frequency external clock signal to a high speed internal clock.&lt;/LI&gt;&#13;&#10;&lt;LI&gt;Standby clock: Used for backup clock calibration.&lt;/LI&gt;&#13;&#10;&lt;B&gt;Note: Standby clock option only available on XMC42/41 devices.&lt;/B&gt;&#13;&#10;&lt;/OL&gt;" enabled="false" manifestObj="true" options="System Clock&#13;&#10;USB PLL Clock&#13;&#10;Main PLL Clock&#13;&#10;Standby Clock" toolTipText="Select a source of external clock output." value="System Clock" widgetName="gcombo_extclkoutsrc">
+							<p1:GCombo.layoutData>
+								<GridData horizontalSpan="2" widthHint="146"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+						<Label/>
+						<p1:GLabel text="Clock divider:" widgetName="glabel_extclkplldiv" enabled="false" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GInteger description="Scale downs the fEXTCLK clock. The value of external clock divider is represented as ECKDIV + 1 in GUI.&#13;&#10;The Divider is dividing down the USB PLL or Main PLL&lt;BR&gt;&#13;&#10;   &#9;&#9;&lt;B&gt; fEXTCLK = (fUSBPLL or fPLL) / Divider&lt;/B&gt;" enabled="false" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="512" minValue="1" toolTipText="Scale downs the external clock." value="1" widgetName="gint_extclkplldiv">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="26"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<p1:GLabel text="Actual frequency [MHz]:" widgetName="glabel_extclkfreqact" manifestObj="true" enabled="false"/>
+						<p1:GFloat description="This is an actual External Clockout frequency (fEXTCLK) derived from three sources fSYS, fPLL and fUSBPLL." enabled="false" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="144.0" minValue="0.00001" value="120" widgetName="gfloat_extclkfreqact" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData widthHint="42"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+						<p1:GMessage text="The output frequency at the pin is not supported (max. 80MHz)." visible="true" manifestObj="true" widgetName="gmessage_extclkoutfreq">
+							<p1:GMessage.layoutData>
+								<GridData grabExcessHorizontalSpace="true" horizontalAlignment="FILL" horizontalSpan="4"/>
+							</p1:GMessage.layoutData>
+						</p1:GMessage>
+						<Label/>
+						<Label/>
+						<Label/>
+					</p1:GGroup>
+					<p1:GGroup text="EtherCAT Clock (fECAT)" manifestObj="true" widgetName="ggroup_ecatfreq" bounds="5, 803, 721, 108">
+						<p1:GGroup.layout>
+							<GridLayout numColumns="4"/>
+						</p1:GGroup.layout>
+						<p1:GCheck text="Enable EtherCAT clock" manifestObj="true" widgetName="gcheck_enable_ecat_clock" value="true" description="This selection enables the EtherCAT clock source and divider settings." toolTipText="This selection enables the EtherCAT clock source and divider settings.">
+							<p1:GCheck.layoutData>
+								<GridData horizontalSpan="2"/>
+							</p1:GCheck.layoutData>
+						</p1:GCheck>
+						<Label/>
+						<Label/>
+						<p1:GLabel text="Clock source:" widgetName="glabel_ecatclksrc" manifestObj="true">
+							<p1:GLabel.layoutData>
+								<GridData widthHint="120"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GCombo description="The EtherCAT clock (fECAT) is a source of EtherCAT Slave Controller (ESC) module, and it is derived from following two sources:&#13;&#10;&lt;OL&gt;&lt;LI&gt;USB PLL Clock: Provide an accurate clock for USB 2.0 fullspeed operation, the basic functionality of the USB PLL is similar to the main PLL.&lt;BR&gt;&#13;&#10;   &#9;&#9;&lt;B&gt;fUSBPLL = (N * fOHP) / (P * 2)&lt;/B&gt;&lt;/LI&gt;&#13;&#10;&lt;LI&gt;Main PLL Clock:  Converts a low-frequency external clock signal to a high-speed internal clock.&lt;/LI&gt;&#13;&#10;&lt;B&gt;Note: EtherCAT module only available on XMC48/43 devices.&lt;/B&gt;&#13;&#10;&lt;/OL&gt;" manifestObj="true" options="USB PLL Clock&#13;&#10;Main PLL Clock" toolTipText="Select a source of EtherCAT clock frequency." value="USB PLL Clock" widgetName="gcombo_ecatclksrc">
+							<p1:GCombo.layoutData>
+								<GridData widthHint="146" horizontalSpan="2"/>
+							</p1:GCombo.layoutData>
+						</p1:GCombo>
+						<Label/>
+						<p1:GLabel text="Clock divider:" widgetName="glabel_ecatdiv" manifestObj="true"/>
+						<p1:GInteger description="Scale downs the EtherCAT clock. The value of EtherCAT clock divider is represented as ECADIV + 1 in GUI.&#13;&#10;The Divider is dividing down the USB PLL or Main PLL&lt;BR&gt;&#13;&#10;   &#9;&#9;&lt;B&gt; fECAT = (fUSBPLL or fPLL) / Divider&lt;/B&gt;" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="4" minValue="1" value="1" widgetName="gint_ecatdiv" toolTipText="Scale downs the EtherCAT clock.">
+							<p1:GInteger.layoutData>
+								<GridData widthHint="26"/>
+							</p1:GInteger.layoutData>
+						</p1:GInteger>
+						<p1:GLabel enabled="false" manifestObj="true" text="Actual frequency [MHz]:" widgetName="glabel_ecatactfreq">
+							<p1:GLabel.layoutData>
+								<GridData horizontalAlignment="LEFT"/>
+							</p1:GLabel.layoutData>
+						</p1:GLabel>
+						<p1:GFloat description="This is an actual EtherCAT clock frequency  (fECAT) derived from various sources." enabled="false" format="*,2" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="260.0" minValue="0.00001" value="100" widgetName="gfloat_ecatactfreq" x:Style="BORDER">
+							<p1:GFloat.layoutData>
+								<GridData horizontalAlignment="LEFT" widthHint="42"/>
+							</p1:GFloat.layoutData>
+						</p1:GFloat>
+					</p1:GGroup>
+					<p1:GMessage bounds="5, 920, 722, 38" isError="false" manifestObj="true" text="Actual system frequency (fSYS) value is not as expected." widgetName="gmessage_clock_selection"/>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab text="Event Settings" visible="true" enabled="true" manifestObj="true" widgetName="gtab_eventsettings">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite_23">
+					<p1:Tab.layout>
+						<GridLayout/>
+					</p1:Tab.layout>
+					<p1:GCheck text="OSC_HP oscillator watchdog trap" manifestObj="true" widgetName="gcheck_osc_hp_oscillator_watchdog_trap_event" toolTipText="Selection enables user to monitor OSC_HP frequency (fOSC)&#13;&#10;whether it is usable for the VCO as a part of the PLL or not. &#13;&#10;And also allow user to take appropriate action when NMI TRAP&#13;&#10;occurs." description="Selection enables user to monitor OSC_HP frequency (fOSC)&#13;&#10;whether it is usable for the VCO as a part of the PLL or not. &#13;&#10;And also allow user to take appropriate action when NMI TRAP&#13;&#10;occurs."/>
+					<p1:GCheck text="USB VCO lock trap" manifestObj="true" widgetName="gcheck_usb_vco_lock_trap_event" toolTipText="Selection enables user to monitor USB VCO  frequency (fVCO)&#13;&#10;whether it is usable for the VCO as a part of the USBPLL or not. &#13;&#10;And also allow user to take appropriate action when NMI TRAP occurs." description="Selection enables user to monitor USB VCO  frequency (fVCO)&#13;&#10;whether it is usable for the VCO as a part of the USBPLL or not. &#13;&#10;And also allow user to take appropriate action when NMI TRAP occurs."/>
+					<p1:GCheck text="System VCO lock trap" manifestObj="true" widgetName="gcheck_system_vco_lock_trap_event" toolTipText="Selection enables user to monitor main VCO frequency (fVCO)&#13;&#10;whether it is usable for the VCO as a part of the main PLL or not. &#13;&#10;And also allow user to take appropriate action when NMI TRAP occurs." description="Selection enables user to monitor main VCO frequency (fVCO)&#13;&#10;whether it is usable for the VCO as a part of the main PLL or not. &#13;&#10;And also allow user to take appropriate action when NMI TRAP occurs."/>
+					<p1:GCheck text="OSC_ULP oscillator watchdog trap" manifestObj="true" widgetName="gcheck_osc_ulp_oscillator_watchdog_trap_event" toolTipText="Selection enables user to monitor OSC_ULP frequency (fULP)&#13;&#10;whether it is usable or not. And also allow user to take appropriate&#13;&#10;action when NMI TRAP occurs." description="Selection enables user to monitor OSC_ULP frequency (fULP)&#13;&#10;whether it is usable or not. And also allow user to take appropriate&#13;&#10;action when NMI TRAP occurs."/>
+					<p1:GLabel text="Note: Clock events are handled in user defined NMI_Handler function." visible="true" manifestObj="true" widgetName="glabel_nmi_trap_note" foreground="COLOR_BLACK"/>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+	</p1:TabFolder>
+</p1:Tab>

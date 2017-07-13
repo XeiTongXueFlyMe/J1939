@@ -1,0 +1,12 @@
+<p1:Tab  xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:com.ifx.davex.ui.controls.app" x:Class="e" layout="{x:Null}">
+	<p1:TabFolder bounds="5, 5, 600, 500">
+		<p1:GTab text="General Settings" widgetName="tab_generalSettings" visible="true" enabled="true" manifestObj="true">
+			<p1:GTab.control>
+				<p1:Tab layout="{x:Null}">
+					<p1:GLabel text="CMSIS RTOS API implementation:" visible="true" widgetName="glabel_rtosSelection" bounds="8, 15, 188, 17"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_rtosSelection" bounds="198, 13, 142, 21" options="Keil RTX" value="Keil RTX" toolTipText="Select standardized RTOS programming interface / framework." description="Selection allows to choose standardized RTOS programming interface / framework."/>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+	</p1:TabFolder>
+</p1:Tab>

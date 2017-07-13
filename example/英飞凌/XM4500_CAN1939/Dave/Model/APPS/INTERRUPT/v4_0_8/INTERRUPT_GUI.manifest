@@ -1,0 +1,25 @@
+package Model.APPS.INTERRUPT.v4_0_8;
+
+// Import statements
+import ifx.davex.app.manifest.*
+
+abstract class INTERRUPT_GUI extends AppManifest {
+	/* Begin : UI variable section */
+	 public GString gstring_handler;
+	 public GCheck gcheck_enable_at_init;
+	 public GLabel glabel_warning;
+	 public GInterruptPrio ginterruptprio_priority;
+	 public GMessage gmessage_valid_isr_name;
+
+	 public INTERRUPT_GUI(DaveEnv daveEnv){
+
+	 gstring_handler = GString(widgetName:"gstring_handler", value:"UserIRQHandler", enabled:true, visible:true, isMandatoryValue:false)
+	 gcheck_enable_at_init = GCheck(widgetName:"gcheck_enable_at_init", value:true, enabled:true, visible:true)
+	 glabel_warning = GLabel(widgetName:"glabel_warning", text:"Warning: sr_irq input not connected. Please use of HW Signal Connections dialog to \r\nestablish a connection.", enabled:true, visible:true)
+	 ginterruptprio_priority = GInterruptPrio(widgetName:"ginterruptprio_priority", priorityValue:0, minPriority:0, maxPriority:63, subPriorityValue:0, minSubPriority:0, maxSubPriority:0, subPriorityVisible:true, enabled:true, visible:true)
+	 gmessage_valid_isr_name = GMessage(widgetName:"gmessage_valid_isr_name", text:"Invalid function name", isError:false, visible:true)
+
+
+	 }
+	/* End : UI variable section */
+}

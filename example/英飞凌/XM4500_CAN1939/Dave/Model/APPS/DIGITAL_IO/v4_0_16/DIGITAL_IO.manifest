@@ -1,0 +1,371 @@
+package Model.APPS.DIGITAL_IO.v4_0_16;
+
+/*
+Copyright (c) 2015, Infineon Technologies AG
+All rights reserved.                       
+                                           
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+following conditions are met:  
+                                                                            
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+disclaimer.                       
+ 
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+disclaimer in the documentation and/or other materials provided with the distribution.                      
+ 
+Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote
+products derived from this software without specific prior written permission.                                          
+                                                                            
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                                                 
+                                                                            
+To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes with 
+Infineon Technologies AG: dave@infineon.com. */
+
+/*************** Revision History **********************************************
+ Version        Date          Description 
+ 4.0.0       16-Feb-2015   Initial version for DAVEv4.<br>
+ 4.0.1       20-Feb-2015   APP Help documentation improved.<br>
+ 4.0.2       07-May-2015   1). APP owner feedbacks fixed.<br>
+                           2). XMC_ASSERT debug statement is added in all API's.<br>
+ 4.0.4       20-Jun-2015   1). Help Doc example usage is improved.<br>
+                           2). _Add Pin is removed.<br>
+                           3). Version check added for XMCLib dependency.<br>
+ 4.0.6       09-Jul-2015   APP Help documentation improved.<br>
+ 4.0.7       31-Jul-2015   Added support for XMC1400 devices.<br>
+ 4.0.8       08-Oct-2015   Added support for XMC4700/XMC4800 devices.<br>
+ 4.0.10      18-Dec-2015   Added support for XMC4300 devices.<br>
+ 4.0.12      22-Dec-2015   Added support for hardware controlled IO.<br>
+ 4.0.14      04-Mar-2016   Corrected wrong generation of structure object for pins with<br> 
+                           default hardware peripheral connection. <br>
+ 4.0.16      08-Jul-2016   Fixed incorrect case for an included header. <BR>
+ *******************************************************************************/
+
+/* Import statements */
+import ifx.davex.app.manifest.*
+
+class  DIGITAL_IO extends DIGITAL_IO_GUI {
+	/* ----------------------------------------------- Begin : APP Properties -------------------------------------------------------------- */
+
+	/**
+	 * APP version
+	 * Format: a string with three digit separated by a dot.
+	 */
+	def version            = '4.0.16'
+
+
+	/**
+	 * APP categories declaration. 
+	 * It is list of strings. Subcategories are separated by slash.
+	 * No limits on number of categories and subcategories depth.
+	 */
+	def categoriesDescription = ['System']/** 
+	 * Minimum DAVE version required for this APP.
+	 * 
+	 * It is string with three digit separated by a dot.
+	 */
+	def minDaveVersion           = '4.0.0'
+
+	/** 
+	 * Keywords used by search feature in APPs selection view
+	 * 
+	 * It is a list of string.
+	 */
+	def keywords      = [
+		'GPIO',
+		'IO',
+		'Pin',
+		'Driver',
+		'ALL'
+	]
+
+	/** 
+	 * softwareIDs is used to declare which devices are compatible with this APP.
+	 * It is a map with key a string containing a pattern that shall match the SW id of
+	 * the device and as value the minimal version of the APP.
+	 * 
+	 * 
+	 */
+
+	def softwareIDs       = [
+		"XMC4.5.*.*.*":"1.0.0",
+		"XMC4.4.*.*.*":"1.0.0",
+		"XMC4.3.*.*.*":"1.0.0",
+		"XMC4.2.*.*.*":"1.0.0",
+		"XMC4.1.*.*.*":"1.0.0",
+		"XMC4.7.*.*.*":"1.0.0",
+		"XMC4.8.*.*.*":"1.0.0",
+		"XMC1.1.*.*.*":"1.0.0",
+		"XMC1.2.*.*.*":"1.0.0",
+		"XMC1.3.*.*.*":"1.0.0",
+		"XMC1.4.*.*.*":"1.0.0"
+		]
+
+	/**
+	 * Singleton property:
+	 * When it is true the APP can be instantiated only once.
+	 */
+	def singleton     = false
+
+	/**
+	 * initProvider property
+	 * It shall be true to add a call to <APPName>_Init()
+	 */
+	def initProvider  = true
+
+	/**
+	 * Deprecated APP
+	 * Set it to true to indicate that the APP shall be not used for new projects.
+	 */
+	def deprecated    = false
+
+	/**
+	 * Sharable property.
+	 * It shall be true to allows multiple APPs to require the same instance of this APP.
+	 */
+	def sharable      = false
+
+
+	/**
+	 *  APP function description.
+	 */ 
+	def description = "The DIGITAL_IO APP is used to configure \n a port pin as digital Input/Output."
+
+	/* ---------------------------------------------------------End: APP Properties------------------------------------------------------------- */
+
+	/* -----------------------Begin : User Variables for hardware resources and virtual signals------------------------------------------------- */
+
+	SolverVariable port_no = SolverVariable()
+	MVirtualResourceGroup hwres_port_pin
+	MVirtualSignal vs_digital_io_sw_pin
+	MVirtualSignal vs_digital_io_pad_pin
+	MVirtualSignal vs_digital_io_hwsel
+
+	/*-----------------------End : User Variables for hardware resources and virtual signals---------------------------------------------------- */
+
+	/*-------------------------------------------------------Begin : APP Constructor and Logic -------------------------------------------------*/
+
+	public DIGITAL_IO(DaveEnv daveEnv) {
+
+		MF digital_input
+		MF digital_output
+		MF hardware_control
+		MF non_hw_control
+		MF input_or_hwcontrol
+		MF output_or_hwcontrol
+		MF digital_output_speedclass
+		MF port_constraint
+		MF iocr_oe_en
+		MF speed_class
+		List hw = [0]
+
+		/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+		/*                          Target Specific User Variable initialization                                                                     */
+		/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+		if (daveEnv.project.selectedDevice.deviceId.family == "XMC4") {
+			glabel_hysteresis.visible = false
+			gcombo_hysteresis.visible = false
+
+			gcombo_driver_strength.options = [
+				"Don't Care",
+				"Weak Driver",
+				"Medium Driver",
+				"Strong Driver Soft Edge",
+				"Strong Driver Slow Edge",
+				"Strong Driver Sharp Edge",
+				"Strong Driver Medium Edge"
+			]
+
+			gcombo_driver_strength.value = "Don't Care"
+
+			/* device based port range constraint */
+			port_constraint = MF({
+				List a;
+				if (gcombo_io_function.value == 'Input') {
+					a= [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 14, 15]
+				}
+				else {
+					a= [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+				}
+				a;
+			}, List)
+		}
+
+		/* device based port range constraint */
+		if (daveEnv.project.selectedDevice.deviceId.family == "XMC1") {
+			glabel_driver_strength.visible = false
+			gcombo_driver_strength.visible = false
+
+			gcombo_hysteresis.options = [
+				"Standard",
+				"Large"
+			]
+
+			gcombo_hysteresis.value = "Standard"
+
+			port_constraint = MF({
+				List b;
+
+				if ((gcombo_io_function.value == 'Input') ||(gcombo_io_function.value == 'Input/Output')) {
+					b= [0, 1, 2, 3, 4]
+				}
+				else {
+					b= [0, 1, 2, 3, 4]
+				}
+				b;
+			}, List)
+		}
+
+		/* checking mode selection to update enable property of input widgets */
+		digital_input = MF({
+			if(gcombo_io_function.value == 'Input') {
+				true
+			}
+			else {
+				false
+			}
+		}, Boolean)
+
+		/* checking mode selection to update enable property of output widgets */
+		digital_output = MF({
+
+			if(gcombo_io_function.value == 'Input/Output') {
+				true
+			}
+			else {
+				false
+			}
+		}, Boolean)
+		
+		/*Check if hardware control mode is selected*/
+		hardware_control = MF({
+
+			if(gcombo_io_function.value == 'Hardware Controlled') {
+				true
+			}
+			else {
+				false
+			}
+		}, Boolean)
+		
+		non_hw_control = MF({gcombo_io_function.value != 'Hardware Controlled'}, Boolean)
+		
+		input_or_hwcontrol = MF({(gcombo_io_function.value == 'Input') || (gcombo_io_function.value == 'Hardware Controlled')},Boolean)
+		output_or_hwcontrol = MF({(gcombo_io_function.value == 'Input/Output') || (gcombo_io_function.value == 'Hardware Controlled')},Boolean)
+
+		/* updating output enable of solver register constraint */
+		iocr_oe_en = MF({
+			if (gcombo_io_function.value == "Input/Output") {
+				[1]
+			}
+			else {
+				[0]
+			}
+		}, List)
+
+		gcombo_input_mode.enabled = input_or_hwcontrol
+		gcombo_hysteresis.enabled = input_or_hwcontrol
+		glabel_hysteresis.enabled = input_or_hwcontrol
+		glabel_input_mode.enabled = input_or_hwcontrol
+		gcombo_output_mode.enabled = digital_output
+		gcombo_initial_output_level.enabled = digital_output
+		gcombo_driver_strength.enabled = output_or_hwcontrol
+		glabel_driver_strength.enabled = output_or_hwcontrol
+		glabel_output_mode.enabled = digital_output
+		glabel_initial_output_level.enabled = digital_output
+		
+		gcombo_input_mode.options = MF({
+			if(gcombo_io_function.value == 'Hardware Controlled')
+			{
+				["Tristate",
+				 "Inverted Tristate"]
+			}
+			else
+			{
+				["Tristate",
+				"Pull Up",
+				"Pull Down",
+				"Continuous Sampling Mode",
+				"Inverted Tristate",
+				"Inverted Pull Up",
+				"Inverted Pull Down",
+				"Inverted Continuous Sampling Mode"]
+			}
+		},List)
+
+		/* Solver constraint for port range */
+		addUriElementRangeConstraint(port_no, port_constraint)
+
+		/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+		/*---------------------------------	Hardware resource consumption block ------------------------------------------------------------------- */
+		/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+		hwres_port_pin = MVirtualResourceGroup("pin", [
+			"port",
+			"p",
+			port_no,
+			"pad",
+			"*"
+		])
+
+		/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+		/*                                 Virtual Signals Definitions                                                                               */
+		/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+
+		/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+		/*---------------------------------	DIGITAL IO Signals ------------------------------------------------------------------- */
+		/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+		@AddPin(pinDisplayName ='pin')
+		vs_digital_io_pad_pin = MVirtualSignal(hwres_port_pin, "pin", "pad", true, non_hw_control)
+		vs_digital_io_sw_pin = MVirtualSignal(hwres_port_pin, "software controlled output signal", "swreg_out", digital_output, false)
+		vs_digital_io_hwsel = MVirtualSignal(hwres_port_pin, "hardware pin control", "hw_o", hardware_control, hardware_control)
+
+		/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+		/*                                 Virtual Signals Connections                                                                               */ 
+		/*-------------------------------------------------------------------------------------------------------------------------------------------*/
+		addRegisterBitFieldConstraint(hwres_port_pin, "iocr_oe",  iocr_oe_en, digital_output)
+
+		/* updating speed class based on driver strength selected */	
+		if (daveEnv.project.selectedDevice.deviceId.family == "XMC4") {
+			speed_class = MF({
+				if (gcombo_driver_strength.value == "Weak Driver" || gcombo_driver_strength.value == "Medium Driver") {
+					['A1', 'A1+', 'A2']
+				}
+				else if (gcombo_driver_strength.value == "Strong Driver Slow Edge") {
+					['A1+']
+				}
+				else if (gcombo_driver_strength.value == "Strong Driver Soft Edge") {
+					['A1+', 'A2']
+				}
+				else if(gcombo_driver_strength.value == "Strong Driver Medium Edge" || gcombo_driver_strength.value == "Strong Driver Sharp Edge") {
+					['A2']
+				}
+				else {
+					['A1', 'A1+', 'A2']
+				}
+			}, List)
+
+			addResourcePropertyConstraint(hwres_port_pin, "speed_class of rg_property", speed_class,output_or_hwcontrol)
+		}
+	}
+	/*----------------------------------------------- End : APP Constructor and Logic -----------------------------------------------------------*/
+
+
+	/*-------------------------------------------------Begin : Source Files Generation ----------------------------------------------------------*/                                                            
+
+	/* File Generation */
+	def generateFiles(){
+
+		copy("digital_io.c", "digital_io.c")
+		copy("digital_io.h", "digital_io.h")
+		generate("digital_io_confc.tmpl", "digital_io_conf.c")
+		generate("digital_io_confh.tmpl", "digital_io_conf.h")
+		generate("digital_io_externh.tmpl", "digital_io_extern.h")
+	}
+
+	/*--------------------------------------------------- End : Source Files Generation -------------------------------------------------------*/
+}

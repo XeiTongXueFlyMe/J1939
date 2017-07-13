@@ -1,0 +1,31 @@
+<p1:Tab  xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:com.ifx.davex.ui.controls.app" x:Class="e">
+	<p1:Tab.layout>
+		<GridLayout/>
+	</p1:Tab.layout>
+	<p1:TabFolder>
+		<p1:TabFolder.layoutData>
+			<GridData heightHint="600" widthHint="500"/>
+		</p1:TabFolder.layoutData>
+		<p1:GTab text="General Settings" visible="true" enabled="true" manifestObj="true" widgetName="tab1">
+			<p1:GTab.control>
+				<p1:Tab>
+					<p1:Tab.layout>
+						<GridLayout numColumns="2"/>
+					</p1:Tab.layout>
+					<p1:GLabel manifestObj="true" text="Desired CAN frequency [MHz]:          " toolTipText="Required CAN  frequency" visible="true" widgetName="glabel_desired_can_freq"/>
+					<p1:GFloat description="User configurable desired CAN frequency" format="*,1" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="120.0" minValue="5" value="60" widgetName="gfloat_desired_can_freq" x:Style="BORDER" toolTipText="Required peripheral frequency for MultiCAN module.">
+						<p1:GFloat.layoutData>
+							<GridData widthHint="41"/>
+						</p1:GFloat.layoutData>
+					</p1:GFloat>
+					<p1:GLabel text="Select clock source:" visible="true" manifestObj="true" widgetName="glabel_select_clock_source" toolTipText="Clock source for the baud rate logic"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_select_clock_source" description="Clock source for the baud rate logic" options="Main Clock (MCLK)&#13;&#10;External Crystal Oscillator (OSC_HP)&#13;&#10;CAN Baudrate Clock" value="Main Clock (MCLK)">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="207"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+	</p1:TabFolder>
+</p1:Tab>

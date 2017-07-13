@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ResourceModel:Peripheral xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ResourceModel="http://www.infineon.com/Davex/Resource.ecore" URI="http://resources/0.1.28/peripheral/sdmmc/0" description="SD/MMC Interface" baseAddress="0x4801C000">
+  <provided xsi:type="ResourceModel:ResourceGroup" name="HOST" URI="http://resources/0.1.28/peripheral/sdmmc/0/host">
+    <resourcesList name="block_size" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/block_size"/>
+    <resourcesList name="block_count" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/block_count"/>
+    <resourcesList name="argument1" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/argument1"/>
+    <resourcesList name="transfer_mode" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/transfer_mode"/>
+    <resourcesList name="command" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/command"/>
+    <resourcesList name="response0" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/response0"/>
+    <resourcesList name="response2" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/response2"/>
+    <resourcesList name="response4" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/response4"/>
+    <resourcesList name="response6" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/response6"/>
+    <resourcesList name="data_buffer" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/data_buffer"/>
+    <resourcesList name="present_state" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/present_state"/>
+    <resourcesList name="host_ctrl" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/host_ctrl"/>
+    <resourcesList name="power_ctrl" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/power_ctrl"/>
+    <resourcesList name="block_gap_ctrl" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/block_gap_ctrl"/>
+    <resourcesList name="wakeup_ctrl" requiredResourceUri="http://resources/Peripheral/0.1.28/sdmmc/0/wakeup_ctrl"/>
+    <resourcesList name="clock_ctrl" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/clock_ctrl"/>
+    <resourcesList name="timeout_ctrl" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/timeout_ctrl"/>
+    <resourcesList name="sw_reset" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/sw_reset"/>
+    <resourcesList name="int_status_norm" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/int_status_norm"/>
+    <resourcesList name="int_status_err" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/int_status_err"/>
+    <resourcesList name="en_int_status_norm" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/en_int_status_norm"/>
+    <resourcesList name="en_int_status_err" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/en_int_status_err"/>
+    <resourcesList name="en_int_signal_norm" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/en_int_signal_norm"/>
+    <resourcesList name="en_int_signal_err" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/en_int_signal_err"/>
+    <resourcesList name="acmd_err_status" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/acmd_err_status"/>
+    <resourcesList name="force_event_acmd_err_status" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/force_event_acmd_err_status"/>
+    <resourcesList name="force_event_err_status" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/force_event_err_status"/>
+    <resourcesList name="debug_sel" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/debug_sel"/>
+    <resourcesList name="spi" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/spi"/>
+    <resourcesList name="slot_int_status" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/slot_int_status"/>
+    <resourcesList name="mmc_clk_in" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_clk_in"/>
+    <resourcesList name="mmc_cmd_in" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_cmd_in"/>
+    <resourcesList name="mmc_data_in0" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_in0"/>
+    <resourcesList name="mmc_data_in1" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_in1"/>
+    <resourcesList name="mmc_data_in2" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_in2"/>
+    <resourcesList name="mmc_data_in3" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_in3"/>
+    <resourcesList name="mmc_data_in4" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_in4"/>
+    <resourcesList name="mmc_data_in5" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_in5"/>
+    <resourcesList name="mmc_data_in6" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_in6"/>
+    <resourcesList name="mmc_data_in7" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_in7"/>
+    <resourcesList name="mmc_sdcd" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_sdcd"/>
+    <resourcesList name="mmc_sdwc" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_sdwc"/>
+    <resourcesList name="mmc_clk_out" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_clk_out"/>
+    <resourcesList name="mmc_cmd_out" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_cmd_out"/>
+    <resourcesList name="mmc_data_out0" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_out0"/>
+    <resourcesList name="mmc_data_out1" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_out1"/>
+    <resourcesList name="mmc_data_out2" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_out2"/>
+    <resourcesList name="mmc_data_out3" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_out3"/>
+    <resourcesList name="mmc_data_out4" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_out4"/>
+    <resourcesList name="mmc_data_out5" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_out5"/>
+    <resourcesList name="mmc_data_out6" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_out6"/>
+    <resourcesList name="mmc_data_out7" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_data_out7"/>
+    <resourcesList name="mmc_led" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_led"/>
+    <resourcesList name="mmc_reset" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_reset"/>
+    <resourcesList name="mmc_bus_power" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/mmc_bus_power"/>
+    <resourcesList name="interrupt" requiredResourceUri="http://resources/0.1.28/peripheral/sdmmc/0/interrupt"/>
+  </provided>
+  <addressBlock offset="0x0" size="0x4000" usage="registers"/>
+</ResourceModel:Peripheral>

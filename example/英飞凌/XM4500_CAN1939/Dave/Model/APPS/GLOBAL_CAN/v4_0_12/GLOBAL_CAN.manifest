@@ -1,0 +1,263 @@
+package Model.APPS.GLOBAL_CAN.v4_0_12;
+
+/**
+ *  Copyright (c) 2015, Infineon Technologies AG
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,are permitted provided that the
+ * following conditions are met:
+ *
+ *   Redistributions of source code must retain the above copyright notice, this list of conditions and the  following
+ *   disclaimer.
+ *
+ *   Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+ *   following disclaimer in the documentation and/or other materials provided with the distribution.
+ *
+ *   Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote
+ *   products derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes
+ * with Infineon Technologies AG (dave@infineon.com).
+ */
+/*************** Revision History **********************************************
+Version        Date          Description
+
+4.0.0        16-Feb-2015    Initial version for DAVEv4.<br>
+
+4.0.1        20-Feb-2015    Help documentation improved.<br>
+
+4.0.2        19-May-2015    XMC_ASSERT debug statement is added in all API's.<br>
+
+4.0.4        18-Jun-2015    1. LLD version check is removed.<br>
+                            2. Version check added for XMCLib dependency.<br>
+
+4.0.6        30-Jun-2015    GLOBAL_CAN_Enable() and GLOBAL_CAN_Disable() APIs are removed.<br>
+
+4.0.8        09-Jul-2015    Help documentation improved.<br>
+
+4.0.9        28-Aug-2015    Added support for XMC1400 devices.<br>
+
+4.0.10       23-Sep-2015    Added support for XMC4800 devices.<br>
+4.0.12       18-Dec-2015    Added support for XMC4300 devices.<br>
+*******************************************************************************/
+
+/* Import statements */
+import ifx.davex.app.manifest.*
+
+class  GLOBAL_CAN extends GLOBAL_CAN_GUI {
+
+/**
+*  Note  : Following APP properties are mandatory and important
+* Begin : APP property section
+*/
+/**
+* APP version
+* Format: a string with three digit separated by a dot.
+*/
+  def version            = '4.0.12'
+
+/**
+* APP categories declaration.
+* It is list of strings. Sub categories are separated by slash.
+* No limits on number of categories and sub categories depth.
+*/
+  def categoriesDescription = ["System/~Global Reg Control"] 
+
+/** 
+* Minimum DAVE version required for this APP.
+* 
+* It is string with three digit separated by a dot.
+*/
+  def minDaveVersion           = '4.0.0'
+
+/** 
+* Keywords used by search feature in APPs selection view
+* 
+* It is a list of string.
+*/
+  def keywords      = ["ALL"]
+
+/**
+* softwareIDs is used to declare which devices are compatible with this APP.
+* It is a map with key a string containing a pattern that shall match the SW id of
+* the device and as value the minimal version of the APP.
+*
+*
+*/
+
+  def softwareIDs       = [
+	"XMC4.8.*.*.*":"1.0.0",
+	"XMC4.7.*.*.*":"1.0.0",
+	
+    "XMC4.5.00.(E144|F144|F100).*":"1.0.0",
+    "XMC4.5.02.F100.*":"1.0.0",
+	  
+    "XMC4.4.00.(F100|F64).*":"1.0.0",
+    "XMC4.4.02.(F100|F64).*":"1.0.0",
+	  
+	"XMC4.3.*.*.*":"1.0.0",
+	
+    "XMC4.2.00.(F64|Q48).*":"1.0.0",
+	  
+    "XMC4.1.00.(F64|Q48).*":"1.0.0",
+    "XMC4.1.08.(F64|Q48).*":"1.0.0",
+	
+    "XMC1.4.03.(Q048|Q064).*":"1.0.0",
+	
+    "XMC1.4.04.(F064|Q048|Q064).*":"1.0.0"
+  ]
+
+
+/**
+* Singleton property:
+* When it is true the APP can be instantiated only once.
+*/
+  def singleton     = true
+/**
+* initProvider property
+* It shall be true to add a call to <AppName>_Init()
+*/
+  def initProvider  = true
+/**
+* Deprecated APP
+* Set it to true to indicate that the APP shall be not used for new projects.
+*/
+  def deprecated    = false
+/**
+* Sharable property.
+* It shall be true to allows multiple APPs to require the same instance of this APP.
+*/
+  def sharable      = true
+
+/**
+*  APP function description.
+*/
+  def description = "GLOBAL_CAN APP configures global \n resources of MultiCAN module."
+
+  /* End   : APP property section */
+
+  /* Required APP consumption for global_can */
+  MRequiredApp clock_app /* CLOCK APP consumption for XMC4xxx device */
+
+  /* Required global variables  */
+
+  GFloat gclock = GFloat(widgetName:"gclock" )
+  GFloat gtempminval = GFloat(widgetName:"gclockNormal")
+
+
+  MVirtualResourceGroup hwres_can_global
+
+  /* APP Constructor */
+  public GLOBAL_CAN(DaveEnv daveEnv) {
+
+    String dev_family = daveEnv.project.selectedDevice.deviceId.family   /* ex:XMC4 or XMC1 */
+  /*ex:XMC45, 44.. */
+    String dev_series = (daveEnv.project.selectedDevice.deviceId.family + daveEnv.project.selectedDevice.deviceId.series) 
+  
+  gtempminval.value = 5.0
+    /* -------------------------------------------------------------- */
+    /* ------------ Hardware resource consumption block ------------- */
+    /* -------------------------------------------------------------- */
+    hwres_can_global =  MVirtualResourceGroup(" GLOBAL_CAN", ["peripheral","can", "*", "global"])
+
+    /* -------------------------------------------------------------- */
+    /* -------------- APP IO Signals -------------------------------- */
+    /* -------------------------------------------------------------- */
+
+    /* ---------------------------------------------------------- ----*/
+    /* ----------- APP consumption Block -----------------------------*/
+    /* ----------------------------------------------------------------*/
+    /* for XMC4x device family */
+    if (dev_family == 'XMC4')
+    {
+      clock_app = MRequiredApp("CLOCK_XMC4","CLOCK APP", RSHARABLE, "4.0.2")
+      gclock.value = MF({clock_app.getVal(["gfloat_peribusfreq", "value"])}, Float)
+      /* Control the GUI Line widget visibility */
+      if(dev_series == 'XMC47' || dev_series == 'XMC48' || dev_series == "XMC43")
+      {
+        glabel_select_clock_source.visible = MF({true },Boolean)
+	    gcombo_select_clock_source.visible = MF({true },Boolean)
+	    //gcombo_select_clock_source.options = ["Peripheral Clock","External Crystal Oscillator (OSC_HP)","CAN Baudrate Clock"]
+		gcombo_select_clock_source.options = ["Peripheral Clock","External Crystal Oscillator (OSC_HP)"]
+		gcombo_select_clock_source.value = "Peripheral Clock"
+      }
+      else
+      {
+        glabel_select_clock_source.visible = MF({false },Boolean)
+        gcombo_select_clock_source.visible = MF({false },Boolean)
+      }
+    }
+    else if (dev_series == 'XMC14')
+    {
+      /* Control the GUI Line widget visibility */
+      glabel_select_clock_source.visible = MF({true },Boolean)
+      gcombo_select_clock_source.options = ["Main Clock (MCLK)","External Crystal Oscillator (OSC_HP)"]
+      gcombo_select_clock_source.visible = MF({true },Boolean)
+      clock_app = MRequiredApp("CLOCK_XMC1","CLOCK APP", RSHARABLE, "4.0.2")
+      gclock.value = MF({clock_app.getVal(["gfloat_mclkactfrq", "value"])}, Float)
+    }
+
+    /* ----------------------------------------------------------------*/
+    /* -------------------- APP Configuration  ------------------------*/
+    /* ----------------------------------------------------------------*/
+    /* Read peripheral clock value from low level CLOCK APP */
+
+    /* Desired CAN Frequency max value */
+    gfloat_desired_can_freq.maxValue =  MF({
+      gclock.value
+    },Float)
+
+  /* Desired CAN Frequency min value */
+    gfloat_desired_can_freq.minValue =  MF({
+
+      gtempminval.value
+    },Float)
+
+
+    /* change the initial desired can frequency value based on the XMC series */
+    if((dev_series == "XMC42") || (dev_series == "XMC41"))
+    {
+
+      gfloat_desired_can_freq.value = 80.0
+    }
+    else if(dev_series == "XMC45")
+    {
+      gfloat_desired_can_freq.value = 120.0
+    }
+    else if(dev_series == "XMC48" || dev_series == "XMC47" || dev_series == "XMC43")
+    {
+      gfloat_desired_can_freq.value = 144.0
+    }
+    else if(dev_series == "XMC14")
+    {
+      gfloat_desired_can_freq.value = 48.0
+    }
+
+  }
+
+
+  /* File Generation */
+  def generateFiles(){
+    /* Copy global_can.c static file as it is */
+    copy("global_can.c", "global_can.c")
+    /* Copy global_can.h static file as it is */
+    copy("global_can.h", "global_can.h")
+    /* generate global_can_conf.h file dynamically according to user configuration */
+    generate("global_can_confh.tmpl", "global_can_conf.h")
+    /* generate global_can_conf.c file dynamically according to user configuration */
+    generate("global_can_confc.tmpl", "global_can_conf.c")
+    /* generate global_can_extern.h file for external declaration*/
+    generate("global_can_externh.tmpl", "global_can_extern.h")
+  }
+
+  
+}

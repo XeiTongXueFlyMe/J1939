@@ -1,0 +1,311 @@
+package Model.APPS.CMSIS_RTOS_RTX.v4_0_16;
+
+/*
+ Copyright (c) 2015, Infineon Technologies AG
+ All rights reserved.
+											
+ Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
+ following conditions are met:
+																			 
+ Redistributions of source code must retain the above copyright notice, this list of conditions and the following
+ disclaimer.
+  
+ Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following
+ disclaimer in the documentation and/or other materials provided with the distribution.
+  
+ Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote
+ products derived from this software without specific prior written permission.
+																			 
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+																			 
+ To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes with
+ Infineon Technologies AG: dave@infineon.com. */
+
+
+/*************** Revision History **********************************************
+ Version        Date          Description
+
+ 4.0.0        21-Jun-2015    Initial version for DAVEv4.<br> 
+ 
+ 4.0.2        09-Jul-2015   APP help documentation improved.<br>
+ 
+ 4.0.3        25-Aug-2015   Supported XMC14 device.<br>        
+ 
+ 4.0.5        02-Sep-2015   Supported XMC47 and XMC48 device.<br>                     
+ 
+ 4.0.8        08-Oct-2015   Migrated to CMSIS-RTOS RTX (v4.79) library.<br>              
+ 
+ 4.0.10       14-Dec-2015   Migrated to CMSIS-RTOS RTX (v4.80) library and Supported XMC43 device.<br>  
+ 
+ 4.0.12       07-Apr-2016   1). APP help documentation improved.<br>
+                            2). Default thread stack size value changed to 300.<br>
+ 
+ 4.0.14       21-Apr-2016   License information is updated in help documentation.<br>
+ 
+ 4.0.16       08-Jul-2016   Fixed incorrect case for an included header. <BR>
+                            Rename ENABLE_CPU_CM_001_WORKAROUND to ENABLE_PMU_CM_001_WORKAROUND<br>
+                            If using any device affected by the errata PMU_CM_001 (XMC4500 AA, AB steps, XMC4400 AA step, XMC4200 AA step)<br>
+			                add to the compiler options:<br>
+			                1) Add a new preprocessor symbol: ENABLE_PMU_CM_001_WORKAROUND<br>
+			                2) Add to the Assembler, Miscellaneous, Other flags: -Xassembler --defsym -Xassembler ENABLE_PMU_CM_001_WORKAROUND=1<br> 
+ *******************************************************************************/
+ /* Import statements */
+ import ifx.davex.app.manifest.*
+
+class  CMSIS_RTOS_RTX extends CMSIS_RTOS_RTX_GUI {
+
+ /* Note  : CMSIS_RTOS_RTX properties are mandatory and important
+ Begin : CMSIS_RTOS_RTX property section */
+	 
+ /**
+  * APP version
+  * Format: a string with three digit separated by a dot.
+  */
+ def version            = '4.0.16'
+
+ /**
+  * APP categories declaration.
+  * It is list of strings. Subcategories are separated by slash.
+  * No limits on number of categories and subcategories depth.
+  */
+ def categoriesDescription = ["System"]
+
+ /**
+  * Minimum DAVE version required for this APP.
+  *
+  * It is string with three digit separated by a dot.
+  */
+ def minDaveVersion           = '4.0.0'
+
+ /**
+  * Keywords used by search feature in APPs selection view
+  *
+  * It is a list of string.
+  */
+  def keywords      = ["RTOS", "CMSIS_RTOS", "RTX", "ALL"]
+	
+ /**
+  * softwareIDs is used to declare which devices are compatible with this APP.
+  * It is a map with key a string containing a pattern that shall match the SW id of
+  * the device and as value the minimal version of the APP.
+  *
+  *
+  */
+ /* Any step, any variant and any packages of XMC4x and XMC1x device */
+ def softwareIDs       = [
+  "XMC4.8.*.*.*":"1.0.0",	 
+  "XMC4.7.*.*.*":"1.0.0",
+  "XMC4.5.*.*.*":"1.0.0",
+  "XMC4.4.*.*.*":"1.0.0",
+  "XMC4.3.*.*.*":"1.0.0",
+  "XMC4.2.*.*.*":"1.0.0",
+  "XMC4.1.*.*.*":"1.0.0",
+  "XMC1.4.*.*.*":"1.0.0",
+  "XMC1.3.*.*.*":"1.0.0",
+  "XMC1.2.*.*.*":"1.0.0",
+  "XMC1.1.*.*.*":"1.0.0"
+	]
+	
+ /**
+  * Singleton property:
+  * When it is true the APP can be instantiated only once.
+  */
+ def singleton     = true
+
+ /**
+  * initProvider property
+  * It shall be true to add a call to <AppName>_Init()
+  */
+ def initProvider  = true
+
+ /**
+  * Deprecated APP
+  * Set it to true to indicate that the APP shall be not used for new projects.
+  */
+ def deprecated    = false
+
+ /**
+  * Sharable property.
+  * It shall be true to allows multiple APPs to require the same instance of this APP.
+  */
+ def sharable      = true
+
+ /**
+  *  APP function description.
+  */
+ def description = "Keil RTX implementation of the CMSIS-RTOS API."
+	
+ /* End   : CMSIS_RTOS_RTX property section */
+	
+ /* Begin : User variable section */
+	
+	/* virtual resource group for System timer */
+	MVirtualResourceGroup hwres_systick
+	MVirtualResourceGroup hwres_exception_systick
+	MVirtualResourceGroup hwres_exception_pendsv
+	MVirtualResourceGroup hwres_exception_svcall
+
+	MRequiredApp appres_cpu
+	MRequiredApp appres_clk
+
+	GInteger g_cpuclock = GInteger(widgetName : "g_cpuclock", value : 0)
+	
+	/* End   : User APP property section */
+
+	/* APP Constructor */
+ public CMSIS_RTOS_RTX(DaveEnv daveEnv) {
+    String family = daveEnv.project.selectedDevice.deviceId.family
+	MF systick_enabled = MF({gcheck_systick.value}, Boolean)
+	
+	hwres_systick =  MVirtualResourceGroup("systick", ["peripheral", "cpu", "0", "systick"], systick_enabled)
+	hwres_exception_systick =  MVirtualResourceGroup("systick_exception", ["peripheral", "cpu", "0", "exception", "systick"], systick_enabled)
+	hwres_exception_pendsv =  MVirtualResourceGroup("pendsv_exception", ["peripheral", "cpu", "0", "exception", "pendsv"])
+	hwres_exception_svcall =  MVirtualResourceGroup("svcall_exception", ["peripheral", "cpu", "0", "exception", "svcall"])
+
+	if (family == "XMC4") {
+		appres_cpu =  MRequiredApp("CPU_CTRL_XMC4", "CPU_CTRL_XMC4", RSHARABLE, "4.0.2")
+		appres_clk =  MRequiredApp("CLOCK_XMC4", "CLOCK_XMC4", RSHARABLE, "4.0.2")
+	}
+
+	if (family == "XMC1") {
+		appres_cpu =  MRequiredApp("CPU_CTRL_XMC1", "CPU_CTRL_XMC1", RSHARABLE, "4.0.2")
+		appres_clk =  MRequiredApp("CLOCK_XMC1", "CLOCK_XMC1", RSHARABLE, "4.0.2")
+	}
+	
+	if (family == "XMC4") {
+		g_cpuclock.value = MF({appres_clk.getVal(["gfloat_cpuclkfreq", "value"]) as Integer}, Integer)
+
+	}
+	else {
+		g_cpuclock.value = MF({appres_clk.getVal(["gfloat_mclkactfrq", "value"]) as Integer}, Integer)
+	}
+	
+	/* UI logic */
+	/* control the widget properties */
+	ginteger_privstksize.enabled = MF({ginteger_privcnt.value > 0}, Boolean)
+	
+	ginteger_robintout.enabled = MF({gcheck_robin.value}, Boolean)
+	
+	ginteger_timerstksz.enabled = MF({gcheck_timers.value}, Boolean)
+
+	ginteger_timercbqs.enabled = MF({gcheck_timers.value}, Boolean)
+	
+	gcombo_timerprio.enabled = MF({gcheck_timers.value}, Boolean)
+	
+    /* calculate maximum boundary value of SysTick interval   */
+    ginteger_tick.maxValue = MF({
+      float  temp_interval = (16777216 / g_cpuclock.value); /* pow(2,24) *(1/fCPU) * 1E6,  where fCPU is in Hertz.*/
+      if(temp_interval > 16777216)
+      {
+        Math.round(16777216)
+  
+      }else
+      {
+	   return (temp_interval.round())
+      }
+    },Integer)
+	
+  /* calculate the maximum value for Number of threads with user-provided stack size */
+  ginteger_privcnt.maxValue = MF({(ginteger_taskcnt.value)},Integer)
+  
+  
+  /* Controlling the visibility of gmessage based on stack size */
+  gmessage_valid_stack_size.visible = MF({
+	Boolean temp
+	if(((ginteger_stksize.value % 4) != 0) || ((ginteger_privstksize.value % 4) != 0) )
+	{
+	  temp = true
+	}
+	else
+	{
+	  
+	  temp = false
+	}
+	return temp
+  }, Boolean)
+
+  /* throw error message when expected stack size value not multiple of 4  */
+  gmessage_valid_stack_size.isError = MF({
+	  Boolean temp
+	  if(((ginteger_stksize.value % 4) != 0) || ((ginteger_privstksize.value % 4) != 0))
+	  {
+		temp = true
+	  }
+	  else
+	  {
+		
+		temp = false
+	  }
+	  return temp
+	}, Boolean)
+  
+  
+  /* Controlling the visibility of gmessage based on stack size */
+  gmessage_valid_timer_stack_size.visible = MF({
+	Boolean temp
+	if(((ginteger_timerstksz.value % 4) != 0))
+	{
+	  temp = true
+	}
+	else
+	{
+	  
+	  temp = false
+	}
+	return temp
+  }, Boolean)
+
+  /* throw error message when expected stack size value not multiple of 4  */
+  gmessage_valid_timer_stack_size.isError = MF({
+	  Boolean temp
+	  if(((ginteger_timerstksz.value % 4) != 0))
+	  {
+		temp = true
+	  }
+	  else
+	  {
+		
+		temp = false
+	  }
+	  return temp
+	}, Boolean)
+
+}
+	
+	/* File Generation */
+ def generateFiles(){
+	String family = daveEnv.project.selectedDevice.deviceId.family 	//ex:XMC4 or XMC1
+	
+	copy("INC", "INC")
+	copy("SRC", "SRC")
+	
+	if (family == "XMC1") {
+		copy("HAL/SVC_Table.S", "SRC/SVC_Table.S")
+		copy("HAL/HAL_CM0.S", "SRC/HAL_CM0.S")
+		copy("HAL/HAL_CM0_ARMCC.c", "SRC/HAL_CM0_ARMCC.c")
+	}
+	else if (family == "XMC4") {
+		copy("HAL/SVC_Table.S", "SRC/SVC_Table.S")
+		copy("HAL/HAL_CM4.S", "SRC/HAL_CM4.S")
+		copy("HAL/HAL_CM4_ARMCC.c", "SRC/HAL_CM4_ARMCC.c")
+	}
+
+	copy("License.txt", "License.txt")
+	copy("cmsis_rtos_rtx.c", "cmsis_rtos_rtx.c")
+	copy("cmsis_rtos_rtx.h", "cmsis_rtos_rtx.h")
+	generate("cmsis_rtos_rtx_confh.tmpl", "cmsis_rtos_rtx_conf.h")
+	generate("cmsis_rtos_rtx_confc.tmpl", "cmsis_rtos_rtx_conf.c")
+	generate("cmsis_rtos_rtx_externh.tmpl", "cmsis_rtos_rtx_extern.h")
+	generate("RTX_Conf_CMc.tmpl", "RTX_Conf_CM.c")
+}
+	
+	/**
+	 * Add main code here
+	 */
+}

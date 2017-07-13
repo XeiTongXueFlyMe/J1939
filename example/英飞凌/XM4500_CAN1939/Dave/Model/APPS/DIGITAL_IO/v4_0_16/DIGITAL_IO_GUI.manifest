@@ -1,0 +1,41 @@
+package Model.APPS.DIGITAL_IO.v4_0_16;
+
+/* Import statements */
+import ifx.davex.app.manifest.*
+
+abstract class DIGITAL_IO_GUI extends AppManifest {
+	/* Begin : UI variable section */
+	 public GTab tab_configuration;
+	 public GCombo gcombo_io_function;
+	 public GCombo gcombo_input_mode;
+	 public GCombo gcombo_hysteresis;
+	 public GCombo gcombo_output_mode;
+	 public GCombo gcombo_initial_output_level;
+	 public GCombo gcombo_driver_strength;
+	 public GLabel glabel_io_function;
+	 public GLabel glabel_input_mode;
+	 public GLabel glabel_hysteresis;
+	 public GLabel glabel_output_mode;
+	 public GLabel glabel_initial_output_level;
+	 public GLabel glabel_driver_strength;
+
+	 public DIGITAL_IO_GUI(DaveEnv daveEnv){
+
+	 tab_configuration = GTab(widgetName:"tab_configuration", text:"General Settings", enabled:true, visible:true)
+	 gcombo_io_function = GCombo(widgetName:"gcombo_io_function", options:["Input","Input/Output","Hardware Controlled"], value:"Input", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_input_mode = GCombo(widgetName:"gcombo_input_mode", options:["Tristate","Pull Up","Pull Down","Continuous Sampling Mode","Inverted Tristate","Inverted Pull Up","Inverted Pull Down","Inverted Continuous Sampling Mode"], value:"Tristate", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_hysteresis = GCombo(widgetName:"gcombo_hysteresis", options:["Standard","Large"], value:"Standard", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_output_mode = GCombo(widgetName:"gcombo_output_mode", options:["Push Pull","Open Drain"], value:"Push Pull", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_initial_output_level = GCombo(widgetName:"gcombo_initial_output_level", options:["Low","High"], value:"Low", enabled:true, visible:true, isMandatoryValue:false)
+	 gcombo_driver_strength = GCombo(widgetName:"gcombo_driver_strength", options:["Don't Care","Weak Driver","Medium Driver","Strong Driver Soft Edge","Strong Driver Slow Edge","Strong Driver Sharp Edge","Strong Driver Medium Edge"], value:"Don't Care", enabled:true, visible:true, isMandatoryValue:false)
+	 glabel_io_function = GLabel(widgetName:"glabel_io_function", text:"Pin direction:", enabled:true, visible:true)
+	 glabel_input_mode = GLabel(widgetName:"glabel_input_mode", text:"Mode:", enabled:true, visible:true)
+	 glabel_hysteresis = GLabel(widgetName:"glabel_hysteresis", text:"Hysteresis:", enabled:true, visible:true)
+	 glabel_output_mode = GLabel(widgetName:"glabel_output_mode", text:"Mode:", enabled:true, visible:true)
+	 glabel_initial_output_level = GLabel(widgetName:"glabel_initial_output_level", text:"Initial output level:", enabled:true, visible:true)
+	 glabel_driver_strength = GLabel(widgetName:"glabel_driver_strength", text:"Driver strength:", enabled:true, visible:true)
+
+
+	 }
+	/* End : UI variable section */
+}

@@ -1,0 +1,1884 @@
+<p1:Tab  xmlns="http://www.eclipse.org/xwt/presentation" xmlns:x="http://www.eclipse.org/xwt" xmlns:p1="clr-namespace:com.ifx.davex.ui.controls.app" x:Class="e">
+	<p1:Tab.layout>
+		<GridLayout/>
+	</p1:Tab.layout>
+	<p1:TabFolder>
+		<p1:TabFolder.layoutData>
+			<GridData widthHint="839" heightHint="334"/>
+		</p1:TabFolder.layoutData>
+		<p1:GTab text="General Settings" visible="true" enabled="true" manifestObj="true" widgetName="gtab_general">
+			<p1:GTab.control>
+				<p1:Tab>
+					<p1:Tab.layout>
+						<GridLayout numColumns="2"/>
+					</p1:Tab.layout>
+					<p1:GLabel text="Number of message objects in the list:" visible="true" widgetName="glabel_num_msg_obj">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="209"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GInteger x:Style="NONE" minValue="1" maxValue="32" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" widgetName="ginteger_num_msg_obj" value="1" description="Configured message object numbers for the node." toolTipText="Select the desired number of message objects for the CAN node." manifestObj="true">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="48"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GLabel text="Baud rate [Kbps]:" visible="true" widgetName="glabel_required_baudrate">
+                            <p1:GLabel.layoutData>
+                                <GridData widthHint="209"/>
+                            </p1:GLabel.layoutData>
+                        </p1:GLabel>
+                    <p1:GInteger x:Style="NONE" minValue="100" maxValue="1000" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_required_baudrate" value="500" description="Required baud rate" toolTipText="Required CAN node baud rate.">
+                            <p1:GInteger.layoutData>
+                                <GridData widthHint="48"/>
+                            </p1:GInteger.layoutData>
+                        </p1:GInteger>
+
+					<p1:GCheck text="Enable loopback mode" widgetName="gcheck_loopback_mode" toolTipText="Connects to internal CAN Bus ." manifestObj="true" description="Loopback mode internally connects Tx to Rx.&#13;&#10; And it also helps to determine if communication settings have been setup correctly.">
+						<p1:GCheck.layoutData>
+							<GridData widthHint="211"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<Label/>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab text="Advanced Settings" visible="true" enabled="true" manifestObj="true" widgetName="gtab_advanced">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite_1">
+					<p1:Tab.layout>
+						<GridLayout numColumns="2"/>
+					</p1:Tab.layout>
+                            <p1:GLabel text="Synchronization jump width [tq]:" visible="true" widgetName="glabel_sync_jump_width" toolTipText="Time quanta for resynchronization.">
+                                <p1:GLabel.layoutData>
+                                    <GridData widthHint="205"/>
+                                </p1:GLabel.layoutData>
+                            </p1:GLabel>
+                            <p1:GInteger x:Style="NONE" minValue="0" maxValue="3" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_sync_jump_width" value="1" description="Time quanta allowed for re-synchronization." toolTipText="Time quanta for resynchronization.">
+                                <p1:GInteger.layoutData>
+                                    <GridData widthHint="48"/>
+                                </p1:GInteger.layoutData>
+                            </p1:GInteger>
+                            <p1:GLabel text="Sample point for the bit time [%]:" visible="true" widgetName="glabel_next_bit_time_percent">
+                                <p1:GLabel.layoutData>
+                                    <GridData widthHint="211"/>
+                                </p1:GLabel.layoutData>
+                            </p1:GLabel>
+                            <p1:GInteger x:Style="NONE" minValue="0" maxValue="100" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_next_bit_time_percent" value="80" description="Sample point of the bit time in percentage.">
+                                <p1:GInteger.layoutData>
+                                    <GridData horizontalAlignment="FILL"/>
+                                </p1:GInteger.layoutData>
+                            </p1:GInteger>
+				</p1:Tab>
+
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab text="Event Settings" visible="true" enabled="true" widgetName="gtab_event">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite9">
+					<p1:Tab.layout>
+						<GridLayout/>
+					</p1:Tab.layout>
+					<p1:GCheck text="Enable node alert" manifestObj="true" widgetName="gcheck_node_alert_event" description="Select to enable can alert event . &#13;&#10;This event is generated by any one of the following occurrences.&#13;&#10;  A change of bit NSRx.BOFF&#13;&#10;  A change of bit NSRx.EWRN&#13;&#10;  A List Length Error, which also sets bit NSRx.LLE&#13;&#10;  A List Object Error, which also sets bit NSRx.LOE&#13;&#10;  A Bit INIT is set by hardware.&#13;&#10;Note: User has to connect the signal to the NVIC node." toolTipText="Enables the alert event of CAN node. "/>
+					<p1:GCheck text="Enable last error code " manifestObj="true" widgetName="gcheck_last_err_code_event" description="Select to enable LEC event .&#13;&#10;This event is generated with each update of bit field NSRx.LEC with LEC &gt; 0&#13;&#10; (CAN protocol error). &#13;&#10;When this event is enabled, its occurrence can cause an interrupt to be generated.&#13;&#10;Note: User has to connect the signal to the NVIC node.&#13;&#10;" toolTipText="This event indicates the type of the most recent CAN error.&#13;&#10;"/>
+					<p1:GCheck text="Enable transfer ok" manifestObj="true" widgetName="gcheck_transfer_ok_event" description="TRIE enables the transfer interrupt of CAN node .&#13;&#10; This event is generated after the successful reception &#13;&#10;or transmission of a CAN frame in node .&#13;&#10;Note: User has to connect the signal to the NVIC node." toolTipText="Select to enable transfer ok event."/>
+					<p1:GCheck text="Enable frame counter " manifestObj="true" widgetName="gcheck_frame_counter_event" description="Select to enable frame count event.&#13;&#10;Note: User has to connect the signal to the NVIC node." toolTipText="Select to enable the CAN frame counter overflow &#13;&#10;event of CAN node."/>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab text="MO Settings_Page1" visible="true" enabled="true" widgetName="gtab_MOConfig1">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite11">
+					<p1:Tab.layout>
+						<GridLayout numColumns="11"/>
+					</p1:Tab.layout>
+					<p1:GLabel text="Logical&#13;&#10;MO" visible="true" widgetName="glabel_lmo_p1" x:Style="CENTER" toolTipText="Logical message object number.">
+						
+					</p1:GLabel>
+					<p1:GLabel text="Message&#13;&#10;Type" visible="true" widgetName="glabel_msgtyp_01" x:Style="CENTER" toolTipText="Message object can be configured as,&#13;&#10;Tx (Transmit MO type)&#13;&#10;Rx (Receive MO type)">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="57"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Identifier&#13;&#10;Type(IDE)" visible="true" widgetName="glabel_idntftyp_01" x:Style="CENTER" toolTipText="Message object identifier type.&#13;&#10;1. Standard 11 bit identifier&#13;&#10;2. Extended 29 bit identifier">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="73"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Identifier &#13;&#10;Value" visible="true" widgetName="glabel_idntfval_01" x:Style="CENTER" toolTipText="User configurable identifier value for the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="81"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Acceptance&#13;&#10;Mask" visible="true" widgetName="glabel_aceptmask_01" x:Style="CENTER" toolTipText="This defines the mask type for the&#13;&#10;acceptance filtering of the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="96"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Mask Value" visible="true" widgetName="glabel_maskval_01" x:Style="CENTER" toolTipText="This contains the mask bits for the&#13;&#10;acceptance filtering of the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					
+					<p1:GLabel text="DLC    " visible="true" widgetName="glabel_dlc_01" toolTipText="Desired data length of the transmit message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="27"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Data_H      " visible="true" widgetName="glabel_datah_01" toolTipText="MSB 4 bytes of data(DB7 to DB3).">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Data_L      " visible="true" widgetName="glabel_datal_01" toolTipText="LSB 4 bytes of data(DB3 to DB0).">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="85"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Tx&#13;&#10;Event  " visible="true" widgetName="glabel_tx_01" x:Style="CENTER" toolTipText="Enable transmit event for the message object."/>
+					<p1:GLabel text="Rx&#13;&#10;Event  " visible="true" widgetName="glabel_rx_01" x:Style="CENTER" toolTipText="Enable receive event for the message object."/>
+					<p1:GLabel text="LMO_01" visible="true" widgetName="glabel_lmo_01" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_01" value="Tx" options="Tx&#13;&#10;Rx" description="Select Message Type ( Transmit / Receive)">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="63"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" widgetName="gcombo_idntftyp_01" value="Std_11bit" options="Std_11bit&#13;&#10;Ext_29bit" manifestObj="true" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_01" value="0X7FF" description="Identifier value for the message object.&#13;&#10;For Standard 11bit Identifier range: 0 to 0X7FF and &#13;&#10;for Extended 29bit identifier range: 0 to 0X1FFFFFFF&#13;&#10;">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="81"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" widgetName="gcombo_aceptmask_01" value="Matching_IDE" options="Std_Ext&#13;&#10;Matching_IDE" manifestObj="true" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0X0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_01" value="0X7FF" description="This contains the mask bits for the&#13;&#10;acceptance filtering of the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_01" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_01" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_01" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_01" description="Enable transmit event for this message object." text="Transmit event">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_01" description="Enable receive interrupt for this message object." text="Receive event">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_02" visible="true" widgetName="glabel_lmo_02" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_02" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="63"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" widgetName="gcombo_idntftyp_02" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" manifestObj="true" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="82"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_02" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_02" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_02" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_02" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_02" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_02" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_02" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_02" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_03" visible="true" widgetName="glabel_lmo_03" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_03" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="63"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_03" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="82"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_03" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_03" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_03" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_03" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_03" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_03" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_03" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_03" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_04" visible="true" widgetName="glabel_lmo_04" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_04" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="63"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_04" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="82"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_04" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_04" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_04" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_04" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_04" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_04" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_04" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_04" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_05" visible="true" widgetName="glabel_lmo_05" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_05" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="63"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_05" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="82"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_05" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_05" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_05" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_05" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_05" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_05" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_05" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_05" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_06" visible="true" widgetName="glabel_lmo_06" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_06" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="63"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_06" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="82"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_06" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_06" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_06" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_06" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_06" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_06" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_06" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_06" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_07" visible="true" widgetName="glabel_lmo_07" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_07" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="63"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_07" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="82"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_07" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_07" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_07" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_07" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_07" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_07" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_07" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_07" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_08" visible="true" widgetName="glabel_lmo_08" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_08" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="63"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_08" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="82"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_08" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_08" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_08" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="82"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_08" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_08" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_08" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_08" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_08" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		
+		<p1:GTab text="MO Settings_Page2" visible="true" enabled="true" widgetName="gtab_MOConfig2" manifestObj="true" toolTipText="">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite1">
+					<p1:Tab.layout>
+						<GridLayout numColumns="11"/>
+					</p1:Tab.layout>
+					<p1:GLabel text="Logical &#13;&#10;  MO" visible="true" widgetName="gLabel67_MO1" x:Style="CENTER" toolTipText="Logical message object number."/>
+					<p1:GLabel text="Message&#13;&#10;Type" visible="true" widgetName="glabel_msgtyp_02" x:Style="CENTER" toolTipText="Message object can be configured as,&#13;&#10;Tx (Transmit MO type)&#13;&#10;Rx (Receive MO type)">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="57"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Identifier&#13;&#10;Type(IDE)" visible="true" widgetName="glabel_idntftyp_02" x:Style="CENTER" toolTipText="Message object identifier type.&#13;&#10;1. Standard 11 bit identifier&#13;&#10;2.Extended 29 bit identifier">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Identifier &#13;&#10;Value" visible="true" widgetName="glabel_idntfval_02" x:Style="CENTER" toolTipText="User configurable identifier value for the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="81"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Acceptance&#13;&#10;Mask" visible="true" widgetName="gLabel71_MO1" x:Style="CENTER" toolTipText="This defines the mask type for the&#13;&#10;acceptance filtering of the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="95"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Mask Value" visible="true" widgetName="gLabel72_MO1" x:Style="CENTER" toolTipText="This contains the mask bits for the&#13;&#10;acceptance filtering of the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="73"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="DLC    " visible="true" widgetName="glabel_61" toolTipText="Desired data length of the transmit message object."/>
+					<p1:GLabel text="  Data_H      " visible="true" widgetName="glabel_62" toolTipText="MSB 4 bytes of data(DB7 to DB4).">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="  Data_L      " visible="true" widgetName="glabel_63" toolTipText="LSB 4 bytes of data(DB3 to DB0).">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="85"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Tx&#13;&#10; Event  " visible="true" widgetName="gLabel73_MO01" x:Style="CENTER" toolTipText="Enable transmit event for the message object."/>
+					<p1:GLabel text="Rx&#13;&#10; Event  " visible="true" widgetName="gLabel74_MO1" x:Style="CENTER" toolTipText="Enable receive event for the message object."/>
+					
+					<p1:GLabel text="LMO_09" visible="true" widgetName="glabel_lmo_09" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_09" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_09" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="78"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_09" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_09" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_09" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_09" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_09" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_09" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_09" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_09" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_10" visible="true" widgetName="glabel_lmo_10" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_10" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_10" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="78"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_10" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_10" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_10" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_10" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_10" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_10" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_10" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_10" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_11" visible="true" widgetName="glabel_lmo_11" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_11" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_11" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="78"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_11" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_11" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_11" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_11" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_11" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_11" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_11" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_11" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_12" visible="true" widgetName="glabel_lmo_12" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_12" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_12" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="78"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_12" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_12" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_12" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_12" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_12" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_12" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_12" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_12" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_13" visible="true" widgetName="glabel_lmo_13" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_13" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_13" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="78"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_13" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_13" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_13" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_13" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_13" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_13" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_13" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_13" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_14" visible="true" widgetName="glabel_lmo_14" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_14" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_14" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="78"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_14" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_14" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_14" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_14" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_14" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_14" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_14" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_14" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_15" visible="true" widgetName="glabel_lmo_15" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_15" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_idntftyp_15" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="78"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_15" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_15" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_15" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_15" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_15" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_15" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_15" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_15" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_16" visible="true" widgetName="glabel_lmo_16" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_msgtyp_16" options="Tx&#13;&#10;Rx" value="Tx" description="Select message type ( Transmit / Receive).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" widgetName="gcombo_idntftyp_16" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" manifestObj="true" description="Select identifier type (Standard 11 bit/Extended 29 bit).">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="78"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_idntfval_16" value="0X7FF" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" widgetName="gcombo_aceptmask_16" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData grabExcessHorizontalSpace="true" widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0X1FFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_maskval_16" value="0X7FF" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_16" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_16" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_16" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_16" x:Style="CENTER" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_16" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab text="MO Settings_Page3" visible="true" enabled="true" widgetName="gtab_MOConfig3" manifestObj="true" toolTipText="">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite2">
+					<p1:Tab.layout>
+						<GridLayout numColumns="11"/>
+					</p1:Tab.layout>
+					<p1:GLabel text="Logical &#13;&#10;  MO" visible="true" widgetName="gLabel_p2_1" x:Style="CENTER" toolTipText="Logical message object number."/>
+					<p1:GLabel text="Message&#13;&#10;Type" visible="true" widgetName="glabel_msgtyp_03" x:Style="CENTER" toolTipText="Message object can be configured as,&#13;&#10;Tx (Transmit MO type)&#13;&#10;Rx (Receive MO type)">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="61"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Identifier&#13;&#10;Type(IDE)" visible="true" widgetName="glabel_idntftyp_03" x:Style="CENTER" toolTipText="Message object identifier type.&#13;&#10;1. Standard 11 bit identifier&#13;&#10;2.Extended 29 bit identifier">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="69"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Identifier &#13;&#10;Value" visible="true" widgetName="glabel_idntfval_03" x:Style="CENTER" toolTipText="User configurable identifier value for the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="75"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Acceptance&#13;&#10;Mask" visible="true" widgetName="gLabel_p2_5" x:Style="CENTER" toolTipText="This defines the mask type for the&#13;&#10;acceptance filtering of the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="95"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Mask Value" visible="true" widgetName="gLabel_p2_6" x:Style="CENTER" toolTipText="This contains the mask bits for the&#13;&#10;acceptance filtering of the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="DLC    " visible="true" widgetName="gLabel_p2_7" toolTipText="Desired data length of the transmit message object."/>
+					<p1:GLabel text="  Data_H      " visible="true" widgetName="gLabel_p2_8" toolTipText="MSB 4 bytes of data(DB7 to DB4).">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="  Data_L      " visible="true" widgetName="gLabel_p2_9" toolTipText="LSB 4 bytes of data(DB3 to DB0).">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="85"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Tx&#13;&#10; Event  " visible="true" widgetName="gLabel_p2_010" x:Style="CENTER" toolTipText="Enable transmit event for the message object."/>
+					<p1:GLabel text="Rx&#13;&#10; Event  " visible="true" widgetName="gLabel_p2_11" x:Style="CENTER" toolTipText="Enable receive event for the message object."/>
+					<p1:GLabel text="LMO_17" visible="true" widgetName="glabel_lmo_17" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_17">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_17"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_17" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="75"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_17" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0X0" value="0X7FF" widgetName="ginteger_maskval_17" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_17" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_17" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_17" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="85"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_17" x:Style="CENTER" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_17" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_18" visible="true" widgetName="glabel_lmo_18" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_18">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_18"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_18" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="75"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_18" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_18" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_18" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_18" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_18" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_18" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_18" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_19" visible="true" widgetName="glabel_lmo_19" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_19">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_19"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_19" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="75"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_19" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_19" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_19" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_19" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_19" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_19" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_19" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_20" visible="true" widgetName="glabel_lmo_20" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_20">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_20"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_20" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="75"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_20" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_20" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_20" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_20" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_20" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_20" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_20" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_21" visible="true" widgetName="glabel_lmo_21" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_21">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_21"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_21" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="75"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_21" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_21" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_21" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_21" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_21" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_21" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_21" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_22" visible="true" widgetName="glabel_lmo_22" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_22">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_22"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_22" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="75"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_22" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_22" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_22" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_22" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_22" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_22" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_22" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_23" visible="true" widgetName="glabel_lmo_23" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_23">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_23"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_23" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="75"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_23" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_23" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_23" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_23" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_23" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_23" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_23" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_24" visible="true" widgetName="glabel_lmo_24" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_24">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="56"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_24"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_24" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="75"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_24" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_24" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_24" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_24" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_24" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_24" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_24" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+		<p1:GTab text="MO Settings_Page4" visible="true" enabled="true" widgetName="gtab_MOConfig4" manifestObj="true" toolTipText="" description="">
+			<p1:GTab.control>
+				<p1:Tab widgetName="composite2">
+					<p1:Tab.layout>
+						<GridLayout numColumns="11"/>
+					</p1:Tab.layout>
+					<p1:GLabel text="Logical &#13;&#10;  MO" visible="true" widgetName="gLabel_p3_1" x:Style="CENTER" toolTipText="Logical message object number."/>
+					<p1:GLabel text="Message&#13;&#10;Type" visible="true" widgetName="glabel_msgtyp_04" x:Style="CENTER" toolTipText="Message object can be configured as,&#13;&#10;Tx (Transmit MO type)&#13;&#10;Rx (Receive MO type)">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="61"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Identifier&#13;&#10;Type(IDE)" visible="true" widgetName="glabel_idntftyp_04" x:Style="CENTER" toolTipText="Message object identifier type.&#13;&#10;1. Standard 11 bit identifier&#13;&#10;2. Extended 29 bit identifier">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="69"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Identifier &#13;&#10;Value" visible="true" widgetName="glabel_idntfval_04" x:Style="CENTER" toolTipText="User configurable identifier value for the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="77"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Acceptance&#13;&#10;Mask" visible="true" widgetName="gLabel_p3_5" x:Style="CENTER" toolTipText="This defines the mask type for the&#13;&#10;acceptance filtering of the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="95"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Mask Value" visible="true" widgetName="gLabel_p3_6" x:Style="CENTER" toolTipText="This contains the mask bits for the&#13;&#10;acceptance filtering of the message object.">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="DLC    " visible="true" widgetName="gLabel_p3_7" toolTipText="Desired data length of the transmit message object."/>
+					<p1:GLabel text="  Data_H      " visible="true" widgetName="gLabel_p3_8" toolTipText="MSB 4 bytes of data(DB7 to DB4).">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="83"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="  Data_L      " visible="true" widgetName="gLabel_p3_9" toolTipText="LSB 4 bytes of data(DB3 to DB0).">
+						<p1:GLabel.layoutData>
+							<GridData widthHint="85"/>
+						</p1:GLabel.layoutData>
+					</p1:GLabel>
+					<p1:GLabel text="Tx&#13;&#10; Event  " visible="true" widgetName="gLabel_p3_010" x:Style="CENTER" toolTipText="Enable transmit event for the message object."/>
+					<p1:GLabel text="Rx&#13;&#10; Event  " visible="true" widgetName="gLabel_p3_11" x:Style="CENTER" toolTipText="Enable receive event for the message object."/>
+					<p1:GLabel text="LMO_25" visible="true" widgetName="glabel_lmo_25" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_25">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="62"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_25"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_25" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="77"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_25" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="96"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0X0" value="0X7FF" widgetName="ginteger_maskval_25" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_25" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_25" value="0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="87"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_25" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="85"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_25" x:Style="CENTER" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_25" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_26" visible="true" widgetName="glabel_lmo_26" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_26">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="62"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_26"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_26" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="77"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_26" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_26" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_26" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_26" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_26" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_26" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_26" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_27" visible="true" widgetName="glabel_lmo_27" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_27">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="62"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_27"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_27" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="77"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_27" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_27" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_27" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_27" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_27" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_27" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_27" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_28" visible="true" widgetName="glabel_lmo_28" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_28">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="62"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_28"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_28" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="77"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_28" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_28" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_28" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_28" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_28" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_28" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_28" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_29" visible="true" widgetName="glabel_lmo_29" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_29">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="62"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_29"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_29" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="77"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_29" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_29" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_29" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_29" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_29" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_29" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_29" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_30" visible="true" widgetName="glabel_lmo_30" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_30">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="62"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_30"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_30" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="77"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_30" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_30" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_30" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_30" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_30" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_30" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_30" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_31" visible="true" widgetName="glabel_lmo_31" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_31">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="62"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_31"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_31" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="77"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_31" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_31" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_31" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_31" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_31" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_31" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_31" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GLabel text="LMO_32" visible="true" widgetName="glabel_lmo_32" manifestObj="true"/>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Tx&#13;&#10;Rx" value="Tx" widgetName="gcombo_msgtyp_32">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="62"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_11bit&#13;&#10;Ext_29bit" value="Std_11bit" widgetName="gcombo_idntftyp_32"/>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_idntfval_32" description="Identifier value for the message object.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="77"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCombo mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" options="Std_Ext&#13;&#10;Matching_IDE" value="Matching_IDE" widgetName="gcombo_aceptmask_32" description="Accept only message with matching IDE or With both Extended and Standard IDE">
+						<p1:GCombo.layoutData>
+							<GridData widthHint="98"/>
+						</p1:GCombo.layoutData>
+					</p1:GCombo>
+					<p1:GInteger format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" manifestObj="true" maxValue="0X1FFFFFFF" minValue="0" value="0X7FF" widgetName="ginteger_maskval_32" description="Mask value.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="74"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="8" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).DEC" manifestObj="true" widgetName="ginteger_dlc_32" value="8" description="User configurable data length field for the MO.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="35" horizontalAlignment="FILL"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" manifestObj="true" widgetName="ginteger_datah_32" value="0x0" description="MSB (4 Bytes) of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="88"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GInteger x:Style="NONE" minValue="0" maxValue="0XFFFFFFFF" mandatory="(com.ifx.davex.ui.controls.util.AppUiConstants).FALSE" format="(com.ifx.davex.ui.controls.util.AppUiConstants).HEX" widgetName="ginteger_datal_32" manifestObj="true" value="0" description="LSB(4 bytes )of data for the MO to transmit.">
+						<p1:GInteger.layoutData>
+							<GridData widthHint="86"/>
+						</p1:GInteger.layoutData>
+					</p1:GInteger>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_tx_32" description="Enable transmit event for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					<p1:GCheck manifestObj="true" widgetName="gcheck_rx_32" description="Enable receive interrupt for this message object.">
+						<p1:GCheck.layoutData>
+							<GridData horizontalAlignment="CENTER" widthHint="13"/>
+						</p1:GCheck.layoutData>
+					</p1:GCheck>
+					
+				</p1:Tab>
+			</p1:GTab.control>
+		</p1:GTab>
+	</p1:TabFolder>
+</p1:Tab>

@@ -1,0 +1,37 @@
+package Model.APPS.CPU_CTRL_XMC4.v4_0_12;
+
+import ifx.davex.app.manifest.*;
+
+class Gindexgroup_memregion{
+	 public GLabel glabel_memregion;
+	 public GCheck gcheck_memregion;
+	 public GLabel glabel_startaddr;
+	 public GInteger ginteger_startaddr;
+	 public GLabel glabel_size;
+	 public GCombo gcombo_size;
+	 public GLabel glabel_subregion;
+	 public GInteger ginteger_subregion;
+	 public GLabel glabel_type;
+	 public GCombo gcombo_type;
+	 public GLabel glabel_accessper;
+	 public GCombo gcombo_accessper;
+	 public GLabel glabel_codeexec;
+	 public GCombo gcombo_codeexec;
+
+	public Gindexgroup_memregion (DaveEnv daveEnv, String widgetName,int index){
+	 glabel_memregion = new GLabel(widgetName:"glabel_memregion", text:"Memory region:", enabled:true, visible:true, parentWidgetName:widgetName)
+	 gcheck_memregion = new GCheck(widgetName:"gcheck_memregion", value:false, enabled:true, visible:true, parentWidgetName:widgetName)
+	 glabel_startaddr = new GLabel(widgetName:"glabel_startaddr", text:"    Starting address:", enabled:true, visible:true, parentWidgetName:widgetName)
+	 ginteger_startaddr = new GInteger(widgetName:"ginteger_startaddr", value:0, minValue:0x0, maxValue:0xffffffff, enabled:true, visible:true, isMandatoryValue:false , parentWidgetName:widgetName)
+	 glabel_size = new GLabel(widgetName:"glabel_size", text:"    Size:", enabled:true, visible:true, parentWidgetName:widgetName)
+	 gcombo_size = new GCombo(widgetName:"gcombo_size", options:["32B","64B","128B","256B","512B","1KB","2KB","4KB","8KB","16KB","32KB","64KB","128KB","256KB","512KB","1MB","2MB","4MB","8MB","16MB","32MB","64MB","128MB","256MB","512MB","1GB","2GB","4GB"], value:"128KB", enabled:true, visible:true, isMandatoryValue:false , parentWidgetName:widgetName)
+	 glabel_subregion = new GLabel(widgetName:"glabel_subregion", text:"    Sub region disable:", enabled:true, visible:true, parentWidgetName:widgetName)
+	 ginteger_subregion = new GInteger(widgetName:"ginteger_subregion", value:0, minValue:0, maxValue:256, enabled:true, visible:true, isMandatoryValue:false , parentWidgetName:widgetName)
+	 glabel_type = new GLabel(widgetName:"glabel_type", text:"    Type:", enabled:true, visible:true, parentWidgetName:widgetName)
+	 gcombo_type = new GCombo(widgetName:"gcombo_type", options:["Internal Flash","Internal SRAM","External Memories","Peripherals"], value:"Internal Flash", enabled:true, visible:true, isMandatoryValue:false , parentWidgetName:widgetName)
+	 glabel_accessper = new GLabel(widgetName:"glabel_accessper", text:"    Data access permission:", enabled:true, visible:true, parentWidgetName:widgetName)
+	 gcombo_accessper = new GCombo(widgetName:"gcombo_accessper", options:["All access generate a fault","Access from privileged software only","Writes by unprivileged software generates a fault","Full access","Read only, privileged software","Read only, privileged and unprivileged software"], value:"Full access", enabled:true, visible:true, isMandatoryValue:false , parentWidgetName:widgetName)
+	 glabel_codeexec = new GLabel(widgetName:"glabel_codeexec", text:"    Code execution:", enabled:true, visible:true, parentWidgetName:widgetName)
+	 gcombo_codeexec = new GCombo(widgetName:"gcombo_codeexec", options:["Enabled","Disabled"], value:"Enabled", enabled:true, visible:true, isMandatoryValue:false , parentWidgetName:widgetName)
+	}
+}

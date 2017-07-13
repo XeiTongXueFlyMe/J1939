@@ -1,0 +1,257 @@
+package Model.APPS.DIGITAL_IO.v4_0_16.Templates;
+
+import Model.APPS.DIGITAL_IO.v4_0_16.DIGITAL_IO
+
+out.print("""
+/**
+ * @cond
+ ***********************************************************************************************************************
+ *
+ * Copyright (c) 2015-2016, Infineon Technologies AG
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,are permitted provided that the
+ * following conditions are met:
+ *
+ *   Redistributions of source code must retain the above copyright notice, this list of conditions and the  following
+ *   disclaimer.
+ *
+ *   Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
+ *   following disclaimer in the documentation and/or other materials provided with the distribution.
+ *
+ *   Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote
+ *   products derived from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT  OF THE
+ * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * To improve the quality of the software, users are encouraged to share modifications, enhancements or bug fixes
+ * with Infineon Technologies AG (dave@infineon.com).
+ ***********************************************************************************************************************
+ *
+ * Change History
+ * --------------
+ *
+ * 2015-02-16:
+ *     - Initial version<br>
+ * 2015-12-22
+ *     - Added hardware controlled IO feature.
+ * 2016-07-08:
+ *     - Fixed incorrect case for an included header.<br>
+ *
+ * @endcond
+ *
+ */
+/***********************************************************************************************************************
+ * HEADER FILES
+ **********************************************************************************************************************/
+#include "digital_io.h"
+""");
+
+int xmc_family4x
+int output_enable
+
+/* Checking device selection to update APP handler parameters */
+if( daveEnv.project.selectedDevice.deviceId.family == "XMC4" ){
+	
+	 xmc_family4x = 1;  /** family 4 **/
+
+ }else{
+ 
+	  xmc_family4x = 0;
+}
+
+for (DIGITAL_IO obj : appInstancesList )
+{
+  String objLabel = obj.getInstanceLabel()
+		
+  List mappedUri = obj.hwres_port_pin.getSolverUri()
+  if (mappedUri) 
+  {
+    String port = mappedUri[-3]
+    String pin = mappedUri[-1]
+     
+   String mode;
+   String output_level;
+	
+   output_enable = obj.hwres_port_pin.getRegValue("", "iocr_oe")
+
+   /* Updating mode configuaration based on UI selection */
+   if(output_enable == 0)
+   {
+     if ((obj.gcombo_io_function.value == "Input") || (obj.gcombo_io_function.value == "Hardware Controlled"))
+     {
+	switch(obj.gcombo_input_mode.value)
+	 {
+	   case "Tristate":
+	   mode = "XMC_GPIO_MODE_INPUT_TRISTATE"
+	   break
+					
+	   case "Pull Up":
+	   mode = "XMC_GPIO_MODE_INPUT_PULL_UP"
+	   break
+					
+	   case "Pull Down":
+	   mode = "XMC_GPIO_MODE_INPUT_PULL_DOWN"
+	   break
+					
+	  case "Continuous Sampling Mode":
+	  mode = "XMC_GPIO_MODE_INPUT_SAMPLING"
+	  break
+	
+	  case "Inverted Tristate":
+	  mode = "XMC_GPIO_MODE_INPUT_INVERTED_TRISTATE"
+	  break
+
+	  case "Inverted Pull Up":
+	  mode = "XMC_GPIO_MODE_INPUT_INVERTED_PULL_UP"
+	  break
+				 
+	  case "Inverted Pull Down":
+	  mode = "XMC_GPIO_MODE_INPUT_INVERTED_PULL_DOWN"
+	  break
+				 
+	  case "Inverted Continuous Sampling Mode":
+	  mode = "XMC_GPIO_MODE_INPUT_INVERTED_SAMPLING"
+	  break
+	}
+      } 
+    }
+    else 
+    {	
+        /* Updating output mode enum */			
+	if (obj.gcombo_output_mode.value == "Push Pull")
+	{
+	  mode = "XMC_GPIO_MODE_OUTPUT_PUSH_PULL"
+	}
+	else
+	{
+	  mode = "XMC_GPIO_MODE_OUTPUT_OPEN_DRAIN"			
+	}
+		
+	int alternate_output
+			
+	/* Reading from solver to update port aletrnate function */
+	alternate_output = obj.hwres_port_pin.getRegValue("", "iocr_pcr")
+			
+	if (alternate_output > 0)
+	{
+	  mode += "_ALT" + String.format("%d", alternate_output)
+	}
+	/* Updating initial output level enum */
+	if (obj.gcombo_initial_output_level.value == "High") 
+	{
+	  output_level = "XMC_GPIO_OUTPUT_LEVEL_HIGH"
+	}
+	else 
+	{
+	  output_level = "XMC_GPIO_OUTPUT_LEVEL_LOW"
+	}
+      }
+		
+  String output_strength;
+   		
+  /* Updating port driver strength enum*/
+  if (obj.gcombo_driver_strength.value == "Weak Driver") 
+  {
+    output_strength = "XMC_GPIO_OUTPUT_STRENGTH_WEAK"
+  }
+  else if (obj.gcombo_driver_strength.value == "Medium Driver") 
+  {
+    output_strength = "XMC_GPIO_OUTPUT_STRENGTH_MEDIUM"
+  }
+  else if (obj.gcombo_driver_strength.value == "Strong Driver Slow Edge") 
+  {
+    output_strength = "XMC_GPIO_OUTPUT_STRENGTH_STRONG_SLOW_EDGE"
+  }
+  else if (obj.gcombo_driver_strength.value == "Strong Driver Soft Edge") 
+  {
+    output_strength = "XMC_GPIO_OUTPUT_STRENGTH_STRONG_SOFT_EDGE"
+  }
+  else if (obj.gcombo_driver_strength.value == "Strong Driver Medium Edge") 
+  {
+    output_strength = "XMC_GPIO_OUTPUT_STRENGTH_STRONG_MEDIUM_EDGE"
+  }
+  else if(obj.gcombo_driver_strength.value == "Strong Driver Sharp Edge")
+  {
+    output_strength = "XMC_GPIO_OUTPUT_STRENGTH_STRONG_SHARP_EDGE"
+  }
+  else
+  {
+	
+  }
+
+
+  String hysteresis
+
+  /* Updating input hysteresis enum */
+  if(obj.gcombo_hysteresis.value == "Standard")
+  {
+    hysteresis = "XMC_GPIO_INPUT_HYSTERESIS_STANDARD"
+  }
+  else
+  {
+    hysteresis = "XMC_GPIO_INPUT_HYSTERESIS_LARGE"
+  }
+  
+  Integer hardware_control
+  /* Safely handling hwsel */
+  if((obj.gcombo_io_function.value == "Hardware Controlled")&&(obj.hwres_port_pin.getRegValue("", "hwsel_hw") != null))
+  {
+   hardware_control = obj.hwres_port_pin.getRegValue("", "hwsel_hw")
+  }
+  else
+  {
+   hardware_control = 0
+  }
+
+	
+  String dummy_read
+
+  /* Safely handling pdisc */
+  if(obj.hwres_port_pin.getRegValue("", "pdisc_pdis") != null) 
+  {
+    dummy_read = obj.hwres_port_pin.getRegValue("", "pdisc_pdis")
+  }
+
+		
+out.print("""
+const DIGITAL_IO_t ${objLabel} =
+{
+  .gpio_port = XMC_GPIO_PORT${port},
+  .gpio_pin = ${pin}U,
+  .gpio_config = {
+    .mode = ${mode},\n""");
+
+  if(obj.gcombo_io_function.value == "Input/Output")
+  {
+    out.print("""    .output_level = ${output_level},\n""")
+  }
+  if(xmc_family4x == 1 )
+  {
+	  if((obj.gcombo_io_function.value == "Input/Output") || (obj.gcombo_io_function.value == "Hardware Controlled"))
+	  {
+		if(obj.gcombo_driver_strength.value != "Don't Care")
+		{
+		  out.print("""    .output_strength = ${output_strength},\n""");
+	    }
+	  }
+  }
+
+  if((xmc_family4x == 0) && ((obj.gcombo_io_function.value == "Input") || (obj.gcombo_io_function.value == "Hardware Controlled")))
+  {
+    out.print("""    .input_hysteresis = ${hysteresis}""");
+  }
+  out.print("""
+  },
+  .hwctrl = ${["XMC_GPIO_HWCTRL_DISABLED", "XMC_GPIO_HWCTRL_PERIPHERAL1", "XMC_GPIO_HWCTRL_PERIPHERAL2"][hardware_control]}
+};
+		""");
+ }
+  
+}
