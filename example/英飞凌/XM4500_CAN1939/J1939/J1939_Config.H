@@ -95,12 +95,31 @@
 #define Port_TXinterruptDisable() J1939_TXinterruptDisable() 
 #define Port_TXinterruptOk() J1939_TXinterruptOk()
 #define Port_CAN_identifier_clc()  CAN_identifier_clc()
+/***************************************************************************************/
+/*
+*输入：
+*输出： 
+*说明：基于SAE J1939协议，我们需要CAN控制器提供至少3个滤波器给J1939协议代码。三个滤波器分别配置如下： 
+		1. 设置滤波器0，只接受广播信息（PF = 240 -255）。 
+		2. 设置设置滤波器1，2只接受全局地址（J1939_GLOBAL_ADDRESS） 
+		3. 随着程序的运行，将改变滤波器2，来适应程序逻辑。
+	J1939_SetAddressFilter() 是用来设置滤波器2的， 函数主要设置PS位（目标地址），其目的是，让控制器
+	只接受发送给本设备的消息。
+*/
 void J1939_SetAddressFilter(unsigned char Ps_Address)
 {
 	CAN_NODE3_DEBUG.lmobj_ptr[0]->mo_ptr->can_id_mask &=0XFFFF00FF;
 	CAN_NODE3_DEBUG.lmobj_ptr[0]->mo_ptr->can_id_mask |= (Ps_Address<<8);
     CAN_NODE_MO_Init(CAN_NODE3_DEBUG.lmobj_ptr[0]);
 }
+/*
+*输入： CAN自带的结构体（包含ID） 协议本身的结构体 IDJ1939_MESSAGE
+*输出： 
+*说明：我们需要配置can的远程帧ID,函数ChangeGroupIDofLMO（）提供这样的配置。配置方法和移植，和
+	J1939_CAN_Transmit函数有关，建议一起配置：
+	我们需要配置can的远程帧ID,函数ChangeGroupIDofLMO（）提供这样的配置。配置方法和移植，和
+	J1939_CAN_Transmit函数有关，建议一起配置：
+*/
 void ChangeGroupIDofLMO(const CAN_NODE_LMO_t *lmo_ptr,J1939_MESSAGE *MsgPtr)
 {
 	int _i=0;
@@ -113,8 +132,13 @@ void ChangeGroupIDofLMO(const CAN_NODE_LMO_t *lmo_ptr,J1939_MESSAGE *MsgPtr)
 	// 在线修改lmo配置
     CAN_NODE_MO_Init(lmo_ptr);
 }
-
-/*从MsgPtr加载到CAN自带的结构体中*/
+/*
+*输入： J1939_MESSAGE *MsgPtr ，协议要发送的消息，
+*输出： 
+*说明：从MsgPtr加载到CAN驱动自带的结构体中
+		将和ChangeGroupIDofLMO（）联合移植（可不这样设计）
+		先将传入函数的MsgPtr中的数据写到CAN的结构体（加载），调用CAN驱动的发送函数
+*/
 void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 {
 	CAN_NODE_LMO_t *lmo_ptr = CAN_NODE3_DEBUG.lmobj_ptr[1];
@@ -137,7 +161,12 @@ void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 	//开始发送数据
 	(CAN_NODE_STATUS_t) CAN_NODE_MO_Transmit(lmo_ptr) ;
 }
-//将设备CAN中的数据取出，存入J1939_MESSAGE结构体中
+/*
+*输入：J1939_MESSAGE *MsgPtr 数据要存入的内存的指针
+*输出： 
+*说明：读取CAN驱动的数据，如果没有数据，返回0
+		将设备CAN中的数据取出，存入J1939_MESSAGE结构体中
+*/
 int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 {
 	uint32_t receive_status=0;
@@ -175,36 +204,77 @@ int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 		return 0;//没有消息
 	}
 }
+/*
+*输入：
+*输出： 
+*说明：地址竞争重新估算，设备在总线上要重新申请的地址。
+	  设备是固定地址的，不需要移植此函数。
+	  函数为各个厂家想申请的地址，如果默认地址没有申请成功
+	  则调用此函数，重新申请一个希望得到的地址，当然可能再一次
+	  申请不成功，所以函数可以返回多个不同的地址，一次返回一个
+*/
+BOOL ECU_RecalculateAddress( unsigned char * Address)
+{
+	return 0;//没有生成新的地址，返回0
+}
+/*不使用中断模式，不对下面的函数进行移植*/
+#if J1939_POLL_ECAN == J1939_FALSE
+/*
+*输入：
+*输出： 
+*说明：使能接受中断
+*/
+	void J1939_RXinterruptEnable()
+	{
+		;
+	}
+/*
+*输入：
+*输出： 
+*说明：使能接受中断
+*/
+	void J1939_RXinterruptDisable()
+	{
+		;
+	}
+/*
+*输入：
+*输出： 
+*说明：使能发送中断
+*/
+	void J1939_TXinterruptEnable()
+	{
+		;
+	}
+/*
+*输入：
+*输出： 
+*说明：使能发送中断
+*/
+	void J1939_TXinterruptDisable()
+	{
+		;
+	}
+/*
+*输入：
+*输出： 
+*说明：触发发送中断标致位，当协议栈在中断模式下，要发送消息，将调用此函数
+	CAN驱动函数，就将直接把消息发送出去，不需要协议在调用任何can驱动函数
+*/
+	void J1939_TXinterruptOk()
+	{
+		;
+	}
+/*
+*输入：
+*输出： 
+*说明：清除CAN驱动相关的中断产生标识位，包括（发送中断标志位，接受中断标
+	志位，can总线错误标识位）
+*/
+	void CAN_identifier_clc()
+	{
+		;
+	}
+#endif
 
-void J1939_RXinterruptEnable()
-{
-	INTERRUPT_Enable(&CAN_RInterrupt_DEBUG);
-}
-
-void J1939_RXinterruptDisable()
-{
-	INTERRUPT_Disable(&CAN_RInterrupt_DEBUG);
-}
-void J1939_TXinterruptEnable()
-{
-	;
-}
-
-void J1939_TXinterruptDisable()
-{
-	;
-}
-void J1939_TXinterruptOk()
-{
-	;
-}
-void CAN_identifier_clc()
-{
-	;
-}
-//地址竞争重新估算，设备在总线上要申请的地址
-BOOL ECU_RecalculateAddress( unsigned char * adder)
-{
-	return 0;
-}
 #endif

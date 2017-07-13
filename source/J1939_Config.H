@@ -129,7 +129,6 @@ void ChangeGroupIDofLMO(const CAN_NODE_LMO_t *lmo_ptr,J1939_MESSAGE *MsgPtr)
 		将和ChangeGroupIDofLMO（）联合移植（可不这样设计）
 		先将传入函数的MsgPtr中的数据写到CAN的结构体（加载），调用CAN驱动的发送函数
 */
-
 void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 {
 	/*加载29位ID*/
