@@ -20,7 +20,48 @@
 
 # 协议中参考的质料：
 * <http://download.csdn.net/detail/xietongxueflyme/9887994>
+#示例：
+'''
+void main( void )
+{
+    can_init();
+    J1939_Initialization( TRUE );
+    //等待地址超时
+    while (J1939_Flags.WaitingForAddressClaimContention)
+        J1939_Poll(5);
+    //设备确认总线上没有，竞争地址的设备存在
+    while (1)
+    {
+    /***********************发送数据***************************/
+        Msg.DataPage                = 0;
+        Msg.Priority                = J1939_CONTROL_PRIORITY;
+        Msg.DestinationAddress      = OTHER_NODE;
+        Msg.DataLength              = 8;
+        Msg.PDUFormat               = 0xfe;
+        Msg.Data[0]         = 0xFF;
+        Msg.Data[1]         = 0xFF;
+        Msg.Data[2]         = 0xFF;
+        Msg.Data[3]         = 0xFF;
+        Msg.Data[4]         = 0xFF;
+        Msg.Data[5]         = 0xFF;
+        Msg.Data[6]         = 0xFF;
+        Msg.Data[7]         = 0xFF; 
+        while (J1939_EnqueueMessage( &Msg ) != RC_SUCCESS)
+            J1939_Poll(5);
+     /***********************处理接受数据*************************/
+        while (RXQueueCount > 0)
+        {
+            J1939_DequeueMessage( &Msg );
+            if (Msg.PDUFormat == 0x01)
+                //你的功能码;
+            else if (Msg.PDUFormat == 0x02)
+                //你的功能码;
+        }
 
+        J1939_Poll(20);
+    }
+}
+'''
 # 协议参考文献：
 	1. SAE J1939 J1939概述
 	2. SAE J1939-01 卡车，大客车控制通信文档（大概的浏览J1939协议的用法）
