@@ -20,8 +20,8 @@
 
 # 协议中参考的质料：
 * <http://download.csdn.net/detail/xietongxueflyme/9887994>
-#示例：
-'''
+# 示例：
+```
 void main( void )
 {
     can_init();
@@ -61,7 +61,7 @@ void main( void )
         J1939_Poll(20);
     }
 }
-'''
+```
 # 协议参考文献：
 	1. SAE J1939 J1939概述
 	2. SAE J1939-01 卡车，大客车控制通信文档（大概的浏览J1939协议的用法）
