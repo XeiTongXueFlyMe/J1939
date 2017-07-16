@@ -11,6 +11,12 @@
 * 本仓库存在两条分支
 	1. j1939_main  源代码分支
 	2. master      源代码　+　移植示例分支 	
+# J1939协议栈接口
+* J1939_Initialization(BOOL)
+* J1939_ISR(void)
+* J1939_Poll(unsigned long ElapsedTime)
+* J1939_DequeueMessage(J1939_MESSAGE *MsgPtr)
+* J1939_EnqueueMessage(J1939_MESSAGE *MsgPtr)
 	   
 # 源代码分析网址：
 * <http://blog.csdn.net/xietongxueflyme/article/details/74908563>
