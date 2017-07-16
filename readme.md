@@ -1,5 +1,5 @@
 ﻿# 简述：
-  文档分为两个独立的文件，source文件存放协议栈，example存放J1939协议栈的移植示例，每个示例可单独编译运行。
+  文档分为两个独立的文件，source文件存放协议栈，example存放J1939协议栈的移植示例，每个示例可单独编译运行。将不断的更新移植示例。
 # 协议特性：
 * 易移植（不针对特定的CAN硬件，只要满足CAN2.0B即可）
 * 轻量级（可适应低端的MCU）
@@ -11,6 +11,16 @@
 * 本仓库存在两条分支
 	1. j1939_main  源代码分支
 	2. master      源代码　+　移植示例分支 	
+	   
+# 源代码分析网址：
+* <http://blog.csdn.net/xietongxueflyme/article/details/74908563>
+  
+# 源代码移植：
+* <http://blog.csdn.net/xietongxueflyme/article/details/74923355>
+
+# 协议中参考的质料：
+* <http://download.csdn.net/detail/xietongxueflyme/9887994>
+
 # 协议参考文献：
 	1. SAE J1939 J1939概述
 	2. SAE J1939-01 卡车，大客车控制通信文档（大概的浏览J1939协议的用法）
@@ -24,12 +34,3 @@
 	10. SAE J1939-74 应用层文档（可配置信息）
 	11. SAE J1939-75 应用层文档（发电机组和工业设备）
 	12. SAE J1939-81 网络管理协议
-	   
-# 源代码分析网址：
-* <http://blog.csdn.net/xietongxueflyme/article/details/74908563>
-  
-# 源代码移植：
-* <http://blog.csdn.net/xietongxueflyme/article/details/74923355>
-
-# 协议中参考的质料：
-# <http://download.csdn.net/detail/xietongxueflyme/9887994>
