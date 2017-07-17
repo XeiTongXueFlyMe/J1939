@@ -24,7 +24,7 @@
 # 源代码移植：
 * <http://blog.csdn.net/xietongxueflyme/article/details/74923355>
 
-# 协议中参考的质料：
+# 协议中参考的资料：
 * <http://download.csdn.net/detail/xietongxueflyme/9887994>
 # 示例：
 * 轮询模式简单使用示例
