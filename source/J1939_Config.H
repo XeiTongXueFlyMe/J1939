@@ -210,7 +210,7 @@ BOOL ECU_RecalculateAddress( unsigned char * Address)
 /*
 *输入：
 *输出： 
-*说明：使能接受中断
+*说明：失能接受中断
 */
 	void J1939_RXinterruptDisable()
 	{
@@ -228,7 +228,7 @@ BOOL ECU_RecalculateAddress( unsigned char * Address)
 /*
 *输入：
 *输出： 
-*说明：使能发送中断
+*说明：失能发送中断
 */
 	void J1939_TXinterruptDisable()
 	{
