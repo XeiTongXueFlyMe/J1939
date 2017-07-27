@@ -418,7 +418,8 @@ static void J1939_ReceiveMessages( void )
     while(Port_CAN_Receive(&OneMessage))
     {
         switch( OneMessage.Mxe.PDUFormat)
-        {   
+        { 
+            /*远程对ECU的地址配置*/  
 #if J1939_ACCEPT_CMDADD == J1939_TRUE
             case J1939_PF_TP_CM:   
                 if ((OneMessage.Mxe.Data[0] == J1939_BAM_CONTROL_BYTE) &&
@@ -446,7 +447,7 @@ static void J1939_ReceiveMessages( void )
                     {   
                         CommandedAddressName[7] = OneMessage.Mxe.Data[1];
                         CommandedAddress =OneMessage.Mxe.Data[2];
-                        // 确保我们的消息。我们可以改变地址。
+                        // 确保消息是针对与我们的。然后可以改变地址。
                         if ((CompareName( CommandedAddressName ) == 0) && CA_AcceptCommandedAddress())   
                             J1939_AddressClaimHandling( ADDRESS_CLAIM_TX );   
                         J1939_Flags.GotFirstDataPacket = 0;   
