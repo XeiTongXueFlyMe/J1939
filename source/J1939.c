@@ -419,7 +419,7 @@ static void J1939_ReceiveMessages( void )
     {
         switch( OneMessage.Mxe.PDUFormat)
         {   
-#if J1939_ACCEPT_CMDADD == J1939_TRUE   
+#if J1939_ACCEPT_CMDADD == J1939_TRUE
             case J1939_PF_TP_CM:   
                 if ((OneMessage.Mxe.Data[0] == J1939_BAM_CONTROL_BYTE) &&
                     (OneMessage.Mxe.Data[5] == J1939_PGN0_COMMANDED_ADDRESS) &&
@@ -433,7 +433,7 @@ static void J1939_ReceiveMessages( void )
             case J1939_PF_DT:   
                 if ((J1939_Flags.GettingCommandedAddress == 1) &&   
                     (CommandedAddressSource == OneMessage.Mxe.SourceAddress))
-                {   // Commanded Address Handling   
+                {     
                     if ((!J1939_Flags.GotFirstDataPacket) &&   
                         (OneMessage.Mxe.Data[0] == 1))
                     {   
@@ -446,13 +446,14 @@ static void J1939_ReceiveMessages( void )
                     {   
                         CommandedAddressName[7] = OneMessage.Mxe.Data[1];
                         CommandedAddress =OneMessage.Mxe.Data[2];
-                        if ((CompareName( CommandedAddressName ) == 0) &&   // Make sure the message is for us.   
-                            CA_AcceptCommandedAddress())                    // and we can change the address.   
+                        // 确保我们的消息。我们可以改变地址。
+                        if ((CompareName( CommandedAddressName ) == 0) && CA_AcceptCommandedAddress())   
                             J1939_AddressClaimHandling( ADDRESS_CLAIM_TX );   
                         J1939_Flags.GotFirstDataPacket = 0;   
                         J1939_Flags.GettingCommandedAddress = 0;   
                     }   
-                    else    // This really shouldn't happen, but just so we don't drop the data packet   
+                    else  
+                        /*程序不应该运行到这里，但是我们不能丢掉数据包*/  
                         goto PutInReceiveQueue;   
                 }   
                 else   
