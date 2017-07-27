@@ -421,7 +421,7 @@ static void J1939_ReceiveMessages( void )
         { 
             /*远程对ECU的地址配置*/  
 #if J1939_ACCEPT_CMDADD == J1939_TRUE
-            case J1939_PF_TP_CM:   
+            case J1939_PF_TP_CM:       //参考J1939-81 地址命令配置
                 if ((OneMessage.Mxe.Data[0] == J1939_BAM_CONTROL_BYTE) &&
                     (OneMessage.Mxe.Data[5] == J1939_PGN0_COMMANDED_ADDRESS) &&
                     (OneMessage.Mxe.Data[6] == J1939_PGN1_COMMANDED_ADDRESS) &&
