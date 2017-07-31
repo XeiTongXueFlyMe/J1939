@@ -5,6 +5,11 @@
         "j1939.h": "c",
         "xmc_eth_mac.h": "c",
         "xmc_i2c.h": "c",
-        "xmc_usbd.h": "c"
+        "xmc_usbd.h": "c",
+        "xmc_vadc.h": "c",
+        "arm_math.h": "c",
+        "rt_typedef.h": "c",
+        "test_j1939_tp.h": "c",
+        "stdint.h": "c"
     }
 }
