@@ -42,9 +42,9 @@
  **********************************************************************/
 #ifndef __J1939_H 
 #define __J1939_H 
- 
+
 typedef enum _BOOL { FALSE = 0, TRUE } BOOL; 
- 
+
 //函数返回代码
 #define RC_SUCCESS			    0  //成功
 #define RC_QUEUEEMPTY			1  //列队为空
@@ -56,7 +56,7 @@ typedef enum _BOOL { FALSE = 0, TRUE } BOOL;
 //内部常量
 #define J1939_FALSE				0 
 #define J1939_TRUE				1 
- 
+
 // J1939 默认的优先级（参考J1939文档）
 #define J1939_CONTROL_PRIORITY			0x03 
 #define J1939_INFO_PRIORITY			    0x06 
@@ -70,7 +70,7 @@ typedef enum _BOOL { FALSE = 0, TRUE } BOOL;
 #define J1939_GLOBAL_ADDRESS			255 
 #define J1939_NULL_ADDRESS			    254 
  
-// Some J1939 PDU Formats, Control Bytes, and PGN's 
+//J1939协议栈的PNG请求响应，相关的定义
 #define J1939_PF_REQUEST2			201      //请求
 #define J1939_PF_TRANSFER			202      //转移
 
@@ -81,15 +81,26 @@ typedef enum _BOOL { FALSE = 0, TRUE } BOOL;
 #define J1939_NACK_CONTROL_BYTE			1    //PNG不被支持。否定消息
 #define J1939_ACCESS_DENIED_CONTROL_BYTE	2//拒绝访问，但是信息是被支持
 #define J1939_CANNOT_RESPOND_CONTROL_BYTE	3//不能做出反应，有空能是接受的缓存不够 
- 
+
+//TP协议的一些宏定义 
 #define J1939_PF_DT				        235	    // 协议传输---数据传输
 #define J1939_PF_TP_CM				    236		// 协议传输---链接管理
 
-#define J1939_RTS_CONTROL_BYTE			16		// CM消息的请求发送控制字节
-#define J1939_CTS_CONTROL_BYTE			17		// 清除发送控制字节的CM消息
-#define J1939_EOMACK_CONTROL_BYTE		19
-#define J1939_BAM_CONTROL_BYTE			32
-#define J1939_CONNABORT_CONTROL_BYTE		255	// 连接中断控制字节 of CM message 
+//TP的超时时间，单位（ms）
+#define J1939_TP_Tr						200
+#define J1939_TP_Th						500
+#define J1939_TP_T1						750
+#define J1939_TP_T2						1250
+#define J1939_TP_T3						1250
+#define J1939_TP_T4						1050
+#define J1939_TP_TIMEOUT_NORMAL			0
+#define J1939_TP_IMEOUT_ABNORMAL		1       //超时
+#define J1939_RTS_CONTROL_BYTE			16		// TP.CM_RTS
+#define J1939_CTS_CONTROL_BYTE			17		// TP.CM_CTS
+#define J1939_EOMACK_CONTROL_BYTE		19		// 消息应答结束
+#define J1939_BAM_CONTROL_BYTE			32		// 广播公告消息
+#define J1939_CONNABORT_CONTROL_BYTE	255	// 连接中断控制字节（放弃连接）
+#define J1939_RESERVED_BYTE              0xFF
  
 //与J1939网络层有关的定义 
 #define J1939_PGN2_REQ_ADDRESS_CLAIM		0x00 
@@ -104,8 +115,75 @@ typedef enum _BOOL { FALSE = 0, TRUE } BOOL;
 #define J1939_PF_CANNOT_CLAIM_ADDRESS	238
 #define J1939_PF_PROPRIETARY_A			239         //专用A
 #define J1939_PF_PROPRIETARY_B			255         //专用B
- 
 
+//是否对TP协议的支持（是否支持长帧（大于8字节的数据）的发送与接受）
+#define J1939_TP_RX_TX J1939_TRUE
+//TP协议的支持的最大接受发送消息长度
+#define J1939_TP_MAX_MESSAGE_LENGTH 170
+#if J1939_TP_RX_TX
+/*TP的状态描述*/
+typedef enum
+{
+	J1939_TP_NULL,
+	J1939_TP_RX,
+	J1939_TP_TX,
+}J1939_TP_State;
+
+struct J1939_TP_Flags
+{
+	/*TP的连接状态*/
+	J1939_TP_State state;
+};
+
+typedef struct
+{
+	unsigned long PGN ;
+	unsigned char data[J1939_TP_MAX_MESSAGE_LENGTH] ;
+	unsigned short byte_count;/*数据大小（字节）*/
+	unsigned char SA;/*目标地址（发送目的地  或  接受来源地）*/
+
+} J1939_MESSAGE_T ;
+
+typedef enum
+{
+	J1939_TP_TX_WAIT,
+	J1939_TP_TX_CM_START,
+	J1939_TP_TX_CM_WAIT,
+	J1939_TP_TX_DT,
+	J1939_TP_WAIT_ACK,
+	J1939_TP_TX_ERROR,
+	J1939_TX_DONE,
+}J1939_TP_Tx_Step;//协议的发送步骤
+typedef struct
+{
+	J1939_MESSAGE_T       tp_tx_msg;
+	unsigned short        time;
+	unsigned char         packet_offset_p;//数据包偏移指针
+	unsigned char         packets_total;//总共有多少个数据包
+	unsigned char         packets_request_num;//请求发送的数据包数（接受方准备接受的数据包数）
+	J1939_TP_Tx_Step      state ;
+} J1939_TRANSPORT_TX_INFO;
+
+typedef enum
+{
+	J1939_TP_RX_WAIT,
+	J1939_TP_RX_READ_DATA,
+	J1939_TP_RX_DATA_WAIT,
+	J1939_TP_RX_ERROR,
+	J1939_RX_DONE,
+}J1939_TP_Rx_Step;//协议的接收步骤
+typedef struct
+{
+	J1939_MESSAGE_T    	 tp_rx_msg;
+	char				 osbusy;//此位置1，代表系统繁忙，cpu需要处理其他的事物，直接拒绝一切的链接请求
+								//如果正在接受中，此位置1，则会发出链接保持消息帧。
+	unsigned short    	 time;
+	unsigned char        packets_total;//总共有多少个数据包
+	unsigned char        packets_ok_num;//已经接受的数据包数
+	J1939_TP_Rx_Step     state ;
+} J1939_TRANSPORT_RX_INFO;
+
+#endif //J1939_TP_RX_TX
 // J1939 Data Structures 
 // J1939_MESSAGE_STRUCT旨在J1939消息块映射到设备的地址映射。 只有字段PDU格式不映射到设备寄存器。
 // 结构应该简单地使用PDUFormat和忽视PDUFormat_Top。调整将立即接收和传输之前。
@@ -120,12 +198,12 @@ union J1939_MESSAGE_UNION
 		unsigned int	DataPage			: 1; 
 		unsigned int	Res					: 1; 
 		unsigned int	Priority			: 3; 
-		unsigned int	PDUFormat_Top		: 3;	// 这就需要前后处理。
-		unsigned char	PDUFormat;					// CA should use only PDUFormat. 
+		unsigned int	PDUFormat_Top		: 3;	
+		unsigned char	PDUFormat;					
 		unsigned char	PDUSpecific; 
 		unsigned char	SourceAddress; 
 		unsigned int	DataLength 			: 4; 
-		unsigned int	RTR					: 4;	// RTR bit, value always 0x00 
+		unsigned int	RTR					: 4;	
 		unsigned char	Data[J1939_DATA_LENGTH]; 
 	};
 	struct me Mxe;
@@ -150,18 +228,23 @@ union J1939_FLAGS_UNION
 	  unsigned char		FlagVal; 
 }; 
 typedef union J1939_FLAGS_UNION J1939_FLAG; 
- 
+
 // 向外部声明的全局变量
 extern unsigned char	CA_Name[J1939_DATA_LENGTH]; 
 extern unsigned char 	J1939_Address; 
 extern J1939_FLAG    	J1939_Flags; 
 extern J1939_MESSAGE    OneMessage;  
 extern unsigned char	RXQueueCount; //RX 列队计数器
- 
+#if J1939_TP_RX_TX
+//TP协议全局变量  
+extern struct J1939_TP_Flags           J1939_TP_Flags_t;   
+extern J1939_TRANSPORT_RX_INFO         TP_RX_MSG;    
+extern J1939_TRANSPORT_TX_INFO         TP_TX_MSG;
+#endif //J1939_TP_RX_TX
 
-#ifdef J1939_ACCEPT_CMDADD 
+#ifdef J1939_ACCEPT_CMDADD
 extern void  J1939_CommandedAddressHandling( void );
-#endif 
+#endif
 //出列 用于接受 *MsgPtr代表要存入的缓存
 extern unsigned char	J1939_DequeueMessage( J1939_MESSAGE *MsgPtr );
 //入列 用于发送 *MsgPtr代表要发送的缓存
@@ -181,6 +264,3 @@ static void 		    J1939_AddressClaimHandling( unsigned char Mode );
 #endif 
  
 #endif
-
-
- 

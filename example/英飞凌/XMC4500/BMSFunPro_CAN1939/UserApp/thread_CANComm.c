@@ -2,6 +2,8 @@
 #include "includes.h"
 #include "../J1939/J1939.H"
 
+extern void J1939_TP_Poll();
+
 void thread_CANComm (void const *argument)
 {
 	J1939_MESSAGE Msg;
@@ -12,17 +14,32 @@ void thread_CANComm (void const *argument)
 	while (J1939_Flags.WaitingForAddressClaimContention)
 		J1939_Poll(5);
 	//地址已经设置好了（设备已挂载到总线上）
+
+	TP_TX_MSG.state = J1939_TP_TX_CM_START;
+	TP_TX_MSG.packets_total = 4;
+	TP_TX_MSG.tp_tx_msg.SA = 0xf1;
+	TP_TX_MSG.tp_tx_msg.byte_count = 23;
+	TP_TX_MSG.tp_tx_msg.PGN = 65259;
+	for(_b =0;_b < 23;_b++)
+	{
+		TP_TX_MSG.tp_tx_msg.data[_b] = _b;
+	}
+
+
 	while(1)
 	{
-
-		Msg.Mxe.Priority				= J1939_INFO_PRIORITY;
-		Msg.Mxe.Res						= 0;
-		Msg.Mxe.DataPage				= 0;
-		Msg.Mxe.PDUFormat				= _b;
-		Msg.Mxe.DestinationAddress	    = 0XFF;
-		Msg.Mxe.DataLength				= 8;
-		while (J1939_EnqueueMessage( &Msg ) != RC_SUCCESS)
-			  J1939_Poll(5);
+		J1939_TP_Poll();
+		osDelay(1);
+//		Msg.Mxe.Priority				= J1939_INFO_PRIORITY;
+//		Msg.Mxe.Res						= 0;
+//		Msg.Mxe.DataPage				= 0;
+//		Msg.Mxe.PDUFormat				= _b;
+//		Msg.Mxe.DestinationAddress	    = 0XFF;
+//		Msg.Mxe.DataLength				= 8;
+//		Msg.Mxe.Data[0]= _b;
+//		while (J1939_EnqueueMessage( &Msg ) != RC_SUCCESS)
+//			  J1939_Poll(5);
+//		_b++;
 		while (RXQueueCount > 0)
 		{
 			J1939_DequeueMessage( &Msg );

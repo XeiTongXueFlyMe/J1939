@@ -1,0 +1,16 @@
+activeproject.background=BMSFunPro_CAN1939
+com.ifx.davex.ce.ui.views.linkbutton=true
+com.ifx.davex.enable.log=false
+com.ifx.davex.preferences.closeeditors=true
+com.ifx.davex.preferences.docenabled=true
+com.ifx.davex.preferences.latestversionenabled=true
+com.ifx.davex.preferences.remember.prev.mappings=false
+com.ifx.davex.preferences.restore.date=true
+com.ifx.davex.preferences.scripting=false
+com.ifx.davex.preferences.showbetaapps=true
+com.ifx.davex.preferences.showhiddencategories=false
+com.ifx.davex.sdk.error=false
+com.ifx.librarymanager.davesites=<?xml version\="1.0" encoding\="utf-8"?><Pref version\="1.0"><Lib uri\="http\://dave.infineon.com/Libraries/Examples/XMC_IFX/v4.1//daveSite.xml" provider\="Infineon Technologies AG" displayName\="DAVE Project Library Manager" enabled\="Yes"/><Lib uri\="http\://dave.infineon.com/Libraries/DAVE_Libs/XMC_IFX/v4.1//daveSite.xml" provider\="Infineon Technologies AG" displayName\="DAVE APPs Library Manager" enabled\="Yes"/><Lib uri\="http\://dave.infineon.com/Libraries/DAVE_Libs/Contributed/v4.1//daveSite.xml" provider\="Infineon Technologies AG" displayName\="Contributed DAVE APPs Library Manager" enabled\="Yes"/></Pref>
+com.ifx.librarymanager.libstore=C\:\\Users\\xieming\\Infineon\\D_LibraryStore_4.1
+eclipse.preferences.version=1
+showIntro=false

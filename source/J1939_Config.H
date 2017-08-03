@@ -70,7 +70,6 @@
 #define J1939_CA_NAME0 (J1939_IDENTITY_NUMBER & 0xFF)
 
 /******************************J1939功能配置******************************************/
-
 //是否使用接受协议TP对设备的地址进行远程配置（参考J1939-21，J1939-81）
 #define J1939_ACCEPT_CMDADD J1939_FALSE
 #define J1939_RX_QUEUE_SIZE 3
@@ -88,12 +87,15 @@
 #define Port_CAN_Transmit(MsgPtr) J1939_CAN_Transmit(MsgPtr) 
 #define Port_CAN_Receive(MsgPtr) J1939_CAN_Receive(MsgPtr)
 #define Port_SetAddressFilter(Address) J1939_SetAddressFilter(Address)
-#define Port_RXinterruptEnable() J1939_RXinterruptEnable() 
-#define Port_RXinterruptDisable() J1939_RXinterruptDisable() 
-#define Port_TXinterruptEnable() J1939_TXinterruptEnable() 
-#define Port_TXinterruptDisable() J1939_TXinterruptDisable() 
-#define Port_TXinterruptOk() J1939_TXinterruptOk()
-#define Port_CAN_identifier_clc()  CAN_identifier_clc()
+/*不使用中断模式，不对下面的函数进行移植*/
+#if J1939_POLL_ECAN == J1939_FALSE
+	#define Port_RXinterruptEnable() J1939_RXinterruptEnable() 
+	#define Port_RXinterruptDisable() J1939_RXinterruptDisable() 
+	#define Port_TXinterruptEnable() J1939_TXinterruptEnable() 
+	#define Port_TXinterruptDisable() J1939_TXinterruptDisable() 
+	#define Port_TXinterruptOk() J1939_TXinterruptOk()
+	#define Port_CAN_identifier_clc()  CAN_identifier_clc()
+#endif 
 
 /***************************************************************************************/
 /*

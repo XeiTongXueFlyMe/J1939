@@ -1,0 +1,9 @@
+ACTIVE_CONFIG_NAME=Debug
+AppCompatibilitySet=1
+DEVICE_PACK_VERSION=2.1.16
+DEVICE_PATH=/DeviceRoot/Microcontrollers/XMC4000/XMC4500 Series/XMC4500-F144x1024
+MBS_PROVIDER_ID_KEY=com.dave.mbs.xmc4000.xmc4000MbsFactory
+TEMPLATE_CODEGEN_DEBUG=disable
+TEMPLATE_KEY=com.ifx.xmc4000.appDaveProjectTemplate
+eclipse.preferences.version=1
+minDaveVersion=4.3.2

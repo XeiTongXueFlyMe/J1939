@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.cdt.ui.OPEN_ACTION_SELECTION_DIALOG_SECTION">
+		<item value="398" key="DIALOG_WIDTH"/>
+		<item value="1|微软雅黑|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|微软雅黑" key="DIALOG_FONT_NAME"/>
+		<item value="489" key="DIALOG_HEIGHT"/>
+		<item value="529" key="DIALOG_X_ORIGIN"/>
+		<item value="112" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.cdt.ui.text.hover.CMacroExpansionExploration.internal">
+		<item value="180" key="size.height"/>
+		<item value="384" key="size.width"/>
+	</section>
+	<section name="org.eclipse.cdt.ui.text.hover.CMacroExpansionExploration">
+	</section>
+	<section name="PDOMSearchPage">
+		<item value="false" key="caseSensitive"/>
+		<item value="227191" key="searchFlags"/>
+		<list key="previousPatterns">
+			<item value="TP_RX_MSGstateJ1939_TP_RX_READ_DATA"/>
+			<item value="0x32"/>
+			<item value="TXHead"/>
+			<item value="TXQueueCount"/>
+			<item value="osThreadCreate"/>
+			<item value="CommandedAddress"/>
+			<item value="XMC_FLASH_ProgramPage"/>
+			<item value="Port_TXinterruptDisable"/>
+			<item value="J1939_TXinterruptDisable"/>
+			<item value="J1939_TXinterruptEnable"/>
+		</list>
+	</section>
+	<section name="completion_proposal_size">
+	</section>
+</section>

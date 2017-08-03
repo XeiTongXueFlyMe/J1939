@@ -10,6 +10,8 @@
         "arm_math.h": "c",
         "rt_typedef.h": "c",
         "test_j1939_tp.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "vcruntime.h": "c",
+        "corecrt.h": "c"
     }
 }

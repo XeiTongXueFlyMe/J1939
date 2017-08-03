@@ -1,0 +1,16 @@
+eclipse.preferences.version=1
+environment/workspace/ARM_GCC_HOME/delimiter=;
+environment/workspace/ARM_GCC_HOME/operation=replace
+environment/workspace/ARM_GCC_HOME/value=${eclipse_home}ARM-GCC-49
+environment/workspace/DAVE_APP_STORE/delimiter=;
+environment/workspace/DAVE_APP_STORE/operation=replace
+environment/workspace/DAVE_APP_STORE/value=C\:\\Users\\xieming\\Infineon\\D_LibraryStore_4.1
+environment/workspace/DEVICE_FILE_LOCATION/delimiter=;
+environment/workspace/DEVICE_FILE_LOCATION/operation=replace
+environment/workspace/DEVICE_FILE_LOCATION/value=${DAVE_APP_STORE}\\DeviceFeatures
+environment/workspace/PATH/delimiter=;
+environment/workspace/PATH/operation=replace
+environment/workspace/PATH/value=${ARM_GCC_HOME};${DAVE_APP_STORE};${DEVICE_FILE_LOCATION}
+environment/workspace/append=true
+environment/workspace/appendContributed=true
+macros/workspace=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\r\n<macros/>\r\n

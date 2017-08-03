@@ -1,0 +1,14 @@
+ACTIVE_CONFIG_NAME=Debug
+AppCompatibilitySet=1
+DEVICE_DESC=Package\= LQFP144  \nROM\= 1 MB Flash  \nRAM\= 160 KB RAM  \nInOut\= 91 digital I/O  \nADC\= 26 ADC Channels, 12-bit, Delta Sigma Demodulator  \nDAC\= 2 DAC Channels, 12 bit  \nTimed_InOut\= 26 Timer, 48 CAPCOM channels, 2 POSIF   \nSerial\= 6 USIC channels, ETH, USB, CAN  \nDMA\= 12 DMA channels, ETH DMA, USB DMA   \nTouch\= Touch and LED matrix control  \nEBU\= MUX, DEMUX, Burst, SDRAM   \n
+DEVICE_NAME=XMC4500-F144x1024
+DEVICE_PACKAGE=LQFP144
+DEVICE_PACK_VERSION=2.1.16
+DEVICE_PATH=/DeviceRoot/Microcontrollers/XMC4000/XMC4500 Series/XMC4500-F144x1024
+FLASH_SIZE=1024
+MBS_PROVIDER_ID_KEY=com.dave.mbs.xmc4000.xmc4000MbsFactory
+SOFTWARE_ID=XMC4.5.00.F144.ALL
+TEMPLATE_CODEGEN_DEBUG=disable
+TEMPLATE_KEY=com.ifx.xmc4000.appDaveProjectTemplate
+eclipse.preferences.version=1
+minDaveVersion=4.3.2
