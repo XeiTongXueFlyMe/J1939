@@ -86,22 +86,22 @@ void main( void )
 ```
 void main( void )
 {
-    can_init();
-	char data[100] = {1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7};
+  can_init();
+  char data[100] = {1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7};
 
-	J1939_Initialization( TRUE );
-	// 等待地址声明超时
-	while (J1939_Flags.WaitingForAddressClaimContention)
-		J1939_Poll(5);
-	//地址已经声明好（设备已挂载到总线上）
-	while(1)
-	{
-        /*发送一个长帧 data*/
-		while(J1939_TP_TX_Message(65259,0XF1,data,sizeof(data))==RC_SUCCESS)
-			J1939_Poll(5);
-     	osDelay(1); //基本单位为10ms * 1;
-		J1939_Poll(20);
-	}
+  J1939_Initialization( TRUE );
+  // 等待地址声明超时
+  while (J1939_Flags.WaitingForAddressClaimContention)
+        J1939_Poll(5);
+  //地址已经声明好（设备已挂载到总线上）
+  while(1)
+  {
+  /*发送一个长帧 data*/
+  while(J1939_TP_TX_Message(65259,0XF1,data,sizeof(data))==RC_SUCCESS)
+     J1939_Poll(5);
+  osDelay(1); //基本单位为10ms * 1;
+     J1939_Poll(20);
+  }
 }
 ```
 # 示例3：
@@ -110,43 +110,42 @@ void main( void )
 ```
 void main( void )
 {
-    can_init();
-    //建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH
-	char data[J1939_TP_MAX_MESSAGE_LENGTH] = {0};
+  can_init();
+  //建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH
+  char data[J1939_TP_MAX_MESSAGE_LENGTH] = {0};
 
-	J1939_Initialization( TRUE );
-	// 等待地址声明超时
-	while (J1939_Flags.WaitingForAddressClaimContention)
-		J1939_Poll(5);
-	//地址已经声明好（设备已挂载到总线上）
-    //最简单的示例
-    while(1)
-	{
-        /*读取TP接受数据*/
+  J1939_Initialization( TRUE );
+  // 等待地址声明超时
+  while (J1939_Flags.WaitingForAddressClaimContention)
+        J1939_Poll(5);
+  //地址已经声明好（设备已挂载到总线上）
+  //最简单的示例
+  while(1)
+  {
+  /*读取TP接受数据*/
+  while(J1939_TP_RX_Message( data，sizeof(data))==RC_SUCCESS)
+  J1939_Poll(5);
+
+  osDelay(1); //基本单位为10ms * 1;
+     J1939_Poll(20);
+  }
+
+  //完整的接受逻辑示例
+  while(1)
+  {
+  /*判断有没有接受的TP到来*/
+  if(TP_RX_MSG.tp_rx_msg.byte_count >0)
+  {
+    /*判断数据是否是我们想要的PGN*/
+    if(TP_RX_MSG.tp_rx_msg.PGN == 我们想要的PGN)
+    {
         while(J1939_TP_RX_Message( data，sizeof(data))==RC_SUCCESS)
         J1939_Poll(5);
-     
-     	osDelay(1); //基本单位为10ms * 1;
-		J1939_Poll(20);
-	}
-
-    //完整的接受逻辑示例
-	while(1)
-	{
-        /*判断有没有接受的TP到来*/
-       if(TP_RX_MSG.tp_rx_msg.byte_count >0)
-       {
-            /*判断数据是否是我们想要的PGN*/
-            if(TP_RX_MSG.tp_rx_msg.PGN == 我们想要的PGN)
-            {
-                while(J1939_TP_RX_Message( data，sizeof(data))==RC_SUCCESS)
-                J1939_Poll(5);
-            }
-       }
-     	osDelay(1); //基本单位为10ms * 1;
-		J1939_Poll(20);
-	}
-
+    }
+  }
+  osDelay(1); //基本单位为10ms * 1;
+        J1939_Poll(20);
+  }
 }
 ```
 # 示例4：
