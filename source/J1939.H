@@ -127,6 +127,7 @@ typedef enum
 	J1939_TP_NULL,
 	J1939_TP_RX,
 	J1939_TP_TX,
+	J1939_TP_OSBUSY,//系统繁忙
 }J1939_TP_State;
 
 struct J1939_TP_Flags
@@ -255,7 +256,10 @@ extern void 			J1939_Initialization( BOOL );
 extern void			    J1939_ISR( void );
 //扫描入口
 extern void 			J1939_Poll( unsigned long ElapsedTime );
- 
+//TP协议的发送函数
+extern char J1939_TP_TX_Message(unsigned int PGN,unsigned char SA,char data[],unsigned short data_num);
+//TP协议的接受函数
+extern char J1939_TP_RX_Message(char *data,unsigned short data_num);
 #ifdef  __J1939_SOURCE 
 static void 		    J1939_ReceiveMessages( void );
 static void 		    J1939_RequestForAddressClaimHandling( void );
@@ -264,3 +268,6 @@ static void 		    J1939_AddressClaimHandling( unsigned char Mode );
 #endif 
  
 #endif
+
+
+ 

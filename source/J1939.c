@@ -368,6 +368,7 @@ void J1939_ISR( void )
     //调用相关的处理函数    
     J1939_ReceiveMessages();   
     J1939_TransmitMessages();   
+    J1939_TP_Poll();
     //可能存在因为错误产生中断，直接清除相关的标识位 
 }   
 #endif   
@@ -391,9 +392,10 @@ void J1939_Poll( unsigned long ElapsedTime )
     //更新的竞争等待时间
     ContentionWaitTime += ElapsedTime;   
     //我们必须调用J1939_ReceiveMessages接受函数，在时间被重置为0之前。
-    #if J1939_POLL_ECAN == J1939_TRUE   
+    #if J1939_POLL_ECAN == J1939_TRUE
         J1939_ReceiveMessages();
-        J1939_TransmitMessages();   
+        J1939_TransmitMessages();
+        J1939_TP_Poll();
     #endif   
 
 //当ECU需要竞争地址时，WaitingForAddressClaimContention在初始化中置位，并运行下面语句
@@ -593,14 +595,15 @@ static void J1939_ReceiveMessages( void )
                 	TP_RX_MSG.packets_ok_num++;
 					}
 					TP_RX_MSG.time = J1939_TP_T1;
-					/*判断是否收到偶数个数据包*/
-					if(TP_RX_MSG.packets_ok_num%2 == 0)
+					/*判断是否收到偶数个数据包或者读取到最后一个数据包*/
+					if((TP_RX_MSG.packets_ok_num%2 == 0) ||(TP_RX_MSG.packets_ok_num == TP_RX_MSG.packets_ok_num))
 					{
 						TP_RX_MSG.state = J1939_TP_RX_READ_DATA;
 						break ;
 					}
 					break ;
                 }
+                //程序不可能运行到这，但是我们不能放弃接受的数据包
                 goto PutInReceiveQueue;
 #endif//J1939_TP_RX_TX
 #endif//(J1939_TP_RX_TX || J1939_ACCEPT_CMDADD)
@@ -1010,12 +1013,12 @@ void J1939_read_DT_Packet()
 /*
 *输入：
 *输出:
-*说明：  TP
+*说明：  TP协议的心跳，为了满足在总线的计时准确，10ms轮询一次   J1939_TP_TX_RefreshCMTimer(10)
+*说明：  如果想要更高的分辨率，1ms轮询一次，但是要改下面计时函数  J1939_TP_TX_RefreshCMTimer(1)
 */
 void J1939_TP_Poll()
 {
-
-	if(J1939_TP_Flags_t.state == J1939_TP_NULL)
+	if(J1939_TP_Flags_t.state == J1939_TP_NULL || J1939_TP_Flags_t.state == J1939_TP_OSBUSY)
 	{
 		return ;
 	}
@@ -1032,7 +1035,7 @@ void J1939_TP_Poll()
 			break;
 		case J1939_TP_RX_DATA_WAIT:
 			/*等待TP.DT帧传输的消息*/
-			if(J1939_TP_IMEOUT_ABNORMAL == J1939_TP_RX_RefreshCMTimer(1))
+			if(J1939_TP_IMEOUT_ABNORMAL == J1939_TP_RX_RefreshCMTimer(10))
 			{
 				/* 等待超时，发生连接异常，跳转到异常步骤 */
 				TP_RX_MSG.state = J1939_TP_RX_ERROR;
@@ -1066,7 +1069,7 @@ void J1939_TP_Poll()
 				break;
 			case J1939_TP_TX_CM_WAIT:
 	    		/*等待TP.CM_CTS帧传输的消息*/
-				if(J1939_TP_IMEOUT_ABNORMAL == J1939_TP_TX_RefreshCMTimer(1))
+				if(J1939_TP_IMEOUT_ABNORMAL == J1939_TP_TX_RefreshCMTimer(10))
 				{
 					/* 等待超时，发生连接异常，跳转到异常步骤 */
 					TP_TX_MSG.state = J1939_TP_TX_ERROR;
@@ -1077,7 +1080,7 @@ void J1939_TP_Poll()
 	    		break;
 	        case J1939_TP_WAIT_ACK:
 	        	/*等待TP.EndofMsgACK帧传输的消息*/
-				if(J1939_TP_IMEOUT_ABNORMAL == J1939_TP_TX_RefreshCMTimer(1))
+				if(J1939_TP_IMEOUT_ABNORMAL == J1939_TP_TX_RefreshCMTimer(10))
 				{
 					/* 等待超时，发生连接异常，跳转到异常步骤 */
 					TP_TX_MSG.state = J1939_TP_TX_ERROR;
@@ -1099,5 +1102,88 @@ void J1939_TP_Poll()
 		}
 		return ;
 	}
+}
+/*
+*输入： PGN				TP会话的参数群编号
+*输入： SA					TP会话的目标地址
+*输入： *data				TP会话的数据缓存地址
+*输入： data_num		    TP会话的数据大小
+*输出: RC_SUCCESS        成功打开TP链接，开始进入发送流程
+*输出: RC_CANNOTTRANSMIT 不能发送，因为TP协议已经建立虚拟链接，并且未断开
+*说明：  TP协议的发送函数
+*/
+char J1939_TP_TX_Message(unsigned int PGN,unsigned char SA,char *data,unsigned short data_num)
+{
+	unsigned short _byte_count =0;
+	/*取得发送权限*/
+	if(J1939_TP_Flags_t.state == J1939_TP_NULL)
+	{
+		J1939_TP_Flags_t.state = J1939_TP_TX;
+	}else
+	{
+		return RC_CANNOTTRANSMIT;//不能发送，因为TP协议已经建立虚拟链接，并且未断开
+	}
+
+	TP_TX_MSG.tp_tx_msg.PGN = PGN;
+	TP_TX_MSG.tp_tx_msg.SA = SA;
+	TP_TX_MSG.tp_tx_msg.byte_count = data_num;
+	for(_byte_count = 0;_byte_count < data_num;_byte_count++)
+	{
+		TP_TX_MSG.tp_tx_msg.data[_byte_count] = data[_byte_count];
+	}
+	TP_TX_MSG.packet_offset_p = 0;
+	TP_TX_MSG.packets_request_num = 0;
+	TP_TX_MSG.packets_total = data_num/7 +1;
+	TP_TX_MSG.time = J1939_TP_T3;
+	//触发开始CM_START
+	TP_TX_MSG.state = J1939_TP_TX_CM_START;
+
+	return RC_SUCCESS;
+}
+/*
+*输入： data		读取数据的缓存
+*输入： data_num  读取数据的缓存大小
+*输出: RC_CANNOTRECEIVE 不能接受，TP协议正在接受数据中
+*输出: RC_SUCCESS		读取数据成功
+*说明：  TP的接受函数 , 接受缓存的大小必须大于接受数据的大小，建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH
+*说明：  请正确带入 缓存区的大小，参数错误程序运行有风险
+*应用实例：
+		char data[J1939_TP_MAX_MESSAGE_LENGTH]
+		while(J1939_TP_RX_Message( data，sizeof(data))==RC_SUCCESS)
+		  J1939_Poll(5);
+*/
+char J1939_TP_RX_Message(char *data,unsigned short data_num)
+{
+	int _a = 0;
+	/*判断是否能读取数据*/
+	if(J1939_TP_Flags_t.state == J1939_TP_NULL)
+	{
+		J1939_TP_Flags_t.state = J1939_TP_OSBUSY;
+	}else
+	{
+		return RC_CANNOTRECEIVE;//不能接受，TP协议正在接受数据中
+	}
+    //判断数据缓存够不够
+	if(data_num < TP_RX_MSG.tp_rx_msg.byte_count)
+	{
+		return RC_CANNOTRECEIVE;//不能接受，缓存区太小
+	}
+
+	for(_a = 0;_a < data_num;_a++)
+	{
+		data[_a] = TP_RX_MSG.tp_rx_msg.data[_a];
+	}
+
+    /*丢弃读取过的数据*/
+	TP_RX_MSG.tp_rx_msg.byte_count= 0u;
+	TP_RX_MSG.tp_rx_msg.PGN = 0;
+
+	/*释放TP接管权限*/
+	if(J1939_TP_Flags_t.state == J1939_TP_OSBUSY)
+	{
+		J1939_TP_Flags_t.state = J1939_TP_NULL;
+	}
+
+	return RC_SUCCESS;
 }
 #endif
