@@ -3,42 +3,28 @@
  *            J1939 Main Source Code
  *
  *********************************************************************
- * 文件名:        J1939.c
  *
- *	本程序是由XieTongXueFlyMe对现有的J1939协议文档分析，和对前辈的贡献总结和封装，写出
- *的一套开源的J1939驱动。
+ *	本程序是由XieTongXueFlyMe对现有的J1939协议文档分析，和对前辈的贡献总结,
+ * 写出的一套开源的J1939驱动。
  *	本协议特点：
  *		1.易移植（不针对特定的CAN硬件，只要满足CAN2.0B即可）
  *		2.轻量级（可适应低端的MCU）
  *		3.支持多任务调用接口（可用于嵌入式系统）
  *		4.双模式（轮询或者中断，逻辑更加简单明了）
  *		5.不掉帧（数据采用收发列队缓存）
- *	协议参考文献：
- *		1.SAE J1939 J1939概述
- *		2.SAE J1939-01 卡车，大客车控制通信文档（大概的浏览J1939协议的用法）
- *		3.SAE J1939-11 物理层文档
- *		4.SAE J1939-13 物理层文档
- *		5.SAE J1939-15 物理层文档
- *		6.SAE J1939-21 数据链路层文档（定义信息帧的数据结构，编码规则）
- *		7.SAE J1939-31 网络层文档（定义网络层的链接协议）
- *		8.SAE J1939-71 应用层文档（定义常用物理参数格式）
- *		9.SAE J1939-73 应用层文档（用于故障诊断）
- *		10.SAE J1939-74 应用层文档（可配置信息）
- *		11.SAE J1939-75 应用层文档（发电机组和工业设备）
- *		12.SAE J1939-81 网络管理协议
  *
  *  源代码分析网址：
- *		http://blog.csdn.net/xietongxueflyme/article/details/74908563
- *
+ *	http://blog.csdn.net/xietongxueflyme/article/details/74908563
  *
  * Version     Date        Description
  * ----------------------------------------------------------------------
  * v1.00     2017/06/04    首个版本
- *
+ * v1.01     2017/08/04    完善功能
  *
  * Author               Date         changes
  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *XieTongXueFlyMe       7/06/04      首个版本
+ *XieTongXueFlyMe       7/08/04      增加对TP的支持
  **********************************************************************/
 #ifndef         __J1939_SOURCE
 #define         __J1939_SOURCE
@@ -368,7 +354,9 @@ void J1939_ISR( void )
     //调用相关的处理函数    
     J1939_ReceiveMessages();   
     J1939_TransmitMessages();   
-    J1939_TP_Poll();
+    #if J1939_TP_RX_TX
+        J1939_TP_Poll();
+    #endif //J1939_TP_RX_TX
     //可能存在因为错误产生中断，直接清除相关的标识位 
 }   
 #endif   
@@ -395,7 +383,9 @@ void J1939_Poll( unsigned long ElapsedTime )
     #if J1939_POLL_ECAN == J1939_TRUE
         J1939_ReceiveMessages();
         J1939_TransmitMessages();
+	#if J1939_TP_RX_TX
         J1939_TP_Poll();
+	#endif //J1939_TP_RX_TX
     #endif   
 
 //当ECU需要竞争地址时，WaitingForAddressClaimContention在初始化中置位，并运行下面语句
