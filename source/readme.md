@@ -1,22 +1,32 @@
 ﻿# 简述：
-  文档分为两个独立的文件，source文件存放协议栈，example存放J1939协议栈的移植示例，每个示例可单独编译运行。将不断的更新移植示例。
+  文档分为两个独立的文件，source文件存放协议栈，example存放J1939协议栈的移植示例，每个示例可单独编译运行。将不断的更新移植示例，接受网友合并推送的移植示例。
 # 协议特性：
 * 易移植（不针对特定的CAN硬件，只要满足CAN2.0B即可）
 * 轻量级（可适应低端的MCU）
 * 支持多任务调用接口（可用于嵌入式系统）
 * 双模式（轮询或者中断，逻辑更加简单明了）
 * 不掉帧（数据采用收发列队缓存）
+# 功能：
+* 消息广播
+* 消息请求
+* 消息确认，响应
+* 群功能
+* 专用传输A
+* 专用传输B
+* 地址声明竞争
+* 远程地址配置
+* 自动分配地址
+* 多帧传输协议TP
 # 协议格式：
 * UTF-8	
-* 本仓库存在两条分支
-	1. j1939_main  源代码分支
-	2. master      源代码　+　移植示例分支 	
 # J1939协议栈接口
 * J1939_Initialization(BOOL)
 * J1939_ISR(void)
 * J1939_Poll(unsigned long ElapsedTime)
 * J1939_DequeueMessage(J1939_MESSAGE *MsgPtr)
 * J1939_EnqueueMessage(J1939_MESSAGE *MsgPtr)
+* J1939_TP_TX_Message(unsigned int PGN,unsigned char SA,char *data,unsigned short data_num)
+* J1939_TP_RX_Message(char *data,unsigned short data_num)
 	   
 # 源代码分析网址：
 * <http://blog.csdn.net/xietongxueflyme/article/details/74908563>
@@ -26,9 +36,9 @@
 
 # 协议中参考的资料：
 * <http://download.csdn.net/detail/xietongxueflyme/9887994>
-# 示例：
-* 轮询模式简单使用示例
-* 备注：接受处理，不是标准的接受处理。这里只是测试接受
+# 示例1：
+* 轮询模式
+* 备注：消息的发送接受简单的示例
 ```
 void main( void )
 {
@@ -37,7 +47,7 @@ void main( void )
     //等待地址超时
     while (J1939_Flags.WaitingForAddressClaimContention)
         J1939_Poll(5);
-    //设备确认总线上没有，竞争地址的设备存在
+    //运行到这里，说明地址已经声明好（设备已挂载到总线上）
     while (1)
     {
     /***********************发送数据***************************/
@@ -70,7 +80,77 @@ void main( void )
     }
 }
 ```
+# 示例2：
+* 轮询模式
+* 备注：长帧的发送，TP的发送示例
+```
+void main( void )
+{
+    can_init();
+    char data[100] = {1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7};
+
+    J1939_Initialization( TRUE );
+    // 等待地址声明超时
+    while (J1939_Flags.WaitingForAddressClaimContention)
+          J1939_Poll(5);
+    //地址已经声明好（设备已挂载到总线上）
+    while(1)
+    {
+        /*发送一个长帧 data*/
+        while(J1939_TP_TX_Message(65259,0XF1,data,sizeof(data))==RC_SUCCESS)
+              J1939_Poll(5);
+        osDelay(1); //基本单位为10ms * 1;
+        J1939_Poll(20);
+    }
+}
+```
+# 示例3：
+* 轮询模式
+* 备注：长帧的接受，TP的接受示例
+```
+void main( void )
+{
+	can_init();
+	//建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH
+	char data[J1939_TP_MAX_MESSAGE_LENGTH] = {0};
+
+	J1939_Initialization( TRUE );
+	// 等待地址声明超时
+	while (J1939_Flags.WaitingForAddressClaimContention)
+	    J1939_Poll(5);
+	//地址已经声明好（设备已挂载到总线上）
+	//最简单的示例
+	while(1)
+	{
+        /*读取TP接受数据*/
+        while(J1939_TP_RX_Message( data，sizeof(data))==RC_SUCCESS)
+            J1939_Poll(5);
+
+        osDelay(1); //基本单位为10ms * 1;
+        J1939_Poll(20);
+	}
+
+	//完整的接受逻辑示例
+	while(1)
+	{
+        /*判断有没有接受的TP到来*/
+        if(TP_RX_MSG.tp_rx_msg.byte_count >0)
+        {
+            /*判断数据是否是我们想要的PGN*/
+            if(TP_RX_MSG.tp_rx_msg.PGN == 我们想要的PGN)
+            {
+                while(J1939_TP_RX_Message( data，sizeof(data))==RC_SUCCESS)
+                J1939_Poll(5);
+            }
+        }
+        osDelay(1); //基本单位为10ms * 1;
+        J1939_Poll(20);
+	}
+}
+```
+# 示例4：
 * 中断模式
+* 备注：消息确认，响应
 ```
 void main()
 {
@@ -112,7 +192,7 @@ void main()
                         Msg.Data[6]         = J1939_PGN1_REQ_ENGINE_SPEED;
                         Msg.Data[7]         = J1939_PGN2_REQ_ENGINE_SPEED;
                     }
-                    else
+                    else//相关的PGN（参数群的响应）
                     {
                     /*******************上传相关的参数群*****************/
                         Msg.Priority    = J1939_INFO_PRIORITY;
