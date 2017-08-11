@@ -28,8 +28,16 @@
  **********************************************************************/
 #ifndef __J1939_H 
 #define __J1939_H 
+/**********************变量类型定义**************************/
+#define FALSE 0
+#define TRUE 1
+//typedef enum _BOOL { FALSE = 0, TRUE } BOOL;
+typedef unsigned int   j1939_uint32_t;
+typedef int   		   j1939_int32_t;
+typedef unsigned short j1939_uint16_t;
+typedef unsigned char  j1939_uint8_t;
+typedef char           j1939_int8_t;
 
-typedef enum _BOOL { FALSE = 0, TRUE } BOOL; 
 
 //函数返回代码
 #define RC_SUCCESS			    0  //成功
@@ -57,10 +65,10 @@ typedef enum _BOOL { FALSE = 0, TRUE } BOOL;
 #define J1939_NULL_ADDRESS			    254 
  
 //J1939协议栈的PNG请求响应，相关的定义
-#define J1939_PF_REQUEST2			201      //请求
-#define J1939_PF_TRANSFER			202      //转移
+#define J1939_PF_REQUEST2				201  //请求
+#define J1939_PF_TRANSFER				202  //转移
 
-#define J1939_PF_REQUEST			234      //请求，用提供握手机制
+#define J1939_PF_REQUEST				234  //请求，用提供握手机制
 #define J1939_PF_ACKNOWLEDGMENT			232  //确认请求，用提供握手机制
 
 #define J1939_ACK_CONTROL_BYTE			0    //代表确认
@@ -86,16 +94,16 @@ typedef enum _BOOL { FALSE = 0, TRUE } BOOL;
 #define J1939_EOMACK_CONTROL_BYTE		19		// 消息应答结束
 #define J1939_BAM_CONTROL_BYTE			32		// 广播公告消息
 #define J1939_CONNABORT_CONTROL_BYTE	255	// 连接中断控制字节（放弃连接）
-#define J1939_RESERVED_BYTE              0xFF
+#define J1939_RESERVED_BYTE             0xFF
  
 //与J1939网络层有关的定义 
-#define J1939_PGN2_REQ_ADDRESS_CLAIM		0x00 
-#define J1939_PGN1_REQ_ADDRESS_CLAIM		0xEA   
-#define J1939_PGN0_REQ_ADDRESS_CLAIM		0x00 
+#define J1939_PGN2_REQ_ADDRESS_CLAIM	0x00 
+#define J1939_PGN1_REQ_ADDRESS_CLAIM	0xEA   
+#define J1939_PGN0_REQ_ADDRESS_CLAIM	0x00 
  
-#define J1939_PGN2_COMMANDED_ADDRESS		0x00 
-#define J1939_PGN1_COMMANDED_ADDRESS		0xFE	//命令地址消息 
-#define J1939_PGN0_COMMANDED_ADDRESS		0xD8    //参考J1939-81 地址命令配置
+#define J1939_PGN2_COMMANDED_ADDRESS	0x00 
+#define J1939_PGN1_COMMANDED_ADDRESS	0xFE	//命令地址消息 
+#define J1939_PGN0_COMMANDED_ADDRESS	0xD8    //参考J1939-81 地址命令配置
  
 #define J1939_PF_ADDRESS_CLAIMED		238
 #define J1939_PF_CANNOT_CLAIM_ADDRESS	238
@@ -116,18 +124,18 @@ typedef enum
 	J1939_TP_OSBUSY,//系统繁忙
 }J1939_TP_State;
 
-struct J1939_TP_Flags
+typedef struct
 {
 	/*TP的连接状态*/
 	J1939_TP_State state;
-};
+}J1939_TP_Flags;
 
 typedef struct
 {
-	unsigned long PGN ;
-	unsigned char data[J1939_TP_MAX_MESSAGE_LENGTH] ;
-	unsigned short byte_count;/*数据大小（字节）*/
-	unsigned char SA;/*目标地址（发送目的地  或  接受来源地）*/
+	j1939_uint32_t PGN ;
+	j1939_uint8_t  data[J1939_TP_MAX_MESSAGE_LENGTH] ;
+	j1939_uint16_t byte_count;/*数据大小（字节）*/
+	j1939_uint8_t  SA;/*目标地址（发送目的地  或  接受来源地）*/
 
 } J1939_MESSAGE_T ;
 
@@ -144,10 +152,10 @@ typedef enum
 typedef struct
 {
 	J1939_MESSAGE_T       tp_tx_msg;
-	unsigned short        time;
-	unsigned char         packet_offset_p;//数据包偏移指针
-	unsigned char         packets_total;//总共有多少个数据包
-	unsigned char         packets_request_num;//请求发送的数据包数（接受方准备接受的数据包数）
+	j1939_uint16_t        time;
+	j1939_uint8_t         packet_offset_p;//数据包偏移指针
+	j1939_uint8_t         packets_total;//总共有多少个数据包
+	j1939_uint8_t         packets_request_num;//请求发送的数据包数（接受方准备接受的数据包数）
 	J1939_TP_Tx_Step      state ;
 } J1939_TRANSPORT_TX_INFO;
 
@@ -162,11 +170,11 @@ typedef enum
 typedef struct
 {
 	J1939_MESSAGE_T    	 tp_rx_msg;
-	char				 osbusy;//此位置1，代表系统繁忙，cpu需要处理其他的事物，直接拒绝一切的链接请求
+	j1939_uint8_t		 osbusy;//此位置1，代表系统繁忙，cpu需要处理其他的事物，直接拒绝一切的链接请求
 								//如果正在接受中，此位置1，则会发出链接保持消息帧。
-	unsigned short    	 time;
-	unsigned char        packets_total;//总共有多少个数据包
-	unsigned char        packets_ok_num;//已经接受的数据包数
+	j1939_uint16_t    	 time;
+	j1939_uint8_t        packets_total;//总共有多少个数据包
+	j1939_uint8_t        packets_ok_num;//已经接受的数据包数
 	J1939_TP_Rx_Step     state ;
 } J1939_TRANSPORT_RX_INFO;
 
@@ -182,19 +190,19 @@ union J1939_MESSAGE_UNION
 { 
 	struct   me 
 	{ 
-		unsigned int	DataPage			: 1; 
-		unsigned int	Res					: 1; 
-		unsigned int	Priority			: 3; 
-		unsigned int	PDUFormat_Top		: 3;	
-		unsigned char	PDUFormat;					
-		unsigned char	PDUSpecific; 
-		unsigned char	SourceAddress; 
-		unsigned int	DataLength 			: 4; 
-		unsigned int	RTR					: 4;	
-		unsigned char	Data[J1939_DATA_LENGTH]; 
+		j1939_uint32_t	DataPage			: 1; 
+		j1939_uint32_t	Res					: 1; 
+		j1939_uint32_t	Priority			: 3; 
+		j1939_uint32_t	PDUFormat_Top		: 3;	
+		j1939_uint8_t	PDUFormat;					
+		j1939_uint8_t	PDUSpecific; 
+		j1939_uint8_t	SourceAddress; 
+		j1939_uint32_t	DataLength 			: 4; 
+		j1939_uint32_t	RTR					: 4;	
+		j1939_uint8_t	Data[J1939_DATA_LENGTH]; 
 	};
 	struct me Mxe;
-	unsigned char		Array[J1939_MSG_LENGTH + J1939_DATA_LENGTH]; 
+	j1939_uint8_t		Array[J1939_MSG_LENGTH + J1939_DATA_LENGTH]; 
 }; 
 
 #define GroupExtension 		PDUSpecific 
@@ -206,25 +214,25 @@ union J1939_FLAGS_UNION
 	
 	struct 
 	{ 
-		unsigned int	CannotClaimAddress				: 1; 
-		unsigned int	WaitingForAddressClaimContention: 1; 
-		unsigned int	GettingCommandedAddress			: 1; 
-		unsigned int	GotFirstDataPacket				: 1; 
-		unsigned int	ReceivedMessagesDropped			: 1; 
+		j1939_uint32_t	CannotClaimAddress				: 1; 
+		j1939_uint32_t	WaitingForAddressClaimContention: 1; 
+		j1939_uint32_t	GettingCommandedAddress			: 1; 
+		j1939_uint32_t	GotFirstDataPacket				: 1; 
+		j1939_uint32_t	ReceivedMessagesDropped			: 1; 
    }; 
-	  unsigned char		FlagVal; 
+	  j1939_uint8_t		FlagVal; 
 }; 
 typedef union J1939_FLAGS_UNION J1939_FLAG; 
 
 // 向外部声明的全局变量
-extern unsigned char	CA_Name[J1939_DATA_LENGTH]; 
-extern unsigned char 	J1939_Address; 
+extern j1939_uint8_t	CA_Name[J1939_DATA_LENGTH]; 
+extern j1939_uint8_t 	J1939_Address; 
 extern J1939_FLAG    	J1939_Flags; 
 extern J1939_MESSAGE    OneMessage;  
-extern unsigned char	RXQueueCount; //RX 列队计数器
+extern j1939_uint8_t	RXQueueCount; //RX 列队计数器
 #if J1939_TP_RX_TX
 //TP协议全局变量  
-extern struct J1939_TP_Flags           J1939_TP_Flags_t;   
+extern J1939_TP_Flags           	   J1939_TP_Flags_t;   
 extern J1939_TRANSPORT_RX_INFO         TP_RX_MSG;    
 extern J1939_TRANSPORT_TX_INFO         TP_TX_MSG;
 #endif //J1939_TP_RX_TX
@@ -233,24 +241,26 @@ extern J1939_TRANSPORT_TX_INFO         TP_TX_MSG;
 extern void  J1939_CommandedAddressHandling( void );
 #endif
 //出列 用于接受 *MsgPtr代表要存入的缓存
-extern unsigned char	J1939_DequeueMessage( J1939_MESSAGE *MsgPtr );
+extern j1939_uint8_t	J1939_DequeueMessage( J1939_MESSAGE *MsgPtr );
 //入列 用于发送 *MsgPtr代表要发送的缓存
-extern unsigned char  	J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr );
+extern j1939_uint8_t  	J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr );
 //初始化
-extern void 			J1939_Initialization( BOOL );
+extern void 			J1939_Initialization(j1939_uint8_t );
 //中断入口
 extern void			    J1939_ISR( void );
 //扫描入口
-extern void 			J1939_Poll( unsigned long ElapsedTime );
+extern void 			J1939_Poll( j1939_uint32_t ElapsedTime );
 //TP协议的发送函数
-extern char J1939_TP_TX_Message(unsigned int PGN,unsigned char SA,char data[],unsigned short data_num);
+extern j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_int8_t data[],j1939_uint16_t data_num);
 //TP协议的接受函数
-extern char J1939_TP_RX_Message(char *data,unsigned short data_num);
+extern j1939_int8_t J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num);
+//TP轮询函数
+void J1939_TP_Poll();
 #ifdef  __J1939_SOURCE 
 static void 		    J1939_ReceiveMessages( void );
 static void 		    J1939_RequestForAddressClaimHandling( void );
-static unsigned char 	J1939_TransmitMessages( void );
-static void 		    J1939_AddressClaimHandling( unsigned char Mode );
+static j1939_uint8_t 	J1939_TransmitMessages( void );
+static void 		    J1939_AddressClaimHandling( j1939_uint8_t Mode );
 #endif 
  
 #endif

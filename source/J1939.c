@@ -40,52 +40,52 @@
 #define ADDRESS_CLAIM_RX   2
 
 //全局变量。
-unsigned char                   CA_Name[J1939_DATA_LENGTH];//设备的标称符（参考1939-81）
-unsigned char                   CommandedAddress;   
+j1939_uint8_t                   CA_Name[J1939_DATA_LENGTH];//设备的标称符（参考1939-81）
+j1939_uint8_t                   CommandedAddress;   
 #if J1939_ACCEPT_CMDADD == J1939_TRUE   
-    unsigned char               CommandedAddressSource;   
-    unsigned char               CommandedAddressName[J1939_DATA_LENGTH];   
+    j1939_uint8_t               CommandedAddressSource;   
+    j1939_uint8_t               CommandedAddressName[J1939_DATA_LENGTH];   
 #endif   
-unsigned long                   ContentionWaitTime;   
-unsigned char                   J1939_Address;   
+j1939_uint32_t                  ContentionWaitTime;   
+j1939_uint8_t                   J1939_Address;   
 J1939_FLAG                      J1939_Flags;   
 J1939_MESSAGE                   OneMessage;   
 //接受列队全局变量   
-unsigned char                   RXHead;   
-unsigned char                   RXTail;   
-unsigned char                   RXQueueCount;   
+j1939_uint8_t                   RXHead;   
+j1939_uint8_t                   RXTail;   
+j1939_uint8_t                   RXQueueCount;   
 J1939_MESSAGE                   RXQueue[J1939_RX_QUEUE_SIZE];   
 //发送列队全局变量  
-unsigned char                   TXHead;   
-unsigned char                   TXTail;   
-unsigned char                   TXQueueCount;   
+j1939_uint8_t                   TXHead;   
+j1939_uint8_t                   TXTail;   
+j1939_uint8_t                   TXQueueCount;   
 J1939_MESSAGE                   TXQueue[J1939_TX_QUEUE_SIZE];
 #if J1939_TP_RX_TX
 //TP协议全局变量  
-struct J1939_TP_Flags           J1939_TP_Flags_t;   
+J1939_TP_Flags                  J1939_TP_Flags_t;   
 J1939_TRANSPORT_RX_INFO         TP_RX_MSG;    
 J1939_TRANSPORT_TX_INFO         TP_TX_MSG;
 #endif //J1939_TP_RX_TX
 // 函数声明   
 #if J1939_ACCEPT_CMDADD == J1939_TRUE   
-    BOOL CA_AcceptCommandedAddress( void );   
+    j1939_int8_t CA_AcceptCommandedAddress( void );   
 #endif   
    
 #if J1939_ARBITRARY_ADDRESS != 0x00   
 //地址竞争重新估算，设备在总线上要申请的地址
-extern  BOOL ECU_RecalculateAddress( unsigned char * Address);   
+extern  j1939_int8_t ECU_RecalculateAddress( j1939_uint8_t * Address);   
 #endif   
 
 /*
-*输入：unsigned char *     Array of NAME bytes 
+*输入：uint8_t *     Array of NAME bytes 
 *输出： -1 - CA_Name 是小于 OtherName
 *       0  - CA_Name与OtherName 相等
 *       1  - CA_Name 是大于 OtherName
 *说明：比较传入的数组数据名称与设备当前名称存储在CA_Name。
 */
-signed char CompareName( unsigned char *OtherName )   
+j1939_int8_t CompareName( j1939_uint8_t *OtherName )   
 {   
-    unsigned char   i;   
+    j1939_uint8_t   i;   
    
     for (i = 0; (i<J1939_DATA_LENGTH) && (OtherName[i] == CA_Name[i]); i++);   
    
@@ -103,7 +103,7 @@ signed char CompareName( unsigned char *OtherName )
 */  
 void CopyName(void)   
 {   
-    unsigned char i;   
+    j1939_uint8_t i;   
    
     for (i=0; i<J1939_DATA_LENGTH; i++)   
     	OneMessage.Mxe.Data[i]= CA_Name[i];
@@ -115,7 +115,7 @@ void CopyName(void)
 *说明：设置过滤器为指定值，起到过滤地址作用。(参考CAN2.0B的滤波器)
        滤波函数的设置段为PS段
 */    
-void SetAddressFilter( unsigned char Address )   
+void SetAddressFilter( j1939_uint8_t Address )   
 {   
    Port_SetAddressFilter(Address);
 }   
@@ -147,7 +147,7 @@ void SendOneMessage( J1939_MESSAGE *MsgPtr )
     ADDRESS_CLAIM_RX表示一个地址声明消息已经收到,这个CA必须保卫或放弃其地址。
     ADDRESS_CLAIM_TX表明CA是初始化一个声明其地址。
 */      
-static void J1939_AddressClaimHandling( unsigned char Mode )   
+static void J1939_AddressClaimHandling( j1939_uint8_t Mode )   
 {   
     OneMessage.Mxe.Priority = J1939_CONTROL_PRIORITY;
     OneMessage.Mxe.PDUFormat = J1939_PF_ADDRESS_CLAIMED;
@@ -211,9 +211,9 @@ SendAddressClaim:
        RC_CANNOTRECEIVE    目前系统没有接受到消息，应为不能在网络中申请到地址
 *说明：从接受队列中读取一个信息到*MsgPtr。如果我们用的是中断，需要将中断失能，在获取接受队列数据时
 */    
-unsigned char J1939_DequeueMessage( J1939_MESSAGE *MsgPtr )   
+j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr )   
 {   
-    unsigned char   rc = RC_SUCCESS;   
+    j1939_uint8_t   rc = RC_SUCCESS;   
 
  //***************************关接受中断********************************  
  #if J1939_POLL_ECAN == J1939_FALSE
@@ -250,9 +250,9 @@ unsigned char J1939_DequeueMessage( J1939_MESSAGE *MsgPtr )
        如果信息不能入队或者发送，将有一个相应的返回提示，
         如果发送中断被设置（可用），当消息列队后，发送中断被使能
 */   
-unsigned char J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr )   
+j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr )   
 {   
-    unsigned char   rc = RC_SUCCESS;   
+    j1939_uint8_t   rc = RC_SUCCESS;   
 
 #if J1939_POLL_ECAN == J1939_FALSE  
     Port_TXinterruptDisable();
@@ -294,7 +294,7 @@ unsigned char J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr )
         如果设备需要初始化自己的标识符和地址，将InitNAMEandAddress置位。
 */   
 
-void J1939_Initialization( BOOL InitNAMEandAddress )   
+void J1939_Initialization( j1939_uint8_t InitNAMEandAddress )   
 {
     /*初始化全局变量*/   
     J1939_Flags.FlagVal = 1; // 没有声明地址，同事其他的标识位将被设置为0（复位）
@@ -361,7 +361,7 @@ void J1939_ISR( void )
 }   
 #endif   
 /*
-*输入： unsigned char   一个大概的毫秒数，通常设置 5 或 3 
+*输入： j1939_uint8_t   一个大概的毫秒数，通常设置 5 或 3 
 *输出:   
 *说明：如果我们采用轮询的方式获取信息，这个函数每几个毫秒将被调用一次。
         不断的接受消息和发送消息从消息队列中
@@ -375,7 +375,7 @@ void J1939_ISR( void )
 
         如果使用中断模式，本程序将不会处理接受和发送消息，只处理地址竞争超时。
 */     
-void J1939_Poll( unsigned long ElapsedTime )   
+void J1939_Poll( j1939_uint32_t ElapsedTime )   
 {
     //更新的竞争等待时间
     ContentionWaitTime += ElapsedTime;   
@@ -425,7 +425,7 @@ void J1939_Poll( unsigned long ElapsedTime )
 static void J1939_ReceiveMessages( void )   
 {
 #if J1939_TP_RX_TX
-	uint32_t _pgn = 0;
+	j1939_uint32_t _pgn = 0;
 #endif //J1939_TP_RX_T
     /*从接收缓存中读取信息到OneMessage中，OneMessage是一个全局变量*/
     /*Port_CAN_Receive函数读取到数据返回1，没有数据则返回0*/
@@ -448,18 +448,18 @@ static void J1939_ReceiveMessages( void )
                 }
 #endif//J1939_ACCEPT_CMDADD
 #if J1939_TP_RX_TX
-                _pgn = (uint32_t)((OneMessage.Mxe.Data[7]<<16)&0xFF0000)
-                						+(uint32_t)((OneMessage.Mxe.Data[6]<<8)&0xFF00)
-                						+(uint32_t)((OneMessage.Mxe.Data[5])&0xFF);
+                _pgn = (j1939_uint32_t)((OneMessage.Mxe.Data[7]<<16)&0xFF0000)
+                						+(j1939_uint32_t)((OneMessage.Mxe.Data[6]<<8)&0xFF00)
+                						+(j1939_uint32_t)((OneMessage.Mxe.Data[5])&0xFF);
                 if((J1939_TP_Flags_t.state == J1939_TP_NULL) && (TP_RX_MSG.state == J1939_TP_RX_WAIT))
 				{
                 	J1939_TP_Flags_t.state = J1939_TP_RX;
                     if(OneMessage.Mxe.Data[0] == 16)
                     {
                     	TP_RX_MSG.tp_rx_msg.SA = OneMessage.Mxe.SourceAddress;
-                    	TP_RX_MSG.tp_rx_msg.PGN = (uint32_t)((OneMessage.Mxe.Data[7]<<16)&0xFF0000)
-                            						+(uint32_t)((OneMessage.Mxe.Data[6]<<8)&0xFF00)
-                            						+(uint32_t)((OneMessage.Mxe.Data[5])&0xFF);
+                    	TP_RX_MSG.tp_rx_msg.PGN = (j1939_uint32_t)((OneMessage.Mxe.Data[7]<<16)&0xFF0000)
+                            						+(j1939_uint32_t)((OneMessage.Mxe.Data[6]<<8)&0xFF00)
+                            						+(j1939_uint32_t)((OneMessage.Mxe.Data[5])&0xFF);
                     	/*如果系统繁忙*/
                     	if(TP_RX_MSG.osbusy)
                     	{
@@ -467,14 +467,14 @@ static void J1939_ReceiveMessages( void )
                     		break;
                     	}
                     	/*判断是否有足够的内存接收数据，如果没有直接，断开连接*/
-                    	if(((uint32_t)((OneMessage.Mxe.Data[2]<<8)&0xFF00)
-                    			+(uint32_t)((OneMessage.Mxe.Data[1])&0xFF)) > J1939_TP_MAX_MESSAGE_LENGTH)
+                    	if(((j1939_uint32_t)((OneMessage.Mxe.Data[2]<<8)&0xFF00)
+                    			+(j1939_uint32_t)((OneMessage.Mxe.Data[1])&0xFF)) > J1939_TP_MAX_MESSAGE_LENGTH)
                     	{
                     		TP_RX_MSG.state = J1939_TP_RX_ERROR;
                     		break;
                     	}
-                    	TP_RX_MSG.tp_rx_msg.byte_count = ((uint32_t)((OneMessage.Mxe.Data[2]<<8)&0xFF00)
-                    									 +(uint32_t)((OneMessage.Mxe.Data[1])&0xFF));
+                    	TP_RX_MSG.tp_rx_msg.byte_count = ((j1939_uint32_t)((OneMessage.Mxe.Data[2]<<8)&0xFF00)
+                    									 +(j1939_uint32_t)((OneMessage.Mxe.Data[1])&0xFF));
                     	TP_RX_MSG.packets_total = OneMessage.Mxe.Data[3];
                     	TP_RX_MSG.time = J1939_TP_T2;
                     	TP_RX_MSG.state = J1939_TP_RX_READ_DATA;
@@ -513,7 +513,7 @@ static void J1939_ReceiveMessages( void )
 										else
 										{ /* response parameter OK */
 											TP_TX_MSG.packets_request_num = OneMessage.Mxe.Data[1];
-											TP_TX_MSG.packet_offset_p = (uint8_t)(OneMessage.Mxe.Data[2] - 1);
+											TP_TX_MSG.packet_offset_p = (j1939_uint8_t)(OneMessage.Mxe.Data[2] - 1);
 											TP_TX_MSG.state = J1939_TP_TX_DT;
 										}
 
@@ -658,7 +658,7 @@ static void J1939_RequestForAddressClaimHandling( void )
 *说明：  调用这个函数后，如果发送消息列队中有消息就位，则会发送消息 ，如果不能发送消息，相关的错误代码将返回。
         程序运行期间，中断是被失能的。 
 */    
-static unsigned char J1939_TransmitMessages( void )   
+static j1939_uint8_t J1939_TransmitMessages( void )   
 {   
     if (TXQueueCount == 0)   
     {   
@@ -703,8 +703,8 @@ static unsigned char J1939_TransmitMessages( void )
 void J1939_TP_DT_Packet_send(void)
 {
 	J1939_MESSAGE _msg;
-	uint16_t _packet_offset_p;
-	int _i=0;
+	j1939_uint16_t _packet_offset_p;
+	j1939_int32_t _i=0;
 	_msg.Mxe.Priority = J1939_TP_DT_PRIORITY;
 	_msg.Mxe.DataPage =0;
 	_msg.Mxe.PDUFormat = J1939_PF_DT;
@@ -717,9 +717,9 @@ void J1939_TP_DT_Packet_send(void)
     {
     	TP_TX_MSG.packets_request_num--;
     	/*获取数据偏移指针*/
-    	_packet_offset_p = (uint16_t)(TP_TX_MSG.packet_offset_p*7u);
+    	_packet_offset_p = (j1939_uint16_t)(TP_TX_MSG.packet_offset_p*7u);
     	/*加载数据包编号*/
-    	_msg.Mxe.Data[0] = (uint8_t)(1u + TP_TX_MSG.packet_offset_p);
+    	_msg.Mxe.Data[0] = (j1939_uint8_t)(1u + TP_TX_MSG.packet_offset_p);
 
         for(_i = 0; _i<7; _i++)
         {
@@ -775,7 +775,7 @@ void J1939_TP_DT_Packet_send(void)
 */
 void J1939_CM_Start(void)
 {
-	uint32_t pgn_num;
+	j1939_uint32_t pgn_num;
 	J1939_MESSAGE _msg;
 
     pgn_num = TP_TX_MSG.tp_tx_msg.PGN;
@@ -786,13 +786,13 @@ void J1939_CM_Start(void)
     _msg.Mxe.DestinationAddress = TP_TX_MSG.tp_tx_msg.SA;
     _msg.Mxe.DataLength = 8;
     _msg.Mxe.Data[0] = J1939_RTS_CONTROL_BYTE;
-    _msg.Mxe.Data[1] = (uint8_t) TP_TX_MSG.tp_tx_msg.byte_count ;
-    _msg.Mxe.Data[2] = (uint8_t) ((TP_TX_MSG.tp_tx_msg.byte_count)>>8);
+    _msg.Mxe.Data[1] = (j1939_uint8_t) TP_TX_MSG.tp_tx_msg.byte_count ;
+    _msg.Mxe.Data[2] = (j1939_uint8_t) ((TP_TX_MSG.tp_tx_msg.byte_count)>>8);
     _msg.Mxe.Data[3] = TP_TX_MSG.packets_total;
     _msg.Mxe.Data[4] = J1939_RESERVED_BYTE;
-    _msg.Mxe.Data[7] = (uint8_t)((pgn_num>>16) & 0xff);
-    _msg.Mxe.Data[6] = (uint8_t)(pgn_num>>8 & 0xff);
-    _msg.Mxe.Data[5] = (uint8_t)(pgn_num & 0xff);
+    _msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
+    _msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
+    _msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 
 	while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
 		J1939_Poll(5);
@@ -810,7 +810,7 @@ void J1939_CM_Start(void)
 void J1939_TP_TX_Abort(void)
 {
 	J1939_MESSAGE _msg;
-	uint32_t pgn_num;
+	j1939_uint32_t pgn_num;
 
 	pgn_num = TP_TX_MSG.tp_tx_msg.PGN;
 
@@ -824,9 +824,9 @@ void J1939_TP_TX_Abort(void)
 	_msg.Mxe.Data[2] = J1939_RESERVED_BYTE;
 	_msg.Mxe.Data[3] = J1939_RESERVED_BYTE;
 	_msg.Mxe.Data[4] = J1939_RESERVED_BYTE;
-	_msg.Mxe.Data[7] = (uint8_t)((pgn_num>>16) & 0xff);
-	_msg.Mxe.Data[6] = (uint8_t)(pgn_num>>8 & 0xff);
-	_msg.Mxe.Data[5] = (uint8_t)(pgn_num & 0xff);
+	_msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
+	_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
+	_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 
 	while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
 		J1939_Poll(5);
@@ -842,7 +842,7 @@ void J1939_TP_TX_Abort(void)
 void J1939_TP_RX_Abort(void)
 {
 	J1939_MESSAGE _msg;
-	uint32_t pgn_num;
+	j1939_uint32_t pgn_num;
 
 	pgn_num = TP_RX_MSG.tp_rx_msg.PGN;
 
@@ -856,9 +856,9 @@ void J1939_TP_RX_Abort(void)
 	_msg.Mxe.Data[2] = J1939_RESERVED_BYTE;
 	_msg.Mxe.Data[3] = J1939_RESERVED_BYTE;
 	_msg.Mxe.Data[4] = J1939_RESERVED_BYTE;
-	_msg.Mxe.Data[7] = (uint8_t)((pgn_num>>16) & 0xff);
-	_msg.Mxe.Data[6] = (uint8_t)(pgn_num>>8 & 0xff);
-	_msg.Mxe.Data[5] = (uint8_t)(pgn_num & 0xff);
+	_msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
+	_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
+	_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 
 	while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
 		J1939_Poll(5);
@@ -871,7 +871,7 @@ void J1939_TP_RX_Abort(void)
 *输出:
 *说明：  TP的计时器
 */
-unsigned char J1939_TP_TX_RefreshCMTimer(uint16_t dt_ms)
+j1939_uint8_t J1939_TP_TX_RefreshCMTimer(j1939_uint16_t dt_ms)
 {
 	if((J1939_TP_TX_CM_WAIT == TP_TX_MSG.state)||(J1939_TP_WAIT_ACK == TP_TX_MSG.state))
 	{
@@ -898,7 +898,7 @@ unsigned char J1939_TP_TX_RefreshCMTimer(uint16_t dt_ms)
 *输出:
 *说明：  TP的计时器
 */
-unsigned char J1939_TP_RX_RefreshCMTimer(uint16_t dt_ms)
+j1939_uint8_t J1939_TP_RX_RefreshCMTimer(j1939_uint16_t dt_ms)
 {
 	if((J1939_TP_RX_DATA_WAIT == TP_RX_MSG.state))
 	{
@@ -928,7 +928,7 @@ unsigned char J1939_TP_RX_RefreshCMTimer(uint16_t dt_ms)
 void J1939_read_DT_Packet()
 {
 	J1939_MESSAGE _msg;
-	uint32_t pgn_num;
+	j1939_uint32_t pgn_num;
 	pgn_num = TP_RX_MSG.tp_rx_msg.PGN;
 
 	_msg.Mxe.Priority = J1939_TP_CM_PRIORITY;
@@ -945,9 +945,9 @@ void J1939_read_DT_Packet()
 		_msg.Mxe.Data[2] = J1939_RESERVED_BYTE;
 		_msg.Mxe.Data[3] = J1939_RESERVED_BYTE;
 		_msg.Mxe.Data[4] = J1939_RESERVED_BYTE;
-		_msg.Mxe.Data[7] = (uint8_t)((pgn_num>>16) & 0xff);
-		_msg.Mxe.Data[6] = (uint8_t)(pgn_num>>8 & 0xff);
-		_msg.Mxe.Data[5] = (uint8_t)(pgn_num & 0xff);
+		_msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
+		_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
+		_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 		while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
 				J1939_Poll(5);
 		return ;
@@ -962,9 +962,9 @@ void J1939_read_DT_Packet()
 			_msg.Mxe.Data[2] = TP_RX_MSG.packets_total;
 			_msg.Mxe.Data[3] = J1939_RESERVED_BYTE;
 			_msg.Mxe.Data[4] = J1939_RESERVED_BYTE;
-			_msg.Mxe.Data[7] = (uint8_t)((pgn_num>>16) & 0xff);
-			_msg.Mxe.Data[6] = (uint8_t)(pgn_num>>8 & 0xff);
-			_msg.Mxe.Data[5] = (uint8_t)(pgn_num & 0xff);
+			_msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
+			_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
+			_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 			while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
 					J1939_Poll(5);
 			TP_RX_MSG.state = J1939_TP_RX_DATA_WAIT;
@@ -975,9 +975,9 @@ void J1939_read_DT_Packet()
 		_msg.Mxe.Data[2] = (TP_RX_MSG.packets_ok_num + 1);
 		_msg.Mxe.Data[3] = J1939_RESERVED_BYTE;
 		_msg.Mxe.Data[4] = J1939_RESERVED_BYTE;
-		_msg.Mxe.Data[7] = (uint8_t)((pgn_num>>16) & 0xff);
-		_msg.Mxe.Data[6] = (uint8_t)(pgn_num>>8 & 0xff);
-		_msg.Mxe.Data[5] = (uint8_t)(pgn_num & 0xff);
+		_msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
+		_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
+		_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 		//TP_RX_MSG.packets_ok_num +=2;
 		while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
 				J1939_Poll(5);
@@ -991,9 +991,9 @@ void J1939_read_DT_Packet()
 		_msg.Mxe.Data[2] = ((TP_RX_MSG.tp_rx_msg.byte_count >> 8) & 0x00ff);
 		_msg.Mxe.Data[3] = TP_RX_MSG.packets_total;
 		_msg.Mxe.Data[4] = J1939_RESERVED_BYTE;
-		_msg.Mxe.Data[7] = (uint8_t)((pgn_num>>16) & 0xff);
-		_msg.Mxe.Data[6] = (uint8_t)(pgn_num>>8 & 0xff);
-		_msg.Mxe.Data[5] = (uint8_t)(pgn_num & 0xff);
+		_msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
+		_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
+		_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 		while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
 				J1939_Poll(5);
 		TP_RX_MSG.state = J1939_RX_DONE;
@@ -1102,9 +1102,9 @@ void J1939_TP_Poll()
 *输出: RC_CANNOTTRANSMIT 不能发送，因为TP协议已经建立虚拟链接，并且未断开
 *说明：  TP协议的发送函数
 */
-char J1939_TP_TX_Message(unsigned int PGN,unsigned char SA,char *data,unsigned short data_num)
+j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_int8_t *data,j1939_uint16_t data_num)
 {
-	unsigned short _byte_count =0;
+	j1939_uint16_t _byte_count =0;
 	/*取得发送权限*/
 	if(J1939_TP_Flags_t.state == J1939_TP_NULL)
 	{
@@ -1138,13 +1138,13 @@ char J1939_TP_TX_Message(unsigned int PGN,unsigned char SA,char *data,unsigned s
 *说明：  TP的接受函数 , 接受缓存的大小必须大于接受数据的大小，建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH
 *说明：  请正确带入 缓存区的大小，参数错误程序运行有风险
 *应用实例：
-		char data[J1939_TP_MAX_MESSAGE_LENGTH]
+		j1939_uint32_t data[J1939_TP_MAX_MESSAGE_LENGTH]
 		while(J1939_TP_RX_Message( data，sizeof(data))==RC_SUCCESS)
 		  J1939_Poll(5);
 */
-char J1939_TP_RX_Message(char *data,unsigned short data_num)
+j1939_int8_t J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num)
 {
-	int _a = 0;
+	j1939_uint16_t _a = 0;
 	/*判断是否能读取数据*/
 	if(J1939_TP_Flags_t.state == J1939_TP_NULL)
 	{

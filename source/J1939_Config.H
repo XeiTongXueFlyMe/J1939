@@ -243,5 +243,4 @@ BOOL ECU_RecalculateAddress( unsigned char * Address)
 	}
 #endif
 
-
 #endif
