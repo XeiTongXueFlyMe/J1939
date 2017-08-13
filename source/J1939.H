@@ -112,7 +112,7 @@ typedef char           j1939_int8_t;
 
 //是否对TP协议的支持（是否支持长帧（大于8字节的数据）的发送与接受）
 #define J1939_TP_RX_TX J1939_TRUE
-//TP协议的支持的最大接受发送消息长度
+//TP协议的支持的最大接受发送消息长度(最大可配置为1785)
 #define J1939_TP_MAX_MESSAGE_LENGTH 170
 #if J1939_TP_RX_TX
 /*TP的状态描述*/
