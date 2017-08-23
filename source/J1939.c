@@ -429,7 +429,7 @@ static void J1939_ReceiveMessages( void )
 #endif //J1939_TP_RX_T
     /*从接收缓存中读取信息到OneMessage中，OneMessage是一个全局变量*/
     /*Port_CAN_Receive函数读取到数据返回1，没有数据则返回0*/
-    while(Port_CAN_Receive(&OneMessage))
+    if(Port_CAN_Receive(&OneMessage))
     {
         switch( OneMessage.Mxe.PDUFormat)
         { 
@@ -453,9 +453,11 @@ static void J1939_ReceiveMessages( void )
                 						+(j1939_uint32_t)((OneMessage.Mxe.Data[5])&0xFF);
                 if((J1939_TP_Flags_t.state == J1939_TP_NULL) && (TP_RX_MSG.state == J1939_TP_RX_WAIT))
 				{
-                	J1939_TP_Flags_t.state = J1939_TP_RX;
+
                     if(OneMessage.Mxe.Data[0] == 16)
                     {
+                    	J1939_TP_Flags_t.state = J1939_TP_RX;
+
                     	TP_RX_MSG.tp_rx_msg.SA = OneMessage.Mxe.SourceAddress;
                     	TP_RX_MSG.tp_rx_msg.PGN = (j1939_uint32_t)((OneMessage.Mxe.Data[7]<<16)&0xFF0000)
                             						+(j1939_uint32_t)((OneMessage.Mxe.Data[6]<<8)&0xFF00)
@@ -571,7 +573,6 @@ static void J1939_ReceiveMessages( void )
 #if J1939_TP_RX_TX
                 if((TP_RX_MSG.state == J1939_TP_RX_DATA_WAIT)&&(TP_RX_MSG.tp_rx_msg.SA == OneMessage.Mxe.SourceAddress))
                 {
-
                 	TP_RX_MSG.tp_rx_msg.data[(OneMessage.Mxe.Data[0]-1)*7u]=OneMessage.Mxe.Data[1];
                 	TP_RX_MSG.tp_rx_msg.data[(OneMessage.Mxe.Data[0]-1)*7u+1]=OneMessage.Mxe.Data[2];
                 	TP_RX_MSG.tp_rx_msg.data[(OneMessage.Mxe.Data[0]-1)*7u+2]=OneMessage.Mxe.Data[3];
@@ -582,11 +583,11 @@ static void J1939_ReceiveMessages( void )
 					/*特殊处理重新接受已接受过的数据包*/
                 	if((OneMessage.Mxe.Data[0]) > TP_RX_MSG.packets_ok_num)
 					{
-                	TP_RX_MSG.packets_ok_num++;
+                		TP_RX_MSG.packets_ok_num++;
 					}
 					TP_RX_MSG.time = J1939_TP_T1;
 					/*判断是否收到偶数个数据包或者读取到最后一个数据包*/
-					if((TP_RX_MSG.packets_ok_num%2 == 0) ||(TP_RX_MSG.packets_ok_num == TP_RX_MSG.packets_ok_num))
+					if((TP_RX_MSG.packets_ok_num%2 == 0) ||(TP_RX_MSG.packets_ok_num == TP_RX_MSG.packets_total))
 					{
 						TP_RX_MSG.state = J1939_TP_RX_READ_DATA;
 						break ;
@@ -978,7 +979,7 @@ void J1939_read_DT_Packet()
 		_msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
 		_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
 		_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
-		//TP_RX_MSG.packets_ok_num +=2;
+
 		while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
 				J1939_Poll(5);
 		TP_RX_MSG.state = J1939_TP_RX_DATA_WAIT;
