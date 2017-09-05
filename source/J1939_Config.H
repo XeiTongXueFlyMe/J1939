@@ -179,7 +179,7 @@ int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 	  则调用此函数，重新申请一个希望得到的地址，当然可能再一次
 	  申请不成功，所以函数可以返回多个不同的地址，一次返回一个
 */
-BOOL ECU_RecalculateAddress( unsigned char * Address)
+int ECU_RecalculateAddress( unsigned char * Address)
 {
 	return 0;//没有生成新的地址，返回0
 }

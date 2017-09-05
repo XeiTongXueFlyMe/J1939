@@ -31,7 +31,7 @@
 /**********************变量类型定义**************************/
 #define FALSE 0
 #define TRUE 1
-//typedef enum _BOOL { FALSE = 0, TRUE } BOOL;
+
 typedef unsigned int   j1939_uint32_t;
 typedef int   		   j1939_int32_t;
 typedef unsigned short j1939_uint16_t;
@@ -113,7 +113,7 @@ typedef char           j1939_int8_t;
 //是否对TP协议的支持（是否支持长帧（大于8字节的数据）的发送与接受）
 #define J1939_TP_RX_TX J1939_TRUE
 //TP协议的支持的最大接受发送消息长度(最大可配置为1785)
-#define J1939_TP_MAX_MESSAGE_LENGTH 170
+#define J1939_TP_MAX_MESSAGE_LENGTH 240
 #if J1939_TP_RX_TX
 /*TP的状态描述*/
 typedef enum
@@ -190,15 +190,15 @@ union J1939_MESSAGE_UNION
 { 
 	struct   me 
 	{ 
-		j1939_uint32_t	DataPage			: 1; 
-		j1939_uint32_t	Res					: 1; 
-		j1939_uint32_t	Priority			: 3; 
-		j1939_uint32_t	PDUFormat_Top		: 3;	
+		j1939_uint8_t	DataPage			: 1;
+		j1939_uint8_t	Res					: 1;
+		j1939_uint8_t	Priority			: 3;
+		j1939_uint8_t	PDUFormat_Top		: 3;
 		j1939_uint8_t	PDUFormat;					
 		j1939_uint8_t	PDUSpecific; 
 		j1939_uint8_t	SourceAddress; 
-		j1939_uint32_t	DataLength 			: 4; 
-		j1939_uint32_t	RTR					: 4;	
+		j1939_uint8_t	DataLength 			: 4;
+		j1939_uint8_t	RTR					: 4;
 		j1939_uint8_t	Data[J1939_DATA_LENGTH]; 
 	};
 	struct me Mxe;
@@ -238,7 +238,7 @@ extern J1939_TRANSPORT_TX_INFO         TP_TX_MSG;
 #endif //J1939_TP_RX_TX
 
 #ifdef J1939_ACCEPT_CMDADD
-extern void  J1939_CommandedAddressHandling( void );
+extern void  			J1939_CommandedAddressHandling( void );
 #endif
 //出列 用于接受 *MsgPtr代表要存入的缓存
 extern j1939_uint8_t	J1939_DequeueMessage( J1939_MESSAGE *MsgPtr );
@@ -251,9 +251,9 @@ extern void			    J1939_ISR( void );
 //扫描入口
 extern void 			J1939_Poll( j1939_uint32_t ElapsedTime );
 //TP协议的发送函数
-extern j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_int8_t data[],j1939_uint16_t data_num);
+extern j1939_int8_t 	J1939_TP_TX_Message(j1939_uint32_t PGN, j1939_uint8_t SA, j1939_int8_t *data, j1939_uint16_t data_num);
 //TP协议的接受函数
-extern j1939_int8_t J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num);
+extern j1939_int8_t 	J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num);
 //TP轮询函数
 void J1939_TP_Poll();
 #ifdef  __J1939_SOURCE 
