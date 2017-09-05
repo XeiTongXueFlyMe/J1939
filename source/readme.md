@@ -18,7 +18,7 @@
 * 自动分配地址
 * 多帧传输协议TP
 # 协议格式：
-* UTF-8	
+* UTF-8-BOM
 # J1939协议栈接口
 * J1939_Initialization(BOOL)
 * J1939_ISR(void)

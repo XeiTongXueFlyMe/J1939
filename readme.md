@@ -18,7 +18,7 @@
 * 自动分配地址
 * 多帧传输协议TP
 # 协议格式：
-* UTF-8	
+* UTF-8-BOM	
 # J1939协议栈接口
 * J1939_Initialization(BOOL)
 * J1939_ISR(void)
@@ -27,22 +27,29 @@
 * J1939_EnqueueMessage(J1939_MESSAGE *MsgPtr)
 * J1939_TP_TX_Message(unsigned int PGN,unsigned char SA,char *data,unsigned short data_num)
 * J1939_TP_RX_Message(char *data,unsigned short data_num)
+
+# 源代码移植：
+* <http://blog.csdn.net/xietongxueflyme/article/details/74923355>
+
+# 协议应用示例：
+* <http://blog.csdn.net/XieTongXueFlyMe/article/category/7081225>
 	   
 # 源代码分析网址：
 * <http://blog.csdn.net/xietongxueflyme/article/details/74908563>
   
-# 源代码移植：
-* <http://blog.csdn.net/xietongxueflyme/article/details/74923355>
-
-# 协议中参考的资料：
+# 协议参考的资料：
 * <http://download.csdn.net/detail/xietongxueflyme/9887994>
+
 # 示例1：
 * 轮询模式
 * 备注：消息的发送接受简单的示例
 ```
 void main( void )
 {
-    can_init();
+    J1939_MESSAGE Msg;
+    /*在CAN驱动初始化中，请配置好滤波，说明参考移植函数（滤波函数）*/
+    /* can_init(); */
+
     J1939_Initialization( TRUE );
     //等待地址超时
     while (J1939_Flags.WaitingForAddressClaimContention)
@@ -50,20 +57,20 @@ void main( void )
     //运行到这里，说明地址已经声明好（设备已挂载到总线上）
     while (1)
     {
-    /***********************发送数据***************************/
-        Msg.DataPage                = 0;
-        Msg.Priority                = J1939_CONTROL_PRIORITY;
-        Msg.DestinationAddress      = OTHER_NODE;
-        Msg.DataLength              = 8;
-        Msg.PDUFormat               = 0xfe;
-        Msg.Data[0]         = 0xFF;
-        Msg.Data[1]         = 0xFF;
-        Msg.Data[2]         = 0xFF;
-        Msg.Data[3]         = 0xFF;
-        Msg.Data[4]         = 0xFF;
-        Msg.Data[5]         = 0xFF;
-        Msg.Data[6]         = 0xFF;
-        Msg.Data[7]         = 0xFF; 
+    /********发送数据(参考J1939的ID组成填充下面)***********/
+		Msg.Mxe.DataPage = 0;
+		Msg.Mxe.Priority = J1939_CONTROL_PRIORITY;
+		Msg.Mxe.DestinationAddress = 0x0f;
+		Msg.Mxe.DataLength = 8;
+		Msg.Mxe.PDUFormat = 0xfe;
+		Msg.Mxe.Data[0] = 1;
+		Msg.Mxe.Data[1] = 2;
+		Msg.Mxe.Data[2] = 3;
+		Msg.Mxe.Data[3] = 4;
+		Msg.Mxe.Data[4] = 5;
+		Msg.Mxe.Data[5] = 6;
+		Msg.Mxe.Data[6] = 7;
+		Msg.Mxe.Data[7] = 8;
         while (J1939_EnqueueMessage( &Msg ) != RC_SUCCESS)
             J1939_Poll(5);
      /***********************处理接受数据*************************/
@@ -86,8 +93,10 @@ void main( void )
 ```
 void main( void )
 {
-    can_init();
     char data[100] = {1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7};
+	
+	/*在CAN驱动初始化中，请配置好滤波，说明参考移植函数（滤波函数）*/
+    /* can_init(); */
 
     J1939_Initialization( TRUE );
     // 等待地址声明超时
@@ -110,9 +119,11 @@ void main( void )
 ```
 void main( void )
 {
-	can_init();
 	//建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH
 	char data[J1939_TP_MAX_MESSAGE_LENGTH] = {0};
+	
+	/*在CAN驱动初始化中，请配置好滤波，说明参考移植函数（滤波函数）*/
+    /* can_init(); */
 
 	J1939_Initialization( TRUE );
 	// 等待地址声明超时
@@ -154,7 +165,9 @@ void main( void )
 ```
 void main()
 {
-    can_init();
+   /*在CAN驱动初始化中，请配置好滤波，说明参考移植函数（滤波函数）*/
+    /* can_init(); */
+	
     J1939_Initialization( TRUE );
     //等待地址超时
     while (J1939_Flags.WaitingForAddressClaimContention)
@@ -168,39 +181,39 @@ void main()
             //读取接受列队中的数据到Msg （出队）
             J1939_DequeueMessage( &Msg );
             /*判断是否是数据请求帧*/
-            if (Msg.PDUFormat == J1939_PF_REQUEST)
+            if (Msg.Mxe.PDUFormat == J1939_PF_REQUEST)
             {
                 //判断参数群是否被本设备支持
-                if ((Msg.Data[0] == J1939_PGN0_REQ_ENGINE_SPEED) &&
-                     (Msg.Data[1] == J1939_PGN1_REQ_ENGINE_SPEED) &&
-                     (Msg.Data[2] == J1939_PGN2_REQ_ENGINE_SPEED))
+                if ((Msg.Mxe.Data[0] == J1939_PGN0_REQ_ENGINE_SPEED) &&
+                     (Msg.Mxe.Data[1] == J1939_PGN1_REQ_ENGINE_SPEED) &&
+                     (Msg.Mxe.Data[2] == J1939_PGN2_REQ_ENGINE_SPEED))
                 {
                     if (某种原因不能响应)
                     {
                         /*********发送不能响应（参考J1939-21）*************/
-                        Msg.Priority            = J1939_ACK_PRIORITY;
-                        Msg.DataPage            = 0;
-                        Msg.PDUFormat           = J1939_PF_ACKNOWLEDGMENT;
-                        Msg.DestinationAddress  = Msg.SourceAddress;
-                        Msg.DataLength          = 8;
-                        Msg.Data[0]         = J1939_NACK_CONTROL_BYTE;
-                        Msg.Data[1]         = 0xFF;
-                        Msg.Data[2]         = 0xFF;
-                        Msg.Data[3]         = 0xFF;
-                        Msg.Data[4]         = 0xFF;
-                        Msg.Data[5]         = J1939_PGN0_REQ_ENGINE_SPEED;
-                        Msg.Data[6]         = J1939_PGN1_REQ_ENGINE_SPEED;
-                        Msg.Data[7]         = J1939_PGN2_REQ_ENGINE_SPEED;
+                        Msg.Mxe.Priority            = J1939_ACK_PRIORITY;
+                        Msg.Mxe.DataPage            = 0;
+                        Msg.Mxe.PDUFormat           = J1939_PF_ACKNOWLEDGMENT;
+                        Msg.Mxe.DestinationAddress  = Msg.SourceAddress;
+                        Msg.Mxe.DataLength          = 8;
+                        Msg.Mxe.Data[0]         = J1939_NACK_CONTROL_BYTE;
+                        Msg.Mxe.Data[1]         = 0xFF;
+                        Msg.Mxe.Data[2]         = 0xFF;
+                        Msg.Mxe.Data[3]         = 0xFF;
+                        Msg.Mxe.Data[4]         = 0xFF;
+                        Msg.Mxe.Data[5]         = J1939_PGN0_REQ_ENGINE_SPEED;
+                        Msg.Mxe.Data[6]         = J1939_PGN1_REQ_ENGINE_SPEED;
+                        Msg.Mxe.Data[7]         = J1939_PGN2_REQ_ENGINE_SPEED;
                     }
                     else//相关的PGN（参数群的响应）
                     {
                     /*******************上传相关的参数群*****************/
-                        Msg.Priority    = J1939_INFO_PRIORITY;
-                        Msg.DataPage    = J1939_PGN2_REQ_ENGINE_SPEED & 0x01;
-                        Msg.PDUFormat   = J1939_PGN1_REQ_ENGINE_SPEED;
-                        Msg.GroupExtension = J1939_PGN0_REQ_ENGINE_SPEED;
-                        Msg.DataLength  = 1;
-                        Msg.Data[0]     = EngineSpeed;
+                        Msg.Mxe.Priority    = J1939_INFO_PRIORITY;
+                        Msg.Mxe.DataPage    = J1939_PGN2_REQ_ENGINE_SPEED & 0x01;
+                        Msg.Mxe.PDUFormat   = J1939_PGN1_REQ_ENGINE_SPEED;
+                        Msg.Mxe.GroupExtension = J1939_PGN0_REQ_ENGINE_SPEED;
+                        Msg.Mxe.DataLength  = 1;
+                        Msg.Mxe.Data[0]     = EngineSpeed;
                     }
                     while (J1939_EnqueueMessage( &Msg ) != RC_SUCCESS);
                 }
