@@ -165,6 +165,7 @@ void main( void )
 ```
 void main()
 {
+    J1939_MESSAGE Msg;
    /*在CAN驱动初始化中，请配置好滤波，说明参考移植函数（滤波函数）*/
     /* can_init(); */
 	
