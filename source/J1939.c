@@ -1147,12 +1147,12 @@ j1939_int8_t J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num)
 {
 	j1939_uint16_t _a = 0;
 	/*判断是否能读取数据*/
-	if(J1939_TP_Flags_t.state == J1939_TP_NULL)
+	if(J1939_TP_Flags_t.state == J1939_TP_NULL && TP_RX_MSG.tp_rx_msg.PGN != 0)
 	{
 		J1939_TP_Flags_t.state = J1939_TP_OSBUSY;
 	}else
 	{
-		return RC_CANNOTRECEIVE;//不能接受，TP协议正在接受数据中
+		return RC_CANNOTRECEIVE;//不能接受，TP协议正在接受数据中,或没有数据
 	}
     //判断数据缓存够不够
 	if(data_num < TP_RX_MSG.tp_rx_msg.byte_count)
