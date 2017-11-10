@@ -1124,7 +1124,11 @@ j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_int8_
 	}
 	TP_TX_MSG.packet_offset_p = 0;
 	TP_TX_MSG.packets_request_num = 0;
-	TP_TX_MSG.packets_total = data_num/7 +1;
+	TP_TX_MSG.packets_total = data_num/7;
+	if((data_num%7) != 0)
+	{
+		TP_TX_MSG.packets_total ++;
+	}
 	TP_TX_MSG.time = J1939_TP_T3;
 	//触发开始CM_START
 	TP_TX_MSG.state = J1939_TP_TX_CM_START;
