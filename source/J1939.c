@@ -14,17 +14,19 @@
  *		5.不掉帧（数据采用收发列队缓存）
  *
  *  源代码分析网址：
- *	http://blog.csdn.net/xietongxueflyme/article/details/74908563
+ *	
  *
  * Version     Date        Description
  * ----------------------------------------------------------------------
  * v1.00     2017/06/04    首个版本
  * v1.01     2017/08/04    完善功能
- *
+ * v1.10     2017/11/22    Version 1 稳定发布版
+ * v2.01     2017/11/24    Version 2 测试版发布
  * Author               Date         changes
  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *XieTongXueFlyMe       7/06/04      首个版本
  *XieTongXueFlyMe       7/08/04      增加对TP的支持
+ *XieTongXueFlyMe       7/11/24      增加对多路CAN硬件的收发，和报文处理
  **********************************************************************/
 #ifndef         __J1939_SOURCE
 #define         __J1939_SOURCE
@@ -33,15 +35,19 @@
 #include "J1939.H"   
 #include "J1939_config.H"
 
-//特定声明
-#define J1939_TRUE         1
-#define J1939_FALSE        0
-#define ADDRESS_CLAIM_TX   1
-#define ADDRESS_CLAIM_RX   2
+#define J1939_TRUE         1	/**< 代表函数正确返回*/
+#define J1939_FALSE        0	/**< 代表函数错误返回*/
+#define ADDRESS_CLAIM_TX   1	/**< 进入地址竞争发送处理模式*/
+#define ADDRESS_CLAIM_RX   2	/**< 进入地址竞争接受处理模式*/
 
 //全局变量。
-j1939_uint8_t                   CA_Name[J1939_DATA_LENGTH];//设备的标称符（参考1939-81）
-j1939_uint8_t                   CommandedAddress;   
+/** 设备的标称符
+ *	
+ *	我们需要在"J1939_config.H"中配置
+ *	@note 在初始化中赋值，赋值参考参考1939-81文档
+ */
+j1939_uint8_t                   CA_Name[J1939_DATA_LENGTH];
+j1939_uint8_t                   CommandedAddress; 
 #if J1939_ACCEPT_CMDADD == J1939_TRUE   
     j1939_uint8_t               CommandedAddressSource;   
     j1939_uint8_t               CommandedAddressName[J1939_DATA_LENGTH];   
@@ -50,16 +56,48 @@ j1939_uint32_t                  ContentionWaitTime;
 j1939_uint8_t                   J1939_Address;   
 J1939_FLAG                      J1939_Flags;   
 J1939_MESSAGE                   OneMessage;   
-//接受列队全局变量   
-j1939_uint8_t                   RXHead;   
-j1939_uint8_t                   RXTail;   
-j1939_uint8_t                   RXQueueCount;   
-J1939_MESSAGE                   RXQueue[J1939_RX_QUEUE_SIZE];   
-//发送列队全局变量  
-j1939_uint8_t                   TXHead;   
-j1939_uint8_t                   TXTail;   
-j1939_uint8_t                   TXQueueCount;   
-J1939_MESSAGE                   TXQueue[J1939_TX_QUEUE_SIZE];
+CAN_NODE                        Can_Node;
+//接受列队全局变量(CAN_NODE_1)
+j1939_uint8_t                   RXHead_1;
+j1939_uint8_t                   RXTail_1;
+j1939_uint8_t                   RXQueueCount_1;
+J1939_MESSAGE                   RXQueue_1[J1939_RX_QUEUE_SIZE];
+//发送列队全局变量 (CAN_NODE_1)
+j1939_uint8_t                   TXHead_1;
+j1939_uint8_t                   TXTail_1;
+j1939_uint8_t                   TXQueueCount_1;
+J1939_MESSAGE                   TXQueue_1[J1939_TX_QUEUE_SIZE];
+//接受列队全局变量(CAN_NODE_2)
+j1939_uint8_t                   RXHead_2;
+j1939_uint8_t                   RXTail_2;
+j1939_uint8_t                   RXQueueCount_2;
+J1939_MESSAGE                   RXQueue_2[J1939_RX_QUEUE_SIZE];
+//发送列队全局变量 (CAN_NODE_2)
+j1939_uint8_t                   TXHead_2;
+j1939_uint8_t                   TXTail_2;
+j1939_uint8_t                   TXQueueCount_2;
+J1939_MESSAGE                   TXQueue_2[J1939_TX_QUEUE_SIZE];
+//接受列队全局变量(CAN_NODE_3)
+j1939_uint8_t                   RXHead_3;
+j1939_uint8_t                   RXTail_3;
+j1939_uint8_t                   RXQueueCount_3;
+J1939_MESSAGE                   RXQueue_3[J1939_RX_QUEUE_SIZE];
+//发送列队全局变量 (CAN_NODE_3)
+j1939_uint8_t                   TXHead_3;
+j1939_uint8_t                   TXTail_3;
+j1939_uint8_t                   TXQueueCount_3;
+J1939_MESSAGE                   TXQueue_3[J1939_TX_QUEUE_SIZE];
+//接受列队全局变量(CAN_NODE_4)
+j1939_uint8_t                   RXHead_4;
+j1939_uint8_t                   RXTail_4;
+j1939_uint8_t                   RXQueueCount_4;
+J1939_MESSAGE                   RXQueue_4[J1939_RX_QUEUE_SIZE];
+//发送列队全局变量 (CAN_NODE_4)
+j1939_uint8_t                   TXHead_4;
+j1939_uint8_t                   TXTail_4;
+j1939_uint8_t                   TXQueueCount_4;
+J1939_MESSAGE                   TXQueue_4[J1939_TX_QUEUE_SIZE];
+
 #if J1939_TP_RX_TX
 //TP协议全局变量  
 J1939_TP_Flags                  J1939_TP_Flags_t;   
@@ -76,12 +114,12 @@ J1939_TRANSPORT_TX_INFO         TP_TX_MSG;
 extern  j1939_int8_t ECU_RecalculateAddress( j1939_uint8_t * Address);   
 #endif   
 
-/*
-*输入：uint8_t *     Array of NAME bytes 
-*输出： -1 - CA_Name 是小于 OtherName
-*       0  - CA_Name与OtherName 相等
-*       1  - CA_Name 是大于 OtherName
-*说明：比较传入的数组数据名称与设备当前名称存储在CA_Name。
+/** 
+* @param[in]  uint8_t *  Array of NAME bytes 
+* @return    -1    CA_Name 是小于 OtherName
+* @return     0    CA_Name与OtherName 相等
+* @return     1    CA_Name 是大于 OtherName
+* @note      比较传入的数组数据名称与设备当前名称存储在CA_Name。
 */
 j1939_int8_t CompareName( j1939_uint8_t *OtherName )   
 {   
@@ -96,11 +134,10 @@ j1939_int8_t CompareName( j1939_uint8_t *OtherName )
     else   
         return 1;   
 }   
-/*
-*输入：
-*输出：
-*说明：设备名字复制到消息缓冲区的数据数组。我们可以使用这个函数在其他的函数,不会使用任何额外的堆栈空间。
-*/  
+
+/**    
+* @note      设备名字复制到消息缓冲区的数据数组。我们可以使用这个函数在其他的函数,不会使用任何额外的堆栈空间。
+*/
 void CopyName(void)   
 {   
     j1939_uint8_t i;   
@@ -109,23 +146,21 @@ void CopyName(void)
     	OneMessage.Mxe.Data[i]= CA_Name[i];
 }   
 
-/*
-*输入：
-*输出：
-*说明：设置过滤器为指定值，起到过滤地址作用。(参考CAN2.0B的滤波器)
-       滤波函数的设置段为PS段
-*/    
+/**
+* @note  设置过滤器为指定值，起到过滤地址作用。(参考CAN2.0B的滤波器)\n
+         滤波函数的设置段为PS段
+*/
 void SetAddressFilter( j1939_uint8_t Address )   
 {   
    Port_SetAddressFilter(Address);
 }   
-/*
-*输入： J1939_MESSAGE far *
-*输出：
-*说明： 发送*MsgPtr的信息，
-        所有的数据字段（比如数据长度、优先级、和源地址）必须已经设置。
+
+/**
+* @param[in]  J1939_MESSAGE *
+* @note 发送*MsgPtr的信息，\n
+        所有的数据字段（比如数据长度、优先级、和源地址）必须已经设置。\n
         在调用这个函数之前，设备在总线上声明的地址是正确的。
-*/   
+*/
 void SendOneMessage( J1939_MESSAGE *MsgPtr )   
 {    
     //设置消息的最后部分,确保DataLength规范。（参考CAN B2.0）
@@ -136,18 +171,18 @@ void SendOneMessage( J1939_MESSAGE *MsgPtr )
     //发送一帧消息，将 J1939_MESSAGE 中的所有消息加载道can模块自有的结构中     
      Port_CAN_Transmit(MsgPtr);
 }   
-/*
-*输入： ADDRESS_CLAIM_RX 或 ADDRESS_CLAIM_TX
-*输出：
-*说明：//J1939地址请求处理  （参考J1939的网络层）
-    这段程序被调用，当CA必须要求其地址在总线上或另一个CA是试图声称相同的地址在总线上,
-    我们必须捍卫自己或放弃的地址。
-    如果CA的私有范围有一个地址0 - 127或248 - 248,它可以立即解决。
-*补充：
-    ADDRESS_CLAIM_RX表示一个地址声明消息已经收到,这个CA必须保卫或放弃其地址。
-    ADDRESS_CLAIM_TX表明CA是初始化一个声明其地址。
-*/      
-static void J1939_AddressClaimHandling( j1939_uint8_t Mode )   
+ 
+/**
+* @param[in]  ADDRESS_CLAIM_RX 或 ADDRESS_CLAIM_TX
+* @note 1939地址请求处理  （参考J1939的网络层）\n
+		这段程序被调用，当CA必须要求其地址在总线上或另一个CA是试图声称相同的地址在总线上,\n
+		我们必须捍卫自己或放弃的地址。\n
+		如果CA的私有范围有一个地址0 - 127或248-253,它可以立即解决。\n
+		补充：\n
+		ADDRESS_CLAIM_RX表示一个地址声明消息已经收到,这个CA必须保卫或放弃其地址。\n
+		ADDRESS_CLAIM_TX表明CA是初始化一个声明其地址。\n
+*/
+void J1939_AddressClaimHandling( j1939_uint8_t Mode )   
 {   
     OneMessage.Mxe.Priority = J1939_CONTROL_PRIORITY;
     OneMessage.Mxe.PDUFormat = J1939_PF_ADDRESS_CLAIMED;
@@ -203,15 +238,16 @@ SendAddressClaim:
         J1939_Flags.WaitingForAddressClaimContention = 1;   
         ContentionWaitTime = 0;   
     }   
-}
- /*
-*输入：
-*输出: RC_SUCCESS          消息列中移除成功
-       RC_QUEUEEMPTY       没有消息返回 
-       RC_CANNOTRECEIVE    目前系统没有接受到消息，应为不能在网络中申请到地址
-*说明：从接受队列中读取一个信息到*MsgPtr。如果我们用的是中断，需要将中断失能，在获取接受队列数据时
-*/    
-j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr )   
+} 
+/**
+* @param[in]  MsgPtr     用户要出队的消息
+* @param[in]  _Can_Node  要出队的CAN硬件编号
+* @return    RC_SUCCESS           消息列中移除成功
+* @return    RC_QUEUEEMPTY       没有消息返回
+* @return    RC_CANNOTRECEIVE    目前系统没有接受到消息，应为不能在网络中申请到地址
+* @note      从接受队列中读取一个信息到*MsgPtr。如果我们用的是中断，需要将中断失能，在获取接受队列数据时
+*/
+j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 {   
     j1939_uint8_t   rc = RC_SUCCESS;   
 
@@ -219,21 +255,90 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr )
  #if J1939_POLL_ECAN == J1939_FALSE
     Port_RXinterruptDisable();
  #endif  
-    if (RXQueueCount == 0)   
-    {   
-        if (J1939_Flags.CannotClaimAddress)   
-            rc = RC_CANNOTRECEIVE;   
-        else   
-            rc = RC_QUEUEEMPTY;   
-    }   
-    else   
-    {   
-        *MsgPtr = RXQueue[RXHead];   
-        RXHead ++;   
-        if (RXHead >= J1939_RX_QUEUE_SIZE)   
-            RXHead = 0;   
-        RXQueueCount --;   
-    }   
+    switch (_Can_Node)
+	{
+		case  Select_CAN_NODE_1:
+		{
+		    if (RXQueueCount_1 == 0)
+		    {
+		        if (J1939_Flags.CannotClaimAddress)
+		            rc = RC_CANNOTRECEIVE;
+		        else
+		            rc = RC_QUEUEEMPTY;
+		    }
+		    else
+		    {
+		        *MsgPtr = RXQueue_1[RXHead_1];
+		        RXHead_1 ++;
+		        if (RXHead_1 >= J1939_RX_QUEUE_SIZE)
+		        	RXHead_1 = 0;
+		        RXQueueCount_1 --;
+		    }
+			break;
+		}
+		case  Select_CAN_NODE_2:
+		{
+		    if (RXQueueCount_2 == 0)
+		    {
+		        if (J1939_Flags.CannotClaimAddress)
+		            rc = RC_CANNOTRECEIVE;
+		        else
+		            rc = RC_QUEUEEMPTY;
+		    }
+		    else
+		    {
+		        *MsgPtr = RXQueue_2[RXHead_2];
+		        RXHead_2 ++;
+		        if (RXHead_2 >= J1939_RX_QUEUE_SIZE)
+		        	RXHead_2 = 0;
+		        RXQueueCount_2 --;
+		    }
+			break;
+		}
+		case  Select_CAN_NODE_3:
+		{
+		    if (RXQueueCount_3 == 0)
+		    {
+		        if (J1939_Flags.CannotClaimAddress)
+		            rc = RC_CANNOTRECEIVE;
+		        else
+		            rc = RC_QUEUEEMPTY;
+		    }
+		    else
+		    {
+		        *MsgPtr = RXQueue_3[RXHead_3];
+		        RXHead_3 ++;
+		        if (RXHead_3 >= J1939_RX_QUEUE_SIZE)
+		        	RXHead_3 = 0;
+		        RXQueueCount_3 --;
+		    }
+			break;
+		}
+		case  Select_CAN_NODE_4:
+		{
+			if (RXQueueCount_4 == 0)
+			{
+				if (J1939_Flags.CannotClaimAddress)
+					rc = RC_CANNOTRECEIVE;
+				else
+					rc = RC_QUEUEEMPTY;
+			}
+			else
+			{
+				*MsgPtr = RXQueue_4[RXHead_4];
+				RXHead_4 ++;
+				if (RXHead_4 >= J1939_RX_QUEUE_SIZE)
+					RXHead_4 = 0;
+				RXQueueCount_4 --;
+			}
+			break;
+		}
+		default  :
+		{
+			rc = RC_CANNOTRECEIVE;
+			break;
+		}
+	}
   //***************************开接受中断********************************   
 #if J1939_POLL_ECAN == J1939_FALSE
    Port_RXinterruptEnable();
@@ -241,16 +346,18 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr )
 
    return rc;   
 }   
-/*
-*输入： J1939_MESSAGE *     用户要入队的消息 
-*输出:  RC_SUCCESS          消息入队成功 
-        RC_QUEUEFULL        发送列队满，消息入队失败 
-        RC_CANNOTTRANSMIT   系统目前不能发送消息  
-*说明：这段程序，将*MsgPtr放入发送消息列队中
-       如果信息不能入队或者发送，将有一个相应的返回提示，
-        如果发送中断被设置（可用），当消息列队后，发送中断被使能
-*/   
-j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr )   
+  
+/**
+* @param[in]  MsgPtr     用户要入队的消息
+* @param[in]  _Can_Node  要入队的CAN硬件编号
+* @return     RC_SUCCESS          消息入队成功 
+* @return     RC_QUEUEFULL        发送列队满，消息入队失败 
+* @return     RC_CANNOTTRANSMIT   系统目前不能发送消息  
+* @note     这段程序，将*MsgPtr放入发送消息列队中\n
+			如果信息不能入队或者发送，将有一个相应的返回提示，\n
+			如果发送中断被设置（可用），当消息列队后，发送中断被使能
+*/
+j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 {   
     j1939_uint8_t   rc = RC_SUCCESS;   
 
@@ -262,20 +369,85 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr )
         rc = RC_CANNOTTRANSMIT;   
     else   
     {   
-        if ((J1939_OVERWRITE_TX_QUEUE == J1939_TRUE) ||   
-             (TXQueueCount < J1939_TX_QUEUE_SIZE))   
-        {   
-            if (TXQueueCount < J1939_TX_QUEUE_SIZE)   
-            {   
-                TXQueueCount ++;   
-                TXTail ++;   
-                if (TXTail >= J1939_TX_QUEUE_SIZE)   
-                    TXTail = 0;   
-            }   
-            TXQueue[TXTail] = *MsgPtr;   
-        }   
-        else   
-            rc = RC_QUEUEFULL;   
+    	switch (_Can_Node)
+		{
+			case  Select_CAN_NODE_1:
+			{
+				if ((J1939_OVERWRITE_TX_QUEUE == J1939_TRUE) ||
+					 (TXQueueCount_1 < J1939_TX_QUEUE_SIZE))
+				{
+					if (TXQueueCount_1 < J1939_TX_QUEUE_SIZE)
+					{
+						TXQueueCount_1 ++;
+						TXTail_1 ++;
+						if (TXTail_1 >= J1939_TX_QUEUE_SIZE)
+							TXTail_1 = 0;
+					}
+					TXQueue_1[TXTail_1] = *MsgPtr;
+				}
+				else
+					rc = RC_QUEUEFULL;
+				break;
+			}
+			case  Select_CAN_NODE_2:
+			{
+				if ((J1939_OVERWRITE_TX_QUEUE == J1939_TRUE) ||
+					 (TXQueueCount_2 < J1939_TX_QUEUE_SIZE))
+				{
+					if (TXQueueCount_2 < J1939_TX_QUEUE_SIZE)
+					{
+						TXQueueCount_2 ++;
+						TXTail_2 ++;
+						if (TXTail_2 >= J1939_TX_QUEUE_SIZE)
+							TXTail_2 = 0;
+					}
+					TXQueue_2[TXTail_2] = *MsgPtr;
+				}
+				else
+					rc = RC_QUEUEFULL;
+				break;
+			}
+			case  Select_CAN_NODE_3:
+			{
+				if ((J1939_OVERWRITE_TX_QUEUE == J1939_TRUE) ||
+					 (TXQueueCount_3 < J1939_TX_QUEUE_SIZE))
+				{
+					if (TXQueueCount_3 < J1939_TX_QUEUE_SIZE)
+					{
+						TXQueueCount_3 ++;
+						TXTail_3 ++;
+						if (TXTail_3 >= J1939_TX_QUEUE_SIZE)
+							TXTail_3 = 0;
+					}
+					TXQueue_3[TXTail_3] = *MsgPtr;
+				}
+				else
+					rc = RC_QUEUEFULL;
+				break;
+			}
+			case  Select_CAN_NODE_4:
+			{
+				if ((J1939_OVERWRITE_TX_QUEUE == J1939_TRUE) ||
+					 (TXQueueCount_4 < J1939_TX_QUEUE_SIZE))
+				{
+					if (TXQueueCount_4 < J1939_TX_QUEUE_SIZE)
+					{
+						TXQueueCount_4 ++;
+						TXTail_4 ++;
+						if (TXTail_4 >= J1939_TX_QUEUE_SIZE)
+							TXTail_4 = 0;
+					}
+					TXQueue_4[TXTail_4] = *MsgPtr;
+				}
+				else
+					rc = RC_QUEUEFULL;
+				break;
+			}
+			default  :
+			{
+				break;
+			}
+		}
     }   
 
 #if J1939_POLL_ECAN == J1939_FALSE   
@@ -285,31 +457,49 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr )
 #endif   
     return rc;   
 }   
-/*
-*输入： InitNAMEandAddress  是否需要初始化标识符
-*输出:   
-*说明： 这段代码被调用，在系统初始化中。（放在CAN设备初始化之后）
-        初始化J1939全局变量
-        然后在总线上，声明设备自己的地址
-        如果设备需要初始化自己的标识符和地址，将InitNAMEandAddress置位。
-*/   
-
+  
+/**
+* @param[in]  InitNAMEandAddress  是否需要初始化标识符(标识符参考J1939原文档)
+* @note 这段代码被调用，在系统初始化中。（放在CAN设备初始化之后）\n
+		初始化J1939全局变量\n
+		然后在总线上，声明设备自己的地址\n
+		如果设备需要初始化自己的标识符和地址，将InitNAMEandAddress置位。
+*/
 void J1939_Initialization( j1939_uint8_t InitNAMEandAddress )   
 {
     /*初始化全局变量*/   
-    J1939_Flags.FlagVal = 1; // 没有声明地址，同事其他的标识位将被设置为0（复位）
+    J1939_Flags.FlagVal = 1; // 没有声明地址，其他的标识位将被设置为0（复位）
     ContentionWaitTime = 0l; //初始化地址竞争等待时间
 
     /*初始化接受和发送列队*/
-    TXQueueCount = 0; 
-    TXHead = 0;   
-    TXTail = 0xFF;     
-    RXHead = 0;   
-    RXTail = 0xFF;   
-    RXQueueCount = 0;
+    TXQueueCount_1 = 0;
+    TXHead_1 = 0;
+    TXHead_2 = 0;
+    TXHead_3 = 0;
+    TXHead_4 = 0;
+    TXTail_1 = 0xFF;
+    TXTail_2 = 0xFF;
+    TXTail_3 = 0xFF;
+    TXTail_4 = 0xFF;
+    RXHead_1 = 0;
+    RXHead_2 = 0;
+    RXHead_3 = 0;
+    RXHead_4 = 0;
+    RXTail_1 = 0xFF;
+    RXTail_2 = 0xFF;
+    RXTail_3 = 0xFF;
+    RXTail_4 = 0xFF;
+    RXQueueCount_1 = 0;
+    RXQueueCount_2 = 0;
+    RXQueueCount_3 = 0;
+    RXQueueCount_4 = 0;
+    /*初始化CAN节点的选择*/
+    Can_Node = Select_CAN_NODE_1;
     /*将TP协议置为空闲*/
 #if J1939_TP_RX_TX
     J1939_TP_Flags_t.state = J1939_TP_NULL;
+    J1939_TP_Flags_t.TP_RX_CAN_NODE = Select_CAN_NODE_Null;
+    J1939_TP_Flags_t.TP_TX_CAN_NODE = Select_CAN_NODE_Null;
 
     TP_TX_MSG.packets_request_num = 0;
     TP_TX_MSG.packets_total = 0;
@@ -324,7 +514,7 @@ void J1939_Initialization( j1939_uint8_t InitNAMEandAddress )
 #endif
     if (InitNAMEandAddress)   
     {   
-        J1939_Address = J1939_STARTING_ADDRESS;   
+        J1939_Address = J1939_STARTING_ADDRESS_1;
         CA_Name[7] = J1939_CA_NAME7;   
         CA_Name[6] = J1939_CA_NAME6;   
         CA_Name[5] = J1939_CA_NAME5;   
@@ -337,14 +527,14 @@ void J1939_Initialization( j1939_uint8_t InitNAMEandAddress )
     CommandedAddress = J1939_Address;   
        
     J1939_AddressClaimHandling( ADDRESS_CLAIM_TX );
+
 }   
-/*
-*输入： 
-*输出:   
-*说明： 这个函数被调用，当设备产生CAN中断（可能是接受中断，也可能是发送中断）
-        首先我们要清除中断标识位
+
+/**
+* @note 这个函数被调用，当设备产生CAN中断（可能是接受中断，也可能是发送中断）\n
+        首先我们要清除中断标识位\n
         然后调用接受或者发送函数。
-*/     
+*/
 #if J1939_POLL_ECAN == J1939_FALSE   
 void J1939_ISR( void )   
 {   
@@ -360,33 +550,47 @@ void J1939_ISR( void )
     //可能存在因为错误产生中断，直接清除相关的标识位 
 }   
 #endif   
-/*
-*输入： j1939_uint8_t   一个大概的毫秒数，通常设置 5 或 3 
-*输出:   
-*说明：如果我们采用轮询的方式获取信息，这个函数每几个毫秒将被调用一次。
-        不断的接受消息和发送消息从消息队列中
-        此外，如果我们正在等待一个地址竞争反应。 
-        如果超时，我们只接收特定的消息（目标地址 = J1939_Address）
+    
+/**
+* @param[in]  ElapsedTime   一个大概的毫秒数，通常设置 5 或 3
+* @note 如果我们采用轮询的方式获取信息，这个函数每几个毫秒将被调用一次。\n
+        不断的接受消息和发送消息从消息队列中\n
+        此外，如果我们正在等待一个地址竞争反应。\n 
+        如果超时，我们只接收特定的消息（目标地址 = J1939_Address）\n
   
-        如果设备使用中断，此函数被调用，在调用J1939_Initialization（）函数后，因为
-        J1939_Initialization（）可能初始化WaitingForAddressClaimContention标识位为1.
+        如果设备使用中断，此函数被调用，在调用J1939_Initialization（）函数后，因为\n
+        J1939_Initialization（）可能初始化WaitingForAddressClaimContention标识位为1.\n
 
-        如果接受到命令地址消息，这个函数也必须被调用，以防万一总线要求我们改变地址
+        如果接受到命令地址消息，这个函数也必须被调用，以防万一总线要求我们改变地址\n
 
-        如果使用中断模式，本程序将不会处理接受和发送消息，只处理地址竞争超时。
-*/     
+        如果使用中断模式，本程序将不会处理接受和发送消息，只处理地址竞争超时。\n
+*/
 void J1939_Poll( j1939_uint32_t ElapsedTime )   
 {
     //更新的竞争等待时间
     ContentionWaitTime += ElapsedTime;   
     //我们必须调用J1939_ReceiveMessages接受函数，在时间被重置为0之前。
-    #if J1939_POLL_ECAN == J1939_TRUE
+#if J1939_POLL_ECAN == J1939_TRUE
+    	Can_Node = Select_CAN_NODE_1;
+    	J1939_Address = J1939_STARTING_ADDRESS_1;
         J1939_ReceiveMessages();
         J1939_TransmitMessages();
-	#if J1939_TP_RX_TX
+    	Can_Node = Select_CAN_NODE_2;
+    	J1939_Address = J1939_STARTING_ADDRESS_2;
+        J1939_ReceiveMessages();
+        J1939_TransmitMessages();
+    	Can_Node = Select_CAN_NODE_3;
+    	J1939_Address = J1939_STARTING_ADDRESS_3;
+        J1939_ReceiveMessages();
+        J1939_TransmitMessages();
+    	Can_Node = Select_CAN_NODE_4;
+        J1939_Address = J1939_STARTING_ADDRESS_4;
+        J1939_ReceiveMessages();
+        J1939_TransmitMessages();
+#if J1939_TP_RX_TX
         J1939_TP_Poll();
-	#endif //J1939_TP_RX_TX
-    #endif   
+#endif //J1939_TP_RX_TX
+#endif //J1939_POLL_ECAN == J1939_TRUE
 
 //当ECU需要竞争地址时，WaitingForAddressClaimContention在初始化中置位，并运行下面语句
 //如果我们正在等待一个地址竞争反应。 并且超时，我们只接收特定的消息（目标地址 = J1939_Address）
@@ -412,24 +616,23 @@ void J1939_Poll( j1939_uint32_t ElapsedTime )
 
     }   
 }   
-/*
-*输入： 
-*输出:   
-*说明： 这段程序被调用，当CAN收发器接受数据后从中断 或者 轮询。
-        如果一个信息被接受, 它将被调用
-        如果信息是一个网络管理信息或长帧传输（TP），接受的信息将被加工处理，在这个函数中。
-        否则, 信息将放置在用户的接收队列。
-        注意：在这段程序运行期间中断是失能的。
-        注意：为了节省空间，函数J1939_CommandedAddressHandling（）采用内联的函数
-*/   
-static void J1939_ReceiveMessages( void )   
+  
+/**
+* @note 这段程序被调用，当CAN收发器接受数据后从中断 或者 轮询。\n
+        如果一个信息被接受, 它将被调用\n
+        如果信息是一个网络管理信息或长帧传输（TP），接受的信息将被加工处理，在这个函数中。\n
+        否则, 信息将放置在用户的接收队列。\n
+        注意：在这段程序运行期间中断是失能的。\n
+        注意：为了节省空间，函数J1939_CommandedAddressHandling（）采用内联的函数\n
+*/
+void J1939_ReceiveMessages( void )   
 {
 #if J1939_TP_RX_TX
 	j1939_uint32_t _pgn = 0;
 #endif //J1939_TP_RX_T
     /*从接收缓存中读取信息到OneMessage中，OneMessage是一个全局变量*/
     /*Port_CAN_Receive函数读取到数据返回1，没有数据则返回0*/
-    if(Port_CAN_Receive(&OneMessage))
+    while(Port_CAN_Receive(&OneMessage))
     {
         switch( OneMessage.Mxe.PDUFormat)
         { 
@@ -457,6 +660,7 @@ static void J1939_ReceiveMessages( void )
                     if(OneMessage.Mxe.Data[0] == 16)
                     {
                     	J1939_TP_Flags_t.state = J1939_TP_RX;
+                    	J1939_TP_Flags_t.TP_RX_CAN_NODE = Can_Node;
 
                     	TP_RX_MSG.tp_rx_msg.SA = OneMessage.Mxe.SourceAddress;
                     	TP_RX_MSG.tp_rx_msg.PGN = (j1939_uint32_t)((OneMessage.Mxe.Data[7]<<16)&0xFF0000)
@@ -611,33 +815,99 @@ static void J1939_ReceiveMessages( void )
                 break;   
             default:   
 PutInReceiveQueue:   
-                if ( (J1939_OVERWRITE_RX_QUEUE == J1939_TRUE) ||   
-                    (RXQueueCount < J1939_RX_QUEUE_SIZE))   
-                {   
-                    if (RXQueueCount < J1939_RX_QUEUE_SIZE)   
-                    {   
-                        RXQueueCount ++;   
-                        RXTail ++;   
-                        if (RXTail >= J1939_RX_QUEUE_SIZE)   
-                            RXTail = 0;   
-                    }   
-                    RXQueue[RXTail] = OneMessage;   
-                }   
-                else   
-                    J1939_Flags.ReceivedMessagesDropped = 1;   
+			{
+            	switch (Can_Node)
+				{
+					case  Select_CAN_NODE_1:
+					{
+						if ( (J1939_OVERWRITE_RX_QUEUE == J1939_TRUE) ||
+							(RXQueueCount_1 < J1939_RX_QUEUE_SIZE))
+						{
+							if (RXQueueCount_1 < J1939_RX_QUEUE_SIZE)
+							{
+								RXQueueCount_1 ++;
+								RXTail_1 ++;
+								if (RXTail_1 >= J1939_RX_QUEUE_SIZE)
+									RXTail_1 = 0;
+							}
+							RXQueue_1[RXTail_1] = OneMessage;
+						}
+						else
+							J1939_Flags.ReceivedMessagesDropped = 1;
+						break;
+					}
+					case  Select_CAN_NODE_2:
+					{
+						if ( (J1939_OVERWRITE_RX_QUEUE == J1939_TRUE) ||
+							(RXQueueCount_2 < J1939_RX_QUEUE_SIZE))
+						{
+							if (RXQueueCount_2 < J1939_RX_QUEUE_SIZE)
+							{
+								RXQueueCount_2 ++;
+								RXTail_2 ++;
+								if (RXTail_2 >= J1939_RX_QUEUE_SIZE)
+									RXTail_2 = 0;
+							}
+							RXQueue_2[RXTail_2] = OneMessage;
+						}
+						else
+							J1939_Flags.ReceivedMessagesDropped = 1;
+						break;
+					}
+					case  Select_CAN_NODE_3:
+					{
+						if ( (J1939_OVERWRITE_RX_QUEUE == J1939_TRUE) ||
+							(RXQueueCount_3 < J1939_RX_QUEUE_SIZE))
+						{
+							if (RXQueueCount_3 < J1939_RX_QUEUE_SIZE)
+							{
+								RXQueueCount_3 ++;
+								RXTail_3 ++;
+								if (RXTail_3 >= J1939_RX_QUEUE_SIZE)
+									RXTail_3 = 0;
+							}
+							RXQueue_3[RXTail_3] = OneMessage;
+						}
+						else
+							J1939_Flags.ReceivedMessagesDropped = 1;
+						break;
+					}
+					case  Select_CAN_NODE_4:
+					{
+						if ( (J1939_OVERWRITE_RX_QUEUE == J1939_TRUE) ||
+							(RXQueueCount_4 < J1939_RX_QUEUE_SIZE))
+						{
+							if (RXQueueCount_4 < J1939_RX_QUEUE_SIZE)
+							{
+								RXQueueCount_4 ++;
+								RXTail_4 ++;
+								if (RXTail_4 >= J1939_RX_QUEUE_SIZE)
+									RXTail_4 = 0;
+							}
+							RXQueue_4[RXTail_4] = OneMessage;
+						}
+						else
+							J1939_Flags.ReceivedMessagesDropped = 1;
+						break;
+					}
+					default  :
+					{
+						break;
+					}
+				}
+			}
+
         }   
     }
 
 }   
-/*
-*输入： 
-*输出:   
-*说明： 如果接收到地址声明请求，这个函数将被调用
-        如果我们的设备不需要发送一个地址声明，我们将不发送地址声明消息，否则，反之。
+
+/**
+* @note 如果接收到地址声明请求，这个函数将被调用\n
+        如果我们的设备不需要发送一个地址声明，我们将不发送地址声明消息，否则，反之。\n
         为了减少代码大小。两条消息之间只有源地址的变化。
-*/     
-  
-static void J1939_RequestForAddressClaimHandling( void )   
+*/
+void J1939_RequestForAddressClaimHandling( void )   
 {   
     if (J1939_Flags.CannotClaimAddress)   
     	OneMessage.Mxe.SourceAddress = J1939_NULL_ADDRESS;  //发送一个不能声明的地址消息
@@ -652,54 +922,176 @@ static void J1939_RequestForAddressClaimHandling( void )
 
     SendOneMessage( (J1939_MESSAGE *) &OneMessage );   
 }   
-/*
-*输入： 
-*输出:  RC_SUCCESS          信息发送成功
-        RC_CANNOTTRANSMIT   系统没有发送消息，因为设备没有申请到地址，或者没有要发送的消息
-*说明：  调用这个函数后，如果发送消息列队中有消息就位，则会发送消息 ，如果不能发送消息，相关的错误代码将返回。
-        程序运行期间，中断是被失能的。 
-*/    
+/**
+* @return    RC_SUCCESS          信息发送成功
+* @return    RC_CANNOTTRANSMIT   系统没有发送消息，因为设备没有申请到地址，或者没有要发送的消息,或错误的CAN设备
+* @note      调用这个函数后，如果发送消息列队中有消息就位，则会发送消息 ，如果不能发送消息，相关的错误代码将返回。\n
+             程序运行期间，中断是被失能的。
+*/
 static j1939_uint8_t J1939_TransmitMessages( void )   
 {   
-    if (TXQueueCount == 0)   
-    {   
-        //如果没有要发送的消息从发送消息列队中，恢复中断(清空发送标识位)
-#if J1939_POLL_ECAN == J1939_FALSE
-        Port_TXinterruptEnable();
-#endif
-        return RC_CANNOTTRANSMIT;
-    }   
-    else   
-    {  
-        //设备没有正确的声明到地址 
-        if (J1939_Flags.CannotClaimAddress)   
-            return RC_CANNOTTRANSMIT;   
+	switch (Can_Node)
+	{
+		case  Select_CAN_NODE_1:
+		{
+		    if (TXQueueCount_1 == 0)
+		    {
+		        //如果没有要发送的消息从发送消息列队中，恢复中断(清空发送标识位)
+		#if J1939_POLL_ECAN == J1939_FALSE
+		        Port_TXinterruptEnable();
+		#endif
+		        return RC_CANNOTTRANSMIT;
+		    }
+		    else
+		    {
+		        //设备没有正确的声明到地址
+		        if (J1939_Flags.CannotClaimAddress)
+		            return RC_CANNOTTRANSMIT;
 
-        while(TXQueueCount > 0)
-        {
-            /*确保上次数据发送成功*/
-            /**************可增加一个判断函数**************************/
+		        while(TXQueueCount_1 > 0)
+		        {
+		            /*确保上次数据发送成功*/
+		            /**************可增加一个判断函数**************************/
 
-            TXQueue[TXHead].Mxe.SourceAddress = J1939_Address;
-            SendOneMessage( (J1939_MESSAGE *) &(TXQueue[TXHead]) );   
-            TXHead ++;   
-            if (TXHead >= J1939_TX_QUEUE_SIZE)   
-                TXHead = 0;   
-            TXQueueCount --;  
-        }
-     
-       /*配置了一些标识位，使能中断*/
-#if J1939_POLL_ECAN == J1939_FALSE
-        Port_TXinterruptEnable();
-#endif
-    }   
+		        	TXQueue_1[TXHead_1].Mxe.SourceAddress = J1939_STARTING_ADDRESS_1;
+
+		            SendOneMessage( (J1939_MESSAGE *) &(TXQueue_1[TXHead_1]) );
+		            TXHead_1 ++;
+		            if (TXHead_1 >= J1939_TX_QUEUE_SIZE)
+		            	TXHead_1 = 0;
+		            TXQueueCount_1 --;
+		        }
+
+		       /*配置了一些标识位，使能中断*/
+		#if J1939_POLL_ECAN == J1939_FALSE
+		        Port_TXinterruptEnable();
+		#endif
+		    }
+			break;
+		}
+		case  Select_CAN_NODE_2:
+		{
+			if (TXQueueCount_2 == 0)
+			{
+				//如果没有要发送的消息从发送消息列队中，恢复中断(清空发送标识位)
+		#if J1939_POLL_ECAN == J1939_FALSE
+				Port_TXinterruptEnable();
+		#endif
+				return RC_CANNOTTRANSMIT;
+			}
+			else
+			{
+				//设备没有正确的声明到地址
+				if (J1939_Flags.CannotClaimAddress)
+					return RC_CANNOTTRANSMIT;
+
+				while(TXQueueCount_2 > 0)
+				{
+					/*确保上次数据发送成功*/
+					/**************可增加一个判断函数**************************/
+
+					TXQueue_2[TXHead_2].Mxe.SourceAddress = J1939_STARTING_ADDRESS_2;
+
+					SendOneMessage( (J1939_MESSAGE *) &(TXQueue_2[TXHead_2]) );
+					TXHead_2 ++;
+					if (TXHead_2 >= J1939_TX_QUEUE_SIZE)
+						TXHead_2 = 0;
+					TXQueueCount_2 --;
+				}
+
+			   /*配置了一些标识位，使能中断*/
+		#if J1939_POLL_ECAN == J1939_FALSE
+				Port_TXinterruptEnable();
+		#endif
+			}
+			break;
+		}
+		case  Select_CAN_NODE_3:
+		{
+			if (TXQueueCount_3 == 0)
+			{
+				//如果没有要发送的消息从发送消息列队中，恢复中断(清空发送标识位)
+		#if J1939_POLL_ECAN == J1939_FALSE
+				Port_TXinterruptEnable();
+		#endif
+				return RC_CANNOTTRANSMIT;
+			}
+			else
+			{
+				//设备没有正确的声明到地址
+				if (J1939_Flags.CannotClaimAddress)
+					return RC_CANNOTTRANSMIT;
+
+				while(TXQueueCount_3 > 0)
+				{
+					/*确保上次数据发送成功*/
+					/**************可增加一个判断函数**************************/
+
+					TXQueue_3[TXHead_3].Mxe.SourceAddress = J1939_STARTING_ADDRESS_3;
+
+					SendOneMessage( (J1939_MESSAGE *) &(TXQueue_3[TXHead_3]) );
+					TXHead_3 ++;
+					if (TXHead_3 >= J1939_TX_QUEUE_SIZE)
+						TXHead_3 = 0;
+					TXQueueCount_3 --;
+				}
+
+			   /*配置了一些标识位，使能中断*/
+		#if J1939_POLL_ECAN == J1939_FALSE
+				Port_TXinterruptEnable();
+		#endif
+			}
+			break;
+		}
+		case  Select_CAN_NODE_4:
+		{
+			if (TXQueueCount_4 == 0)
+			{
+				//如果没有要发送的消息从发送消息列队中，恢复中断(清空发送标识位)
+		#if J1939_POLL_ECAN == J1939_FALSE
+				Port_TXinterruptEnable();
+		#endif
+				return RC_CANNOTTRANSMIT;
+			}
+			else
+			{
+				//设备没有正确的声明到地址
+				if (J1939_Flags.CannotClaimAddress)
+					return RC_CANNOTTRANSMIT;
+
+				while(TXQueueCount_4 > 0)
+				{
+					/*确保上次数据发送成功*/
+					/**************可增加一个判断函数**************************/
+
+					TXQueue_4[TXHead_4].Mxe.SourceAddress = J1939_STARTING_ADDRESS_4;
+
+					SendOneMessage( (J1939_MESSAGE *) &(TXQueue_4[TXHead_4]) );
+					TXHead_4 ++;
+					if (TXHead_4 >= J1939_TX_QUEUE_SIZE)
+						TXHead_4 = 0;
+					TXQueueCount_4 --;
+				}
+
+			   /*配置了一些标识位，使能中断*/
+		#if J1939_POLL_ECAN == J1939_FALSE
+				Port_TXinterruptEnable();
+		#endif
+			}
+			break;
+		}
+		default  :
+		{
+			return RC_CANNOTTRANSMIT;
+			break;
+		}
+	}
+
     return RC_SUCCESS;   
 }
 #if J1939_TP_RX_TX
-/*
-*输入：
-*输出:
-*说明：  发送TP.DT，参考J1939-21，
+/**
+* @note 发送TP.DT，参考J1939-21
 */
 void J1939_TP_DT_Packet_send(void)
 {
@@ -756,7 +1148,7 @@ void J1939_TP_DT_Packet_send(void)
         	TP_TX_MSG.state = J1939_TP_TX_DT;
         }
 
-        while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
+        while (J1939_EnqueueMessage( &_msg, Can_Node) != RC_SUCCESS)
         	J1939_Poll(5);
     }
     else
@@ -769,10 +1161,8 @@ void J1939_TP_DT_Packet_send(void)
     }
 
 }
-/*
-*输入：
-*输出:
-*说明：  发送TP。CM-RTS,16,23,4,255,PGN消息，参考J1939-21，
+/**
+* @note 发送TP。CM-RTS,16,23,4,255,PGN消息，参考J1939-21，
 */
 void J1939_CM_Start(void)
 {
@@ -795,7 +1185,7 @@ void J1939_CM_Start(void)
     _msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
     _msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 
-	while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
+	while (J1939_EnqueueMessage( &_msg, Can_Node ) != RC_SUCCESS)
 		J1939_Poll(5);
 
 	/*刷新等待时间，触发下一个步骤（）*/
@@ -803,10 +1193,8 @@ void J1939_CM_Start(void)
     TP_TX_MSG.state = J1939_TP_TX_CM_WAIT;
 
 }
-/*
-*输入：
-*输出:
-*说明：  中断TP链接
+/**
+* @note 中断TP链接
 */
 void J1939_TP_TX_Abort(void)
 {
@@ -829,16 +1217,14 @@ void J1939_TP_TX_Abort(void)
 	_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
 	_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 
-	while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
+	while (J1939_EnqueueMessage( &_msg, Can_Node) != RC_SUCCESS)
 		J1939_Poll(5);
 	/*结束发送*/
     TP_TX_MSG.state = J1939_TX_DONE;
 
 }
-/*
-*输入：
-*输出:
-*说明：  中断TP链接
+/**
+* @note 中断TP链接
 */
 void J1939_TP_RX_Abort(void)
 {
@@ -861,16 +1247,14 @@ void J1939_TP_RX_Abort(void)
 	_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
 	_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 
-	while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
+	while (J1939_EnqueueMessage( &_msg, Can_Node) != RC_SUCCESS)
 		J1939_Poll(5);
 	/*结束发送*/
     TP_RX_MSG.state = J1939_RX_DONE;
 
 }
-/*
-*输入：
-*输出:
-*说明：  TP的计时器
+/**
+* @note TP的计时器
 */
 j1939_uint8_t J1939_TP_TX_RefreshCMTimer(j1939_uint16_t dt_ms)
 {
@@ -894,10 +1278,8 @@ j1939_uint8_t J1939_TP_TX_RefreshCMTimer(j1939_uint16_t dt_ms)
 		return  J1939_TP_TIMEOUT_NORMAL;
 	}
 }
-/*
-*输入：
-*输出:
-*说明：  TP的计时器
+/**
+* @note TP的计时器
 */
 j1939_uint8_t J1939_TP_RX_RefreshCMTimer(j1939_uint16_t dt_ms)
 {
@@ -921,10 +1303,8 @@ j1939_uint8_t J1939_TP_RX_RefreshCMTimer(j1939_uint16_t dt_ms)
 		return  J1939_TP_TIMEOUT_NORMAL;
 	}
 }
-/*
-*输入：
-*输出:
-*说明：  发送读取数据 TP.CM_CTS 和 EndofMsgAck消息。
+/**
+* @note 发送读取数据 TP.CM_CTS 和 EndofMsgAck消息。
 */
 void J1939_read_DT_Packet()
 {
@@ -949,7 +1329,7 @@ void J1939_read_DT_Packet()
 		_msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
 		_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
 		_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
-		while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
+		while (J1939_EnqueueMessage( &_msg, Can_Node) != RC_SUCCESS)
 				J1939_Poll(5);
 		return ;
 	}
@@ -966,7 +1346,7 @@ void J1939_read_DT_Packet()
 			_msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
 			_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
 			_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
-			while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
+			while (J1939_EnqueueMessage( &_msg, Can_Node) != RC_SUCCESS)
 					J1939_Poll(5);
 			TP_RX_MSG.state = J1939_TP_RX_DATA_WAIT;
 			return ;
@@ -980,7 +1360,7 @@ void J1939_read_DT_Packet()
 		_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
 		_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
 
-		while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
+		while (J1939_EnqueueMessage( &_msg, Can_Node) != RC_SUCCESS)
 				J1939_Poll(5);
 		TP_RX_MSG.state = J1939_TP_RX_DATA_WAIT;
 		return ;
@@ -995,17 +1375,15 @@ void J1939_read_DT_Packet()
 		_msg.Mxe.Data[7] = (j1939_uint8_t)((pgn_num>>16) & 0xff);
 		_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
 		_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
-		while (J1939_EnqueueMessage( &_msg ) != RC_SUCCESS)
+		while (J1939_EnqueueMessage( &_msg, Can_Node) != RC_SUCCESS)
 				J1939_Poll(5);
 		TP_RX_MSG.state = J1939_RX_DONE;
 		return ;
 	}
 }
-/*
-*输入：
-*输出:
-*说明：  TP协议的心跳，为了满足在总线的计时准确，10ms轮询一次   J1939_TP_TX_RefreshCMTimer(10)
-*说明：  如果想要更高的分辨率，1ms轮询一次，但是要改下面计时函数  J1939_TP_TX_RefreshCMTimer(1)
+/**
+* @note TP协议的心跳，为了满足在总线的计时准确，10ms轮询一次   J1939_TP_TX_RefreshCMTimer(10)\n
+		如果想要更高的分辨率，1ms轮询一次，但是要改下面计时函数  J1939_TP_TX_RefreshCMTimer(1)
 */
 void J1939_TP_Poll()
 {
@@ -1015,6 +1393,7 @@ void J1939_TP_Poll()
 	}
 	if(J1939_TP_Flags_t.state == J1939_TP_RX)
 	{
+		Can_Node = J1939_TP_Flags_t.TP_RX_CAN_NODE;
 		switch(TP_RX_MSG.state)
 		{
 		case J1939_TP_RX_WAIT:
@@ -1034,6 +1413,7 @@ void J1939_TP_Poll()
 			break;
 		case J1939_TP_RX_ERROR:
 			J1939_TP_RX_Abort();
+			J1939_TP_Flags_t.TP_RX_CAN_NODE = Select_CAN_NODE_Null;
 			break;
 		case J1939_RX_DONE:
 			TP_RX_MSG.packets_ok_num = 0;
@@ -1049,6 +1429,7 @@ void J1939_TP_Poll()
 	}
 	if(J1939_TP_Flags_t.state == J1939_TP_TX)
 	{
+		Can_Node = J1939_TP_Flags_t.TP_TX_CAN_NODE;
 		switch (TP_TX_MSG.state)
 		{
 			case J1939_TP_TX_WAIT:
@@ -1079,6 +1460,7 @@ void J1939_TP_Poll()
 	            break;
 			case J1939_TP_TX_ERROR:
 				J1939_TP_TX_Abort();
+
 	    		break;
 			case J1939_TX_DONE:
 				TP_TX_MSG.packets_request_num = 0;
@@ -1094,22 +1476,25 @@ void J1939_TP_Poll()
 		return ;
 	}
 }
-/*
-*输入： PGN				TP会话的参数群编号
-*输入： SA					TP会话的目标地址
-*输入： *data				TP会话的数据缓存地址
-*输入： data_num		    TP会话的数据大小
-*输出: RC_SUCCESS        成功打开TP链接，开始进入发送流程
-*输出: RC_CANNOTTRANSMIT 不能发送，因为TP协议已经建立虚拟链接，并且未断开
-*说明：  TP协议的发送函数
+
+/**这是一个非阻塞io接口
+*
+* @param[in] PGN	TP会话的参数群编号
+* @param[in] SA		TP会话的目标地址
+* @param[in] *data	TP会话的数据缓存地址
+* @param[in] data_num TP会话的数据大小
+* @return    RC_SUCCESS        成功打开TP链接，开始进入发送流程
+* @return    RC_CANNOTTRANSMIT 不能发送，因为TP协议已经建立虚拟链接，并且未断开
+* @note      TP协议的发送函数
 */
-j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_int8_t *data,j1939_uint16_t data_num)
+j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_int8_t *data,j1939_uint16_t data_num, CAN_NODE  _Can_Node)
 {
 	j1939_uint16_t _byte_count =0;
 	/*取得发送权限*/
 	if(J1939_TP_Flags_t.state == J1939_TP_NULL)
 	{
 		J1939_TP_Flags_t.state = J1939_TP_TX;
+		J1939_TP_Flags_t.TP_TX_CAN_NODE = _Can_Node;
 	}else
 	{
 		return RC_CANNOTTRANSMIT;//不能发送，因为TP协议已经建立虚拟链接，并且未断开
@@ -1133,21 +1518,19 @@ j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_int8_
 	//触发开始CM_START
 	TP_TX_MSG.state = J1939_TP_TX_CM_START;
 
+
 	return RC_SUCCESS;
 }
-/*
-*输入： data		读取数据的缓存
-*输入： data_num  读取数据的缓存大小
-*输出: RC_CANNOTRECEIVE 不能接受，TP协议正在接受数据中
-*输出: RC_SUCCESS		读取数据成功
-*说明：  TP的接受函数 , 接受缓存的大小必须大于接受数据的大小，建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH
-*说明：  请正确带入 缓存区的大小，参数错误程序运行有风险
-*应用实例：
-		j1939_uint32_t data[J1939_TP_MAX_MESSAGE_LENGTH]
-		while(J1939_TP_RX_Message( data，sizeof(data))==RC_SUCCESS)
-		  J1939_Poll(5);
+
+/**
+* @param[in] data	读取数据的缓存
+* @param[in] data_num  读取数据的缓存大小
+* @return  RC_CANNOTRECEIVE 不能接受，TP协议正在接受数据中
+* @return  RC_SUCCESS		读取数据成功
+* @note TP的接受函数 , 接受缓存的大小必须大于接受数据的大小，建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH\n
+		请正确带入 缓存区的大小，参数错误程序运行有风险
 */
-j1939_int8_t J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num)
+j1939_int8_t J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num, CAN_NODE  _Can_Node)
 {
 	j1939_uint16_t _a = 0;
 	/*判断是否能读取数据*/
@@ -1157,6 +1540,11 @@ j1939_int8_t J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num)
 	}else
 	{
 		return RC_CANNOTRECEIVE;//不能接受，TP协议正在接受数据中,或没有数据
+	}
+	//判断是不是要读取那一路CAN数据
+	if(_Can_Node != J1939_TP_Flags_t.TP_RX_CAN_NODE)
+	{
+		return RC_CANNOTRECEIVE;
 	}
     //判断数据缓存够不够
 	if(data_num < TP_RX_MSG.tp_rx_msg.byte_count)
