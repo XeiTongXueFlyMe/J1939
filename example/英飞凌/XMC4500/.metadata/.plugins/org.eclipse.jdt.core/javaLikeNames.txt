@@ -1,9 +1,0 @@
-dscp
-dsld
-gpp
-gradle
-groovy
-grunit
-java
-manifest
-tmpl
