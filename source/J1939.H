@@ -228,7 +228,7 @@ typedef struct
 // J1939_MESSAGE_STRUCT旨在J1939消息块映射到设备的地址映射。 只有字段PDU格式不映射到设备寄存器。
 // 结构应该简单地使用PDUFormat和忽视PDUFormat_Top。调整将立即接收和传输之前。
 // 注:编译器创建结构从低一点的位置高一些位置，所以可能出现不匹配的设备寄存器。
-#define J1939_MSG_LENGTH	5  //消息长度
+#define J1939_MSG_LENGTH	9  //消息长度
 #define J1939_DATA_LENGTH	8  //数据长度
  
 /** J1939_MESSAGE_UNION 结构体
@@ -246,13 +246,15 @@ union J1939_MESSAGE_UNION
 		j1939_uint8_t	DataPage			: 1;  /**< 数据页*/
 		j1939_uint8_t	Res					: 1;  /**< Res位*/
 		j1939_uint8_t	Priority			: 3;  /**< 优先级*/
-		j1939_uint8_t	PDUFormat_Top		: 3;  /**< 空闲*/
+		j1939_uint8_t	Reserve				: 3;  /**< 空闲*/
 		j1939_uint8_t	PDUFormat;				  /**< PF*/
 		j1939_uint8_t	PDUSpecific; 			  /**< PS*/
 		j1939_uint8_t	SourceAddress;            /**< SA*/
 		j1939_uint8_t	DataLength 			: 4;  /**< 数据长度*/
 		j1939_uint8_t	RTR					: 4;  /**< RTR位*/
 		j1939_uint8_t	Data[J1939_DATA_LENGTH];  /**< 数据*/
+		j1939_uint32_t  PGN					:24;  /**< 参数群编号*/
+		j1939_uint32_t  ReservePGN			: 8;  /**< 空闲*/
 	};
 	struct j1939_PID Mxe;  /**< j1939 的 ID 组成结构体*/
 	j1939_uint8_t		Array[J1939_MSG_LENGTH + J1939_DATA_LENGTH]; /**< 联合体数组，方便快速处理结构体赋值*/
@@ -284,7 +286,6 @@ extern j1939_uint8_t	CA_Name[J1939_DATA_LENGTH];
 extern j1939_uint8_t 	J1939_Address; 
 extern J1939_FLAG    	J1939_Flags; 
 extern J1939_MESSAGE    OneMessage;  
-extern j1939_uint8_t	RXQueueCount_1; //RX 列队计数器
 extern CAN_NODE         Can_Node;  //CAN硬件选择
 #if J1939_TP_RX_TX
 //TP协议全局变量  

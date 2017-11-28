@@ -816,6 +816,15 @@ void J1939_ReceiveMessages( void )
             default:   
 PutInReceiveQueue:   
 			{
+            	if(OneMessage.Mxe.PDUFormat < 240){
+            		OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
+										+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
+										+0x00;
+            	}else{
+            		OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
+										+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
+										+(j1939_uint32_t)((OneMessage.Array[2])&0xFF);
+            	}
             	switch (Can_Node)
 				{
 					case  Select_CAN_NODE_1:
