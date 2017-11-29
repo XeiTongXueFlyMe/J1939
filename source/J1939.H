@@ -44,7 +44,7 @@ typedef int   		   j1939_int32_t;   /** < 32位整形*/
 typedef unsigned short j1939_uint16_t;  /** < 16位无符号整形*/
 typedef unsigned char  j1939_uint8_t;   /** < 8位无符号整形*/
 typedef char           j1939_int8_t;    /** < 8位无符号整形*/
-
+#define J1939_NULL     ((void *)0)
 
 //函数返回代码
 #define RC_SUCCESS			    0  /**< 成功*/
@@ -75,13 +75,13 @@ typedef char           j1939_int8_t;    /** < 8位无符号整形*/
 #define J1939_PF_REQUEST2				201  /**< J1939协议栈的请求 PF */
 #define J1939_PF_TRANSFER				202  /**< J1939协议栈的转移 PF */
 
-#define J1939_PF_REQUEST				234  /**< 请求，用于握手机制*/
-#define J1939_PF_ACKNOWLEDGMENT			232  /**< 确认请求，用于握手机制*/
+#define J1939_PF_REQUEST				234  /**< 请求 或 用于握手机制*/
+#define J1939_PF_ACKNOWLEDGMENT			232  /**< 确认请求 或 用于握手机制*/
 
 #define J1939_ACK_CONTROL_BYTE			0    /**< 用于TP(长帧数据)，代表确认*/
 #define J1939_NACK_CONTROL_BYTE			1    /**< 用于TP(长帧数据)，PNG不被支持。否定消息*/
-#define J1939_ACCESS_DENIED_CONTROL_BYTE	2/**< 拒绝访问，但是信息是被支持*/
-#define J1939_CANNOT_RESPOND_CONTROL_BYTE	3/**< 不能做出反应，有空能是接受的缓存不够*/
+#define J1939_ACCESS_DENIED_CONTROL_BYTE	2/**< 拒绝访问，但是信息是被支持，暂时不能响应（需要再次发送请求）*/
+#define J1939_CANNOT_RESPOND_CONTROL_BYTE	3/**< 不能做出反应，有空但是接受的缓存不够，或则发送资源被占领，暂时不能响应（需要再次发送请求）*/
 
 //TP协议的一些宏定义 
 #define J1939_PF_DT				        235	    /**< 协议传输---数据传输 PF*/
@@ -224,13 +224,25 @@ typedef struct
 
 #endif //J1939_TP_RX_TX
 
+/**
+* @note 实现Request_PGN 的响应
+*/
+struct Request_List{
+	j1939_uint8_t  *data;
+	j1939_uint16_t lenght;
+	j1939_uint32_t PGN;
+	CAN_NODE       Can_Node;
+	void (*update)();  /**< 在函数里需要对data更新，如果不用更新data赋值为J1939_NULL*/
+	struct Request_List *next;   /**< 链表末尾，需要一直保持J1939_NULL*/
+};
+
 // J1939 Data Structures 
 // J1939_MESSAGE_STRUCT旨在J1939消息块映射到设备的地址映射。 只有字段PDU格式不映射到设备寄存器。
 // 结构应该简单地使用PDUFormat和忽视PDUFormat_Top。调整将立即接收和传输之前。
 // 注:编译器创建结构从低一点的位置高一些位置，所以可能出现不匹配的设备寄存器。
 #define J1939_MSG_LENGTH	9  //消息长度
 #define J1939_DATA_LENGTH	8  //数据长度
- 
+
 /** J1939_MESSAGE_UNION 结构体
 * 实现了J1939消息对象
 *
@@ -279,6 +291,7 @@ union J1939_FLAGS_UNION
    }; 
 	  j1939_uint8_t		FlagVal; 
 }; 
+
 typedef union J1939_FLAGS_UNION J1939_FLAG; 
 
 // 向外部声明的全局变量
@@ -308,7 +321,7 @@ extern void			    J1939_ISR( void );
 //扫描入口
 extern void 			J1939_Poll( j1939_uint32_t ElapsedTime );
 //TP协议的发送函数
-extern j1939_int8_t 	J1939_TP_TX_Message(j1939_uint32_t PGN, j1939_uint8_t SA, j1939_int8_t *data, j1939_uint16_t data_num, CAN_NODE  _Can_Node);
+extern j1939_int8_t 	J1939_TP_TX_Message(j1939_uint32_t PGN, j1939_uint8_t SA, j1939_uint8_t *data, j1939_uint16_t data_num, CAN_NODE  _Can_Node);
 //TP协议的接受函数
 extern j1939_int8_t 	J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num, CAN_NODE  _Can_Node);
 //TP轮询函数

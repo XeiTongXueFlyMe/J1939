@@ -103,6 +103,7 @@ J1939_MESSAGE                   TXQueue_4[J1939_TX_QUEUE_SIZE];
 J1939_TP_Flags                  J1939_TP_Flags_t;   
 J1939_TRANSPORT_RX_INFO         TP_RX_MSG;    
 J1939_TRANSPORT_TX_INFO         TP_TX_MSG;
+struct Request_List REQUEST_LIST;
 #endif //J1939_TP_RX_TX
 // 函数声明   
 #if J1939_ACCEPT_CMDADD == J1939_TRUE   
@@ -349,7 +350,7 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
   
 /**
 * @param[in]  MsgPtr     用户要入队的消息
-* @param[in]  _Can_Node  要入队的CAN硬件编号
+* @param[in]  _Can_Node  要入队的CAN硬件编号（要选择的使用的CAN硬件编号）
 * @return     RC_SUCCESS          消息入队成功 
 * @return     RC_QUEUEFULL        发送列队满，消息入队失败 
 * @return     RC_CANNOTTRANSMIT   系统目前不能发送消息  
@@ -495,6 +496,13 @@ void J1939_Initialization( j1939_uint8_t InitNAMEandAddress )
     RXQueueCount_4 = 0;
     /*初始化CAN节点的选择*/
     Can_Node = Select_CAN_NODE_1;
+    /*初始化请求链表*/
+    REQUEST_LIST.PGN = 0;
+    REQUEST_LIST.data = J1939_NULL;
+	REQUEST_LIST.update = J1939_NULL;
+	REQUEST_LIST.lenght = 0;
+	REQUEST_LIST.Can_Node = Select_CAN_NODE_Null;
+	REQUEST_LIST.next = J1939_NULL;
     /*将TP协议置为空闲*/
 #if J1939_TP_RX_TX
     J1939_TP_Flags_t.state = J1939_TP_NULL;
@@ -616,7 +624,7 @@ void J1939_Poll( j1939_uint32_t ElapsedTime )
 
     }   
 }   
-  
+void J1939_Response(const j1939_uint32_t PGN);
 /**
 * @note 这段程序被调用，当CAN收发器接受数据后从中断 或者 轮询。\n
         如果一个信息被接受, 它将被调用\n
@@ -806,9 +814,24 @@ void J1939_ReceiveMessages( void )
                 if ((OneMessage.Mxe.Data[0] == J1939_PGN0_REQ_ADDRESS_CLAIM) &&
                     (OneMessage.Mxe.Data[1] == J1939_PGN1_REQ_ADDRESS_CLAIM) &&
                     (OneMessage.Mxe.Data[2] == J1939_PGN2_REQ_ADDRESS_CLAIM))
+                {
                     J1939_RequestForAddressClaimHandling();   
-                else   
-                    goto PutInReceiveQueue;   
+                }
+                else
+                {
+                	if(OneMessage.Mxe.PDUFormat < 240)
+                	{
+						OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
+											+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
+											+0x00;
+					}else{
+						OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
+											+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
+											+(j1939_uint32_t)((OneMessage.Array[2])&0xFF);
+					}
+                	J1939_Response(OneMessage.Mxe.PGN);
+
+                }
                 break;   
             case J1939_PF_ADDRESS_CLAIMED:   
                 J1939_AddressClaimHandling( ADDRESS_CLAIM_RX );   
@@ -1492,11 +1515,12 @@ void J1939_TP_Poll()
 * @param[in] SA		TP会话的目标地址
 * @param[in] *data	TP会话的数据缓存地址
 * @param[in] data_num TP会话的数据大小
+* @param[in]  _Can_Node  要入队的CAN硬件编号（要选择的使用的CAN硬件编号）
 * @return    RC_SUCCESS        成功打开TP链接，开始进入发送流程
 * @return    RC_CANNOTTRANSMIT 不能发送，因为TP协议已经建立虚拟链接，并且未断开
 * @note      TP协议的发送函数
 */
-j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_int8_t *data,j1939_uint16_t data_num, CAN_NODE  _Can_Node)
+j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_uint8_t *data,j1939_uint16_t data_num, CAN_NODE  _Can_Node)
 {
 	j1939_uint16_t _byte_count =0;
 	/*取得发送权限*/
@@ -1534,6 +1558,7 @@ j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_int8_
 /**
 * @param[in] data	读取数据的缓存
 * @param[in] data_num  读取数据的缓存大小
+* @param[in]  _Can_Node  要入队的CAN硬件编号（要选择的使用的CAN硬件编号）
 * @return  RC_CANNOTRECEIVE 不能接受，TP协议正在接受数据中
 * @return  RC_SUCCESS		读取数据成功
 * @note TP的接受函数 , 接受缓存的大小必须大于接受数据的大小，建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH\n
@@ -1577,5 +1602,205 @@ j1939_int8_t J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num, CAN
 	}
 
 	return RC_SUCCESS;
+}
+/**
+* @param[in] pgn  被请求的参数群
+* @param[in] DA   目标地址（DestinationAddress） 当DA = 0xff表示是全局请求
+* @param[in] _Can_Node  要入队的CAN硬件编号（要选择的使用的CAN硬件编号）
+* @note      请求（从全局范围或则特定目的地的）参数群，请求规则J1939-21的16-17页，有明确的说明
+*/
+void J1939_Request_PGN(j1939_uint32_t pgn ,j1939_uint8_t DA, CAN_NODE  _Can_Node)
+{
+	J1939_MESSAGE _msg;
+
+	_msg.Mxe.DataPage                = 0;
+	_msg.Mxe.Priority                = J1939_REQUEST_PRIORITY;
+	_msg.Mxe.DestinationAddress      = DA;
+	_msg.Mxe.DataLength              = 3;
+	_msg.Mxe.PDUFormat               = J1939_PF_REQUEST;
+	_msg.Mxe.Data[0]        		 = (j1939_uint8_t)(pgn & 0x000000FF);
+	_msg.Mxe.Data[1]        		 = (j1939_uint8_t)((pgn & 0x0000FF00) >> 8);
+	_msg.Mxe.Data[2]				 = (j1939_uint8_t)((pgn & 0x00FF0000) >> 16);
+
+	while (J1939_EnqueueMessage( &_msg, _Can_Node) != RC_SUCCESS);
+}
+/**
+* @note 创建一个PGN 的 请求 对应的 响应\n 如果收到改请求则先运行 REQUEST_LIST.dataUPFun(),在将数据REQUEST_LIST.data发送出去
+* @warning  本函数只能被串行调用，（多线程）并行调用请在函数外加互斥操作
+*/
+void J1939_Create_Response(j1939_uint8_t data[],j1939_uint16_t dataLenght,j1939_uint32_t PGN,void (*dataUPFun),CAN_NODE  canNode)
+{
+	/*查找可用的链表项*/
+	struct Request_List * _requestList = &REQUEST_LIST;
+	while(J1939_NULL != _requestList->next)
+	{
+		_requestList = _requestList->next;
+	}
+	_requestList->next = (struct Request_List *)malloc(sizeof(struct Request_List));
+	_requestList = _requestList->next;
+
+	/*对新的链表项赋值*/
+	_requestList->data = data;
+	_requestList->lenght = dataLenght;
+	_requestList->PGN = PGN;
+	_requestList->update = dataUPFun;
+	_requestList->Can_Node = canNode;
+	_requestList->next = J1939_NULL;
+
+}
+/**
+* @note 当收到一个PGN请求后，如果有REQUEST_LIST中有相应的PGN，则会自动发送REQUEST_LIST中的PGN。\n
+  如果没有则会发送一个NACK; 本函数的响应逻辑，参考J1939-21 17页表4
+*/
+void J1939_Response(const j1939_uint32_t PGN)
+{
+	J1939_MESSAGE _msg;
+
+	/*查找可用的链表项*/
+	struct Request_List * _requestList = &REQUEST_LIST;
+	while((PGN != _requestList->PGN) || (Can_Node != _requestList->Can_Node))
+	{
+		if(_requestList->next == J1939_NULL)
+		{
+			/*原文档规定 全局请求不被支持时不能响应 NACK*/
+			if(OneMessage.Mxe.PDUSpecific == J1939_GLOBAL_ADDRESS)
+			{
+				return;
+			}
+			if((PGN & 0xFF00) >= 0xF000)
+			{
+				return;
+			}
+
+			/*没有相应的PGN响应被创建，向总线发送一个NACK*/
+			_msg.Mxe.Priority            = J1939_ACK_PRIORITY;
+			_msg.Mxe.DataPage            = 0;
+			_msg.Mxe.PDUFormat           = J1939_PF_ACKNOWLEDGMENT;
+			_msg.Mxe.DestinationAddress  = OneMessage.Mxe.SourceAddress;
+			_msg.Mxe.DataLength          = 8;
+			_msg.Mxe.Data[0]         = J1939_NACK_CONTROL_BYTE;
+			_msg.Mxe.Data[1]         = 0xFF;
+			_msg.Mxe.Data[2]         = 0xFF;
+			_msg.Mxe.Data[3]         = 0xFF;
+			_msg.Mxe.Data[4]         = 0xFF;
+			_msg.Mxe.Data[5]         = (PGN & 0x0000FF);
+			_msg.Mxe.Data[6]         = ((PGN >> 8) & 0x0000FF);
+			_msg.Mxe.Data[7]         = ((PGN >> 16) & 0x0000FF);
+
+			SendOneMessage( (J1939_MESSAGE *) &_msg);
+			return ;
+		}else
+		{
+			_requestList = _requestList->next;
+		}
+	}
+
+	/*调用dataUPFun（）函数，主要用于参数群数据更新*/
+	if(J1939_NULL != _requestList->update)
+	{
+		_requestList->update();
+	}
+
+	/*响应请求*/
+	if(_requestList->lenght > 8)
+	{
+		/*回一个确认响应多帧(非广播多帧)*/
+		if(RC_SUCCESS != J1939_TP_TX_Message(_requestList->PGN,OneMessage.Mxe.SourceAddress,_requestList->data,_requestList->lenght,Can_Node))
+		{
+			/*原文档规定 全局请求不被支持时不能响应 NACK*/
+			if(OneMessage.Mxe.PDUSpecific == J1939_GLOBAL_ADDRESS)
+			{
+				return;
+			}
+
+			/*如果长帧发送不成功*/
+			_msg.Mxe.Priority            = J1939_ACK_PRIORITY;
+			_msg.Mxe.DataPage            = 0;
+			_msg.Mxe.PDUFormat           = J1939_PF_ACKNOWLEDGMENT;
+			_msg.Mxe.DestinationAddress  = OneMessage.Mxe.SourceAddress;
+			_msg.Mxe.DataLength          = 8;
+			_msg.Mxe.Data[0]         = J1939_ACCESS_DENIED_CONTROL_BYTE;
+			_msg.Mxe.Data[1]         = 0xFF;
+			_msg.Mxe.Data[2]         = 0xFF;
+			_msg.Mxe.Data[3]         = 0xFF;
+			_msg.Mxe.Data[4]         = 0xFF;
+			_msg.Mxe.Data[5]         = (PGN & 0x0000FF);
+			_msg.Mxe.Data[6]         = ((PGN >> 8) & 0x0000FF);
+			_msg.Mxe.Data[7]         = ((PGN >> 16) & 0x0000FF);
+
+			SendOneMessage( (J1939_MESSAGE *) &_msg);
+			return ;
+		}
+
+		/*回一个确认响应*/
+		_msg.Mxe.Priority            = J1939_ACK_PRIORITY;
+		_msg.Mxe.DataPage            = 0;
+		_msg.Mxe.PDUFormat           = J1939_PF_ACKNOWLEDGMENT;
+		/*原文档规定 全局请求响应到全局*/
+		if(OneMessage.Mxe.PDUSpecific == J1939_GLOBAL_ADDRESS)
+		{
+			_msg.Mxe.DestinationAddress  = 0XFF;
+		}else{
+			_msg.Mxe.DestinationAddress  = OneMessage.Mxe.SourceAddress;
+		}
+		_msg.Mxe.DataLength          = 8;
+		_msg.Mxe.Data[0]         = J1939_ACK_CONTROL_BYTE;
+		_msg.Mxe.Data[1]         = 0xFF;
+		_msg.Mxe.Data[2]         = 0xFF;
+		_msg.Mxe.Data[3]         = 0xFF;
+		_msg.Mxe.Data[4]         = 0xFF;
+		_msg.Mxe.Data[5]         = (PGN & 0x0000FF);
+		_msg.Mxe.Data[6]         = ((PGN >> 8) & 0x0000FF);
+		_msg.Mxe.Data[7]         = ((PGN >> 16) & 0x0000FF);
+		SendOneMessage( (J1939_MESSAGE *) &_msg);
+	}else{
+
+		/*回一个确认响应*/
+		_msg.Mxe.Priority            = J1939_ACK_PRIORITY;
+		_msg.Mxe.DataPage            = 0;
+		_msg.Mxe.PDUFormat           = J1939_PF_ACKNOWLEDGMENT;
+		/*原文档规定 全局请求响应到全局*/
+		if((OneMessage.Mxe.PDUSpecific == J1939_GLOBAL_ADDRESS) || ((PGN & 0xFF00) >= 0xF000))
+		{
+			_msg.Mxe.DestinationAddress  = 0XFF;
+		}else{
+			_msg.Mxe.DestinationAddress  = OneMessage.Mxe.SourceAddress;
+		}
+		_msg.Mxe.DataLength          = 8;
+		_msg.Mxe.Data[0]         = J1939_ACK_CONTROL_BYTE;
+		_msg.Mxe.Data[1]         = 0xFF;
+		_msg.Mxe.Data[2]         = 0xFF;
+		_msg.Mxe.Data[3]         = 0xFF;
+		_msg.Mxe.Data[4]         = 0xFF;
+		_msg.Mxe.Data[5]         = (PGN & 0x0000FF);
+		_msg.Mxe.Data[6]         = ((PGN >> 8) & 0x0000FF);
+		_msg.Mxe.Data[7]         = ((PGN >> 16) & 0x0000FF);
+		SendOneMessage( (J1939_MESSAGE *) &_msg);
+
+		/*回一个确认响应单帧*/
+		_msg.Mxe.Priority            = J1939_ACK_PRIORITY;
+		_msg.Mxe.DataPage            = (((_requestList->PGN)>>16) & 0x1);
+		_msg.Mxe.PDUFormat           = ((_requestList->PGN)>>8) & 0xFF;
+		/*原文档规定 全局请求响应到全局*/
+		if(OneMessage.Mxe.PDUSpecific == J1939_GLOBAL_ADDRESS)
+		{
+			_msg.Mxe.DestinationAddress  = 0XFF;
+		}else{
+			_msg.Mxe.DestinationAddress  = OneMessage.Mxe.SourceAddress;
+		}
+		_msg.Mxe.DataLength          = _requestList->lenght;
+		{
+			j1939_uint8_t _i = 0;
+			for(_i = 0;_i < (_requestList->lenght);_i++)
+			{
+				_msg.Mxe.Data[_i] = _requestList->data[_i];
+			}
+			for(;_i<8;_i++)
+			{
+				_msg.Mxe.Data[_i] = 0xFF;
+			}
+		}
+		SendOneMessage( (J1939_MESSAGE *) &_msg);
+	}
 }
 #endif
