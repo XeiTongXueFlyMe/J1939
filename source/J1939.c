@@ -819,15 +819,16 @@ void J1939_ReceiveMessages( void )
                 }
                 else
                 {
-                	if(OneMessage.Mxe.PDUFormat < 240)
+                	/*用OneMessage.Mxe.PGN 来存下被请求的PGN*/
+                	if(OneMessage.Mxe.Data[1] < 240)
                 	{
-						OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
-											+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
+						OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Mxe.Data[2]<<16)&0x030000)
+											+(j1939_uint32_t)((OneMessage.Mxe.Data[1]<<8)&0xFF00)
 											+0x00;
 					}else{
-						OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
-											+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
-											+(j1939_uint32_t)((OneMessage.Array[2])&0xFF);
+						OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Mxe.Data[2]<<16)&0x030000)
+											+(j1939_uint32_t)((OneMessage.Mxe.Data[1]<<8)&0xFF00)
+											+(j1939_uint32_t)((OneMessage.Mxe.Data[0])&0xFF);
 					}
                 	J1939_Response(OneMessage.Mxe.PGN);
 
