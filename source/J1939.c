@@ -1521,7 +1521,7 @@ void J1939_TP_Poll()
 * @return    RC_CANNOTTRANSMIT 不能发送，因为TP协议已经建立虚拟链接，并且未断开
 * @note      TP协议的发送函数
 */
-j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_uint8_t *data,j1939_uint16_t data_num, CAN_NODE  _Can_Node)
+j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t DA,j1939_uint8_t *data,j1939_uint16_t data_num, CAN_NODE  _Can_Node)
 {
 	j1939_uint16_t _byte_count =0;
 	/*取得发送权限*/
@@ -1535,7 +1535,7 @@ j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_uint8
 	}
 
 	TP_TX_MSG.tp_tx_msg.PGN = PGN;
-	TP_TX_MSG.tp_tx_msg.SA = SA;
+	TP_TX_MSG.tp_tx_msg.SA = DA;
 	TP_TX_MSG.tp_tx_msg.byte_count = data_num;
 	for(_byte_count = 0;_byte_count < data_num;_byte_count++)
 	{
@@ -1565,7 +1565,7 @@ j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t SA,j1939_uint8
 * @note TP的接受函数 , 接受缓存的大小必须大于接受数据的大小，建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH\n
 		请正确带入 缓存区的大小，参数错误程序运行有风险
 */
-j1939_int8_t J1939_TP_RX_Message(j1939_int8_t *data,j1939_uint16_t data_num, CAN_NODE  _Can_Node)
+j1939_int8_t J1939_TP_RX_Message(j1939_uint8_t *data,j1939_uint16_t data_num, CAN_NODE  _Can_Node)
 {
 	j1939_uint16_t _a = 0;
 	/*判断是否能读取数据*/
@@ -1679,6 +1679,7 @@ void J1939_Response(const j1939_uint32_t PGN)
 			_msg.Mxe.PDUFormat           = J1939_PF_ACKNOWLEDGMENT;
 			_msg.Mxe.DestinationAddress  = OneMessage.Mxe.SourceAddress;
 			_msg.Mxe.DataLength          = 8;
+			_msg.Mxe.SourceAddress		 = J1939_Address;
 			_msg.Mxe.Data[0]         = J1939_NACK_CONTROL_BYTE;
 			_msg.Mxe.Data[1]         = 0xFF;
 			_msg.Mxe.Data[2]         = 0xFF;
@@ -1720,6 +1721,7 @@ void J1939_Response(const j1939_uint32_t PGN)
 			_msg.Mxe.PDUFormat           = J1939_PF_ACKNOWLEDGMENT;
 			_msg.Mxe.DestinationAddress  = OneMessage.Mxe.SourceAddress;
 			_msg.Mxe.DataLength          = 8;
+			_msg.Mxe.SourceAddress		 = J1939_Address;
 			_msg.Mxe.Data[0]         = J1939_ACCESS_DENIED_CONTROL_BYTE;
 			_msg.Mxe.Data[1]         = 0xFF;
 			_msg.Mxe.Data[2]         = 0xFF;
@@ -1745,6 +1747,7 @@ void J1939_Response(const j1939_uint32_t PGN)
 			_msg.Mxe.DestinationAddress  = OneMessage.Mxe.SourceAddress;
 		}
 		_msg.Mxe.DataLength          = 8;
+		_msg.Mxe.SourceAddress		 = J1939_Address;
 		_msg.Mxe.Data[0]         = J1939_ACK_CONTROL_BYTE;
 		_msg.Mxe.Data[1]         = 0xFF;
 		_msg.Mxe.Data[2]         = 0xFF;
@@ -1760,6 +1763,7 @@ void J1939_Response(const j1939_uint32_t PGN)
 		_msg.Mxe.Priority            = J1939_ACK_PRIORITY;
 		_msg.Mxe.DataPage            = 0;
 		_msg.Mxe.PDUFormat           = J1939_PF_ACKNOWLEDGMENT;
+		_msg.Mxe.SourceAddress		 = J1939_Address;
 		/*原文档规定 全局请求响应到全局*/
 		if((OneMessage.Mxe.PDUSpecific == J1939_GLOBAL_ADDRESS) || ((PGN & 0xFF00) >= 0xF000))
 		{
@@ -1768,6 +1772,7 @@ void J1939_Response(const j1939_uint32_t PGN)
 			_msg.Mxe.DestinationAddress  = OneMessage.Mxe.SourceAddress;
 		}
 		_msg.Mxe.DataLength          = 8;
+		_msg.Mxe.SourceAddress		 = J1939_Address;
 		_msg.Mxe.Data[0]         = J1939_ACK_CONTROL_BYTE;
 		_msg.Mxe.Data[1]         = 0xFF;
 		_msg.Mxe.Data[2]         = 0xFF;
@@ -1782,6 +1787,7 @@ void J1939_Response(const j1939_uint32_t PGN)
 		_msg.Mxe.Priority            = J1939_ACK_PRIORITY;
 		_msg.Mxe.DataPage            = (((_requestList->PGN)>>16) & 0x1);
 		_msg.Mxe.PDUFormat           = ((_requestList->PGN)>>8) & 0xFF;
+		_msg.Mxe.SourceAddress		 = J1939_Address;
 		/*原文档规定 全局请求响应到全局*/
 		if(OneMessage.Mxe.PDUSpecific == J1939_GLOBAL_ADDRESS)
 		{
