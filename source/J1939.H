@@ -44,7 +44,7 @@ typedef int   		   j1939_int32_t;   /** < 32位整形*/
 typedef unsigned short j1939_uint16_t;  /** < 16位无符号整形*/
 typedef unsigned char  j1939_uint8_t;   /** < 8位无符号整形*/
 typedef char           j1939_int8_t;    /** < 8位无符号整形*/
-#define J1939_NULL     ((void *)0)
+#define J1939_NULL     0
 
 //函数返回代码
 #define RC_SUCCESS			    0  /**< 成功*/
@@ -327,7 +327,7 @@ extern j1939_int8_t 	J1939_TP_RX_Message(j1939_uint8_t *data,j1939_uint16_t data
 //请求获去一个PGN
 extern void             J1939_Request_PGN(j1939_uint32_t pgn ,j1939_uint8_t DA, CAN_NODE  _Can_Node);
 //创建一个PGN响应
-extern void             J1939_Create_Response(j1939_uint8_t data[],j1939_uint16_t dataLenght,j1939_uint32_t PGN,void (*dataUPFun),CAN_NODE  canNode);
+extern void             J1939_Create_Response(j1939_uint8_t data[],j1939_uint16_t dataLenght,j1939_uint32_t PGN,void (*dataUPFun)(),CAN_NODE  canNode);
 //TP轮询函数
 void J1939_TP_Poll();
 #ifdef  __J1939_SOURCE 

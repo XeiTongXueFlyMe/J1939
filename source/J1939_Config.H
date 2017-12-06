@@ -75,7 +75,7 @@
 
 /******************************J1939移植配置函数******************************************/
 
-#define Port_CAN_Transmit(MsgPtr) J1939_CAN_Transmit(MsgPtr) 
+#define Port_CAN_Transmit(MsgPtr) J1939_CAN_Transmit(MsgPtr)
 #define Port_CAN_Receive(MsgPtr) J1939_CAN_Receive(MsgPtr)
 #define Port_SetAddressFilter(Address) J1939_SetAddressFilter(Address)
 /*不使用中断模式，不对下面的函数进行移植*/
