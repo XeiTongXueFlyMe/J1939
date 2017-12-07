@@ -31,8 +31,10 @@
 #ifndef __J1939_Config_H 
 #define __J1939_Config_H 
 
+#include "CAN.h"//使用者，自己工程必要的声明,主要是CAN驱动
 #include "J1939.H"
-#include "../UserApp/includes.h"//使用者，自己工程必要的声明
+extern CAN_NODE   Can_Node;   //CAN硬件选择
+
 
 /***************************J1939 标识符和地址配置*************************************/
 //设备默认的地址（地址命名是有规定的，参考J1939的附录B 地址和标识符的分配）

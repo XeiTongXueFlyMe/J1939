@@ -30,7 +30,7 @@
  **********************************************************************/
 #ifndef __J1939_H 
 #define __J1939_H 
-/**********************变量类型定义**************************/
+/************************************类型声明*************************************/
 #define FALSE 0
 #define TRUE 1
 
@@ -168,6 +168,18 @@ typedef struct
 	j1939_uint8_t  SA;   /**< J1939的消息对象的 目标地址（发送目的地  或  接受来源地）*/
 
 } J1939_MESSAGE_T ;
+/**J1939消息对象的结构体
+*
+* 本结构体实现了 J1939的多帧消息对象
+*/
+typedef struct
+{
+    j1939_uint8_t *data;        /**< 缓存区指针*/
+    j1939_uint16_t data_num;    /**< 缓存区大小*/
+    j1939_uint8_t SA;           /**< J1939的消息对象的 数据 源地址*/
+    j1939_uint16_t byte_count;  /**< J1939的消息对象的 数据大小*/
+    j1939_uint32_t PGN ;        /**< J1939的消息对象的 PGN*/
+}TP_RX_MESSAGE;
 /**J1939_TP_Tx_Step枚举
 *
 * 实现了记录长帧（多帧）传输的TX 的步骤
@@ -294,42 +306,31 @@ union J1939_FLAGS_UNION
 
 typedef union J1939_FLAGS_UNION J1939_FLAG; 
 
-// 向外部声明的全局变量
-extern j1939_uint8_t	CA_Name[J1939_DATA_LENGTH]; 
-extern j1939_uint8_t 	J1939_Address; 
-extern J1939_FLAG    	J1939_Flags; 
-extern J1939_MESSAGE    OneMessage;  
-extern CAN_NODE         Can_Node;  //CAN硬件选择
-#if J1939_TP_RX_TX
-//TP协议全局变量  
-extern J1939_TP_Flags           	   J1939_TP_Flags_t;   
-extern J1939_TRANSPORT_RX_INFO         TP_RX_MSG;    
-extern J1939_TRANSPORT_TX_INFO         TP_TX_MSG;
-#endif //J1939_TP_RX_TX
+/******************************************* API**************************************************************/
+extern J1939_FLAG    	J1939_Flags;
 
-#ifdef J1939_ACCEPT_CMDADD
-extern void  			J1939_CommandedAddressHandling( void );
-#endif
-//出列 用于接受 *MsgPtr代表要存入的缓存
-extern j1939_uint8_t	J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node);
-//入列 用于发送 *MsgPtr代表要发送的缓存
-extern j1939_uint8_t  	J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node);
 //初始化
 extern void 			J1939_Initialization(j1939_uint8_t );
 //中断入口
 extern void			    J1939_ISR( void );
-//扫描入口
+//心跳函数入口
 extern void 			J1939_Poll( j1939_uint32_t ElapsedTime );
+//出列 用于接受 *MsgPtr代表要存入的缓存
+extern j1939_uint8_t	J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node);
+//入列 用于发送 *MsgPtr代表要发送的缓存
+extern j1939_uint8_t  	J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node);
 //TP协议的发送函数
 extern j1939_int8_t 	J1939_TP_TX_Message(j1939_uint32_t PGN, j1939_uint8_t DA, j1939_uint8_t *data, j1939_uint16_t data_num, CAN_NODE  _Can_Node);
 //TP协议的接受函数
-extern j1939_int8_t 	J1939_TP_RX_Message(j1939_uint8_t *data,j1939_uint16_t data_num, CAN_NODE  _Can_Node);
+extern j1939_int8_t 	J1939_TP_RX_Message(TP_RX_MESSAGE *msg, CAN_NODE _Can_Node);
 //请求获去一个PGN
 extern void             J1939_Request_PGN(j1939_uint32_t pgn ,j1939_uint8_t DA, CAN_NODE  _Can_Node);
 //创建一个PGN响应
-extern void             J1939_Create_Response(j1939_uint8_t data[],j1939_uint16_t dataLenght,j1939_uint32_t PGN,void (*dataUPFun)(),CAN_NODE  canNode);
-//TP轮询函数
-void J1939_TP_Poll();
+extern void             J1939_Create_Response(j1939_uint8_t data[], j1939_uint16_t dataLenght, j1939_uint32_t PGN, void (*dataUPFun)(), CAN_NODE  _Can_Node);
+
+#ifdef J1939_ACCEPT_CMDADD
+extern void  			J1939_CommandedAddressHandling( void );
+#endif
 #ifdef  __J1939_SOURCE 
 static void 		    J1939_ReceiveMessages( void );
 static void 		    J1939_RequestForAddressClaimHandling( void );

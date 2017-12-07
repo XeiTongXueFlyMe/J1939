@@ -346,8 +346,7 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 #endif
 
    return rc;   
-}   
-  
+}
 /**
 * @param[in]  MsgPtr     用户要入队的消息
 * @param[in]  _Can_Node  要入队的CAN硬件编号（要选择的使用的CAN硬件编号）
@@ -573,6 +572,8 @@ void J1939_ISR( void )
 
         如果使用中断模式，本程序将不会处理接受和发送消息，只处理地址竞争超时。\n
 */
+//声明TP轮询函数
+void     J1939_TP_Poll();
 void J1939_Poll( j1939_uint32_t ElapsedTime )   
 {
     //更新的竞争等待时间
@@ -1408,8 +1409,7 @@ void J1939_read_DT_Packet()
 		_msg.Mxe.Data[6] = (j1939_uint8_t)(pgn_num>>8 & 0xff);
 		_msg.Mxe.Data[5] = (j1939_uint8_t)(pgn_num & 0xff);
         /*可能队列已满，发不出去，但是这里不能靠返回值进行无限的死等*/
-		while (J1939_EnqueueMessage( &_msg, Can_Node) != RC_SUCCESS)
-				J1939_Poll(5);
+        J1939_EnqueueMessage(&_msg, Can_Node);
 		TP_RX_MSG.state = J1939_RX_DONE;
 		return ;
 	}
@@ -1557,9 +1557,12 @@ j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t DA,j1939_uint8
 }
 
 /**
-* @param[in] data	读取数据的缓存
-* @param[in] data_num  读取数据的缓存大小
-* @param[in]  _Can_Node  要入队的CAN硬件编号（要选择的使用的CAN硬件编号）
+* @param[in]  msg.data	     读取数据的缓存
+* @param[in]  msg.data_num   读取数据的缓存大小
+* @param[in]  _Can_Node      要入队的CAN硬件编号（要选择的使用的CAN硬件编号）
+* @param[out] msg.SA         数据源地址
+* @param[out] msg.byte_count 数据大小
+* @param[out] msg.PGN        数据参数群编号
 * @return  RC_CANNOTRECEIVE 不能接受，TP协议正在接受数据中
 * @return  RC_SUCCESS		读取数据成功
 * @note TP的接受函数 , 接受缓存的大小必须大于接受数据的大小，建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH\n
@@ -1587,15 +1590,22 @@ j1939_int8_t J1939_TP_RX_Message(j1939_uint8_t *data,j1939_uint16_t data_num, CA
 		return RC_CANNOTRECEIVE;
 	}
     //判断数据缓存够不够
-	if(data_num < TP_RX_MSG.tp_rx_msg.byte_count)
+    if((msg->data_num) < TP_RX_MSG.tp_rx_msg.byte_count)
 	{
 		return RC_CANNOTRECEIVE;//不能接受，缓存区太小
 	}
 
-	for(_a = 0;_a < data_num;_a++)
+    /*获取数据*/
+    for(_a = 0;_a < msg->data_num;_a++)
 	{
-		data[_a] = TP_RX_MSG.tp_rx_msg.data[_a];
+        msg->data[_a] = TP_RX_MSG.tp_rx_msg.data[_a];
 	}
+    /*获取数据 源地址*/
+    msg->SA  =  TP_RX_MSG.tp_rx_msg.SA;
+    /*获取数据的大小*/
+    msg->byte_count  =  TP_RX_MSG.tp_rx_msg.byte_count;
+    /*获取数据PGN*/
+    msg->PGN  =  TP_RX_MSG.tp_rx_msg.PGN;
 
     /*丢弃读取过的数据*/
 	TP_RX_MSG.tp_rx_msg.byte_count= 0u;
@@ -1631,10 +1641,15 @@ void J1939_Request_PGN(j1939_uint32_t pgn ,j1939_uint8_t DA, CAN_NODE  _Can_Node
 	while (J1939_EnqueueMessage( &_msg, _Can_Node) != RC_SUCCESS);
 }
 /**
+* @param[in]  data	      需要发送数据的缓存
+* @param[in]  dataLenght  发送数据的缓存大小
+* @param[in]  PGN         需要发送数据的PGN(参数群编号)
+* @param[in]  void (*dataUPFun)()  用于更新缓存data 的函数地址指针
+* @param[in]  _Can_Node      要入队的CAN硬件编号（要选择的使用的CAN硬件编号）
 * @note 创建一个PGN 的 请求 对应的 响应\n 如果收到改请求则先运行 REQUEST_LIST.dataUPFun(),在将数据REQUEST_LIST.data发送出去
 * @warning  本函数只能被串行调用，（多线程）并行调用请在函数外加互斥操作
 */
-void J1939_Create_Response(j1939_uint8_t data[],j1939_uint16_t dataLenght,j1939_uint32_t PGN,void (*dataUPFun)(),CAN_NODE  canNode)
+void J1939_Create_Response(j1939_uint8_t data[],j1939_uint16_t dataLenght,j1939_uint32_t PGN,void (*dataUPFun)(),CAN_NODE  _Can_Node)
 {
 	/*查找可用的链表项*/
 	struct Request_List * _requestList = &REQUEST_LIST;
@@ -1650,7 +1665,7 @@ void J1939_Create_Response(j1939_uint8_t data[],j1939_uint16_t dataLenght,j1939_
 	_requestList->lenght = dataLenght;
 	_requestList->PGN = PGN;
 	_requestList->update = dataUPFun;
-	_requestList->Can_Node = canNode;
+    _requestList->Can_Node = _Can_Node;
 	_requestList->next = J1939_NULL;
 
 }
