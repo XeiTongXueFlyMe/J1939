@@ -74,7 +74,8 @@ extern CAN_NODE   Can_Node;   //CAN硬件选择
 //是否使用轮询模式（否则使用中断模式）
 #define J1939_POLL_ECAN J1939_TRUE
 #define J1939_PRIORITIZED_INT J1939_TRUE
-
+//是否启用软件滤波器
+#define J1939SoftwareFilterEn J1939_TRUE
 /******************************J1939移植配置函数******************************************/
 
 #define Port_CAN_Transmit(MsgPtr) J1939_CAN_Transmit(MsgPtr)
@@ -98,9 +99,11 @@ extern CAN_NODE   Can_Node;   //CAN硬件选择
 *说明：基于SAE J1939协议，我们需要CAN控制器提供至少3个滤波器给J1939协议代码。三个滤波器分别配置如下： 
 		1. 设置滤波器0，只接受广播信息（PF = 240 -255）。 
 		2. 设置设置滤波器1，2只接受全局地址（J1939_GLOBAL_ADDRESS） 
-		3. 随着程序的运行，将改变滤波器1，来适应程序逻辑。
+        3. 随着程序的运行，将改变滤波器2，来适应程序逻辑。
 	J1939_SetAddressFilter() 是用来设置滤波器2的， 函数主要设置PS位（目标地址），其目的是，让控制器
 	只接受发送给本设备的消息。
+*警告： 滤波器0，1是在CAN驱动里配置，如果对硬件滤波配置不是很熟练，可以使能软件滤波器，#define J1939SoftwareFilterEn 
+*则可跳过本函数的移植和CAN硬件滤波器的配置，为了J1939协议栈性能最优化，建议只是用硬件滤波。
 */
 void J1939_SetAddressFilter(unsigned char Ps_Address)
 {

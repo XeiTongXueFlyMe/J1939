@@ -13,8 +13,10 @@
  *		4.双模式（轮询或者中断，逻辑更加简单明了）
  *		5.不掉帧（数据采用收发列队缓存）
  *
- *  源代码分析网址：
- *	
+ *  源代码下载：
+ *		https://github.com/XeiTongXueFlyMe/J1939
+ *  源代码临时手册Web站点：
+ *		https://xeitongxueflyme.github.io/j1939doc.github.io/
  *
  * Version     Date        Description
  * ----------------------------------------------------------------------
@@ -24,9 +26,12 @@
  * v2.01     2017/11/24    Version 2 测试版发布
  * Author               Date         changes
  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- *XieTongXueFlyMe       7/06/04      首个版本
- *XieTongXueFlyMe       7/08/04      增加对TP的支持
- *XieTongXueFlyMe       7/11/24      增加对多路CAN硬件的收发，和报文处理
+ *XeiTongXueFlyMe       7/06/04      首个版本
+ *XeiTongXueFlyMe       7/08/04      增加对TP的支持
+ *XeiTongXueFlyMe       7/11/24      增加对多路CAN硬件的收发，和报文处理
+ *XeiTongXueFlyMe       7/11/29      增加请求和响应API
+ *XeiTongXueFlyMe       7/12/07      重做TP接受API函数
+ *XeiTongXueFlyMe       7/12/08      增加软件滤波器
  **********************************************************************/
 #ifndef         __J1939_SOURCE
 #define         __J1939_SOURCE
@@ -151,8 +156,15 @@ void CopyName(void)
 * @note  设置过滤器为指定值，起到过滤地址作用。(参考CAN2.0B的滤波器)\n
          滤波函数的设置段为PS段
 */
+#if J1939SoftwareFilterEn == J1939_TRUE
+j1939_uint8_t softwaerFilter = 0;
+#endif//J1939SoftwareFilterEn
+
 void SetAddressFilter( j1939_uint8_t Address )   
 {   
+#if J1939SoftwareFilterEn == J1939_TRUE
+   softwaerFilter = Address;
+#endif//J1939SoftwareFilterEn
    Port_SetAddressFilter(Address);
 }   
 
@@ -626,6 +638,41 @@ void J1939_Poll( j1939_uint32_t ElapsedTime )
     }   
 }   
 void J1939_Response(const j1939_uint32_t PGN);
+
+#if J1939SoftwareFilterEn == J1939_TRUE
+
+/**
+* @return    RC_SUCCESS         消息是可以接受
+* @return    RC_CANNOTTRANSMIT  消息是不可以接受
+* @note 软件滤波器\n
+* @note 基于SAE J1939协议，我们需要CAN控制器提供至少3个滤波器给J1939协议代码。三个滤波器分别配置如下：
+        1. 设置滤波器0，只接受广播信息（PF = 240 -255）。
+        2. 设置设置滤波器1，2只接受全局地址（J1939_GLOBAL_ADDRESS）
+        3. 随着程序的运行，将改变滤波器2，来适应程序逻辑。
+*/
+j1939_uint8_t J1939_Messages_Filter(J1939_MESSAGE *MsgPtr)
+{
+    /*滤波器0*/
+    if((MsgPtr->Mxe.PDUFormat) >= 240)
+    {
+        return RC_SUCCESS;
+    }
+    /*滤波器1*/
+    if(((MsgPtr->Mxe.PDUFormat) < 240) && (MsgPtr->Mxe.PDUSpecific == J1939_GLOBAL_ADDRESS))
+    {
+        return RC_SUCCESS;
+    }
+    /*滤波器2*/
+    if(((MsgPtr->Mxe.PDUFormat) < 240) && (MsgPtr->Mxe.PDUSpecific == softwaerFilter))
+    {
+        return RC_SUCCESS;
+    }
+
+    return RC_CANNOTTRANSMIT;
+}
+
+#endif //J1939SoftwareFilterEn
+
 /**
 * @note 这段程序被调用，当CAN收发器接受数据后从中断 或者 轮询。\n
         如果一个信息被接受, 它将被调用\n
@@ -643,6 +690,12 @@ void J1939_ReceiveMessages( void )
     /*Port_CAN_Receive函数读取到数据返回1，没有数据则返回0*/
     while(Port_CAN_Receive(&OneMessage))
     {
+#if J1939SoftwareFilterEn == J1939_TRUE
+    if(J1939_Messages_Filter(&OneMessage) != RC_SUCCESS)
+    {
+        return ;
+    }
+#endif //J1939SoftwareFilterEn
         switch( OneMessage.Mxe.PDUFormat)
         { 
 #if (J1939_TP_RX_TX || J1939_ACCEPT_CMDADD)
