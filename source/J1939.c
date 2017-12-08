@@ -188,12 +188,12 @@ void SendOneMessage( J1939_MESSAGE *MsgPtr )
 /**
 * @param[in]  ADDRESS_CLAIM_RX 或 ADDRESS_CLAIM_TX
 * @note 1939地址请求处理  （参考J1939的网络层）\n
-		这段程序被调用，当CA必须要求其地址在总线上或另一个CA是试图声称相同的地址在总线上,\n
-		我们必须捍卫自己或放弃的地址。\n
-		如果CA的私有范围有一个地址0 - 127或248-253,它可以立即解决。\n
+        这段程序被调用，当设备在总线上声明其地址 或另一个设备是试图声称相同的地址在总线上,\n
+        我们必须捍卫自己已经声明的地址或 竞争不过从而放弃的地址。（竞争地址获取优先权，在于CA_Name[]的比较）\n
 		补充：\n
-		ADDRESS_CLAIM_RX表示一个地址声明消息已经收到,这个CA必须保卫或放弃其地址。\n
-		ADDRESS_CLAIM_TX表明CA是初始化一个声明其地址。\n
+        ADDRESS_CLAIM_RX表示另一个设备是试图声称相同的地址在总线上,这个设备必须保卫或放弃其地址。\n
+        ADDRESS_CLAIM_TX表明设备在总线上声明其地址。\n
+* @note 如果设备是私有地址（0 - 127或248-253），通常由整车厂分配，将直接跳过初始化的地址竞争。不再等待J1939的网络管理器的地址分配
 */
 void J1939_AddressClaimHandling( j1939_uint8_t Mode )   
 {   
@@ -204,7 +204,7 @@ void J1939_AddressClaimHandling( j1939_uint8_t Mode )
 
     if (Mode == ADDRESS_CLAIM_TX)   
         goto SendAddressClaim;   
-   
+    /*其他设备声明的地址与我们的不同，直接返回*/
     if (OneMessage.Mxe.SourceAddress != J1939_Address)
         return;   
     /*如果我们的设备名，比网络中竞争的小*/
@@ -243,7 +243,10 @@ SendAddressClaim:
         J1939_Address = CommandedAddress;   
 
         //设置地址过滤器为J1939_Address。
-        SetAddressFilter( J1939_Address );   
+        SetAddressFilter( J1939_Address );
+
+        J1939_Flags.WaitingForAddressClaimContention = 0;
+        ContentionWaitTime = 0;
     }   
     else   
     {   
@@ -480,7 +483,7 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 void J1939_Initialization( j1939_uint8_t InitNAMEandAddress )   
 {
     /*初始化全局变量*/   
-    J1939_Flags.FlagVal = 1; // 没有声明地址，其他的标识位将被设置为0（复位）
+    J1939_Flags.FlagVal = 1; //没有声明地址，其他的标识位将被设置为0（复位）
     ContentionWaitTime = 0l; //初始化地址竞争等待时间
 
     /*初始化接受和发送列队*/
@@ -615,8 +618,7 @@ void J1939_Poll( j1939_uint32_t ElapsedTime )
 
 //当ECU需要竞争地址时，WaitingForAddressClaimContention在初始化中置位，并运行下面语句
 //如果我们正在等待一个地址竞争反应。 并且超时，我们只接收特定的消息（目标地址 = J1939_Address）
-    if (J1939_Flags.WaitingForAddressClaimContention &&   
-        (ContentionWaitTime >= 250000l))   
+    if (J1939_Flags.WaitingForAddressClaimContention && (ContentionWaitTime >= 250000l))
     {   
         J1939_Flags.CannotClaimAddress = 0;   
         J1939_Flags.WaitingForAddressClaimContention = 0;   
