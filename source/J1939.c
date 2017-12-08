@@ -1621,7 +1621,7 @@ j1939_int8_t J1939_TP_TX_Message(j1939_uint32_t PGN,j1939_uint8_t DA,j1939_uint8
 * @note TP的接受函数 , 接受缓存的大小必须大于接受数据的大小，建议初始化缓存大小用  J1939_TP_MAX_MESSAGE_LENGTH\n
 		请正确带入 缓存区的大小，参数错误程序运行有风险
 */
-j1939_int8_t J1939_TP_RX_Message(TP_RX_MESSAGE *msg, CAN_NODE _Can_Node);
+j1939_int8_t J1939_TP_RX_Message(TP_RX_MESSAGE *msg, CAN_NODE _Can_Node)
 {
 	j1939_uint16_t _a = 0;
 	/*判断是否能读取数据*/

@@ -13,8 +13,10 @@
  *		4.双模式（轮询或者中断，逻辑更加简单明了）
  *		5.不掉帧（数据采用收发列队缓存）
  *
- *  源代码分析网址：
- *	
+ *  源代码下载：
+ *		https://github.com/XeiTongXueFlyMe/J1939
+ *  源代码临时手册Web站点：
+ *		https://xeitongxueflyme.github.io/j1939doc.github.io/
  *
  * Version     Date        Description
  * ----------------------------------------------------------------------
@@ -24,10 +26,14 @@
  * v2.01     2017/11/24    Version 2 测试版发布
  * Author               Date         changes
  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- *XieTongXueFlyMe       7/06/04      首个版本
- *XieTongXueFlyMe       7/08/04      增加对TP的支持
- *XieTongXueFlyMe       7/11/24      增加对多路CAN硬件的收发，和报文处理
+ *XeiTongXueFlyMe       7/06/04      首个版本
+ *XeiTongXueFlyMe       7/08/04      增加对TP的支持
+ *XeiTongXueFlyMe       7/11/24      增加对多路CAN硬件的收发，和报文处理
+ *XeiTongXueFlyMe       7/11/29      增加请求和响应API
+ *XeiTongXueFlyMe       7/12/07      重做TP接受API函数
+ *XeiTongXueFlyMe       7/12/08      增加软件滤波器
  **********************************************************************/
+
 #ifndef __J1939_Config_H 
 #define __J1939_Config_H 
 
