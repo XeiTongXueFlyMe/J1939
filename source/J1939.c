@@ -700,16 +700,28 @@ void J1939_ReceiveMessages( void )
             default:   
 PutInReceiveQueue:   
 			{
-				/*这里会涉及到位反转的问题，需要解决*/
+/*
+if(OneMessage.Mxe.PDUFormat < 240){
+	OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
+						+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
+						+0x00;
+}else{
+	OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
+						+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
+						+(j1939_uint32_t)((OneMessage.Array[2])&0xFF);
+}
+*/
             	if(OneMessage.Mxe.PDUFormat < 240){
-            		OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
-										+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
-										+0x00;
+            		OneMessage.Mxe.PGN = (OneMessage.Mxe.Res << 17)
+            							+(OneMessage.Mxe.DataPage << 16)
+										+(OneMessage.Mxe.PDUFormat << 8);
             	}else{
-            		OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
-										+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
-										+(j1939_uint32_t)((OneMessage.Array[2])&0xFF);
+            		OneMessage.Mxe.PGN = (OneMessage.Mxe.Res << 17)
+            							+(OneMessage.Mxe.DataPage << 16)
+										+(OneMessage.Mxe.PDUFormat << 8)
+										+ OneMessage.Mxe.PDUSpecific;
             	}
+
             	switch (Can_Node)
 				{
 					case  Select_CAN_NODE_1:
