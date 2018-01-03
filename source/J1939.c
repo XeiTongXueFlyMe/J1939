@@ -188,12 +188,12 @@ void SendOneMessage( J1939_MESSAGE *MsgPtr )
 /**
 * @param[in]  ADDRESS_CLAIM_RX 或 ADDRESS_CLAIM_TX
 * @note 1939地址请求处理  （参考J1939的网络层）\n
-        这段程序被调用，当设备在总线上声明其地址 或另一个设备是试图声称相同的地址在总线上,\n
-        我们必须捍卫自己已经声明的地址或 竞争不过从而放弃的地址。（竞争地址获取优先权，在于CA_Name[]的比较）\n
+		这段程序被调用，当CA必须要求其地址在总线上或另一个CA是试图声称相同的地址在总线上,\n
+		我们必须捍卫自己或放弃的地址。\n
+		如果CA的私有范围有一个地址0 - 127或248-253,它可以立即解决。\n
 		补充：\n
-        ADDRESS_CLAIM_RX表示另一个设备是试图声称相同的地址在总线上,这个设备必须保卫或放弃其地址。\n
-        ADDRESS_CLAIM_TX表明设备在总线上声明其地址。\n
-* @note 如果设备是私有地址（0 - 127或248-253），通常由整车厂分配，将直接跳过初始化的地址竞争。不再等待J1939的网络管理器的地址分配
+		ADDRESS_CLAIM_RX表示一个地址声明消息已经收到,这个CA必须保卫或放弃其地址。\n
+		ADDRESS_CLAIM_TX表明CA是初始化一个声明其地址。\n
 */
 void J1939_AddressClaimHandling( j1939_uint8_t Mode )   
 {   

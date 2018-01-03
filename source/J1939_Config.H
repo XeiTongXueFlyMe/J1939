@@ -37,7 +37,7 @@
 #ifndef __J1939_Config_H 
 #define __J1939_Config_H 
 
-#include "CAN.h"//使用者，自己工程必要的声明,主要是CAN驱动
+#include "CAN.h"//工程中与CAN驱动相关的头文件
 #include "J1939.H"
 extern CAN_NODE   Can_Node;   //CAN硬件选择
 
