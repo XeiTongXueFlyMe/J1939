@@ -53,11 +53,7 @@
  */
 j1939_uint8_t                   CA_Name[J1939_DATA_LENGTH];
 j1939_uint8_t                   CommandedAddress; 
-#if J1939_ACCEPT_CMDADD == J1939_TRUE   
-    j1939_uint8_t               CommandedAddressSource;   
-    j1939_uint8_t               CommandedAddressName[J1939_DATA_LENGTH];   
-#endif   
-j1939_uint32_t                  ContentionWaitTime;   
+ 
 j1939_uint8_t                   J1939_Address;   
 J1939_FLAG                      J1939_Flags;   
 J1939_MESSAGE                   OneMessage;   
@@ -110,69 +106,32 @@ J1939_TRANSPORT_RX_INFO         TP_RX_MSG;
 J1939_TRANSPORT_TX_INFO         TP_TX_MSG;
 struct Request_List REQUEST_LIST;
 #endif //J1939_TP_RX_TX
-// 函数声明   
-#if J1939_ACCEPT_CMDADD == J1939_TRUE   
-    j1939_int8_t CA_AcceptCommandedAddress( void );   
-#endif   
-   
-#if J1939_ARBITRARY_ADDRESS != 0x00   
-//地址竞争重新估算，设备在总线上要申请的地址
-extern  j1939_int8_t ECU_RecalculateAddress( j1939_uint8_t * Address);   
-#endif   
 
-/** 
-* @param[in]  uint8_t *  Array of NAME bytes 
-* @return    -1    CA_Name 是小于 OtherName
-* @return     0    CA_Name与OtherName 相等
-* @return     1    CA_Name 是大于 OtherName
-* @note      比较传入的数组数据名称与设备当前名称存储在CA_Name。
-*/
-j1939_int8_t CompareName( j1939_uint8_t *OtherName )   
-{   
-    j1939_uint8_t   i;   
-   
-    for (i = 0; (i<J1939_DATA_LENGTH) && (OtherName[i] == CA_Name[i]); i++);   
-   
-    if (i == J1939_DATA_LENGTH)   
-        return 0;   
-    else if (CA_Name[i] < OtherName[i] )   
-        return -1;   
-    else   
-        return 1;   
-}   
-
-/**    
-* @note      设备名字复制到消息缓冲区的数据数组。我们可以使用这个函数在其他的函数,不会使用任何额外的堆栈空间。
-*/
-void CopyName(void)   
-{   
-    j1939_uint8_t i;   
-   
-    for (i=0; i<J1939_DATA_LENGTH; i++)   
-    	OneMessage.Mxe.Data[i]= CA_Name[i];
-}   
+static void 		    J1939_ReceiveMessages( void );
+static j1939_uint8_t 	J1939_TransmitMessages( void );
 
 /**
-* @note  设置过滤器为指定值，起到过滤地址作用。(参考CAN2.0B的滤波器)\n
-         滤波函数的设置段为PS段
+* @note  初始化软件滤波器变量\n
 */
 #if J1939SoftwareFilterEn == J1939_TRUE
 j1939_uint8_t softwaerFilter = 0;
 #endif//J1939SoftwareFilterEn
-
+/**
+* @note  硬件滤波器2 或 软件滤波器  滤波配置（设置PS段）\n
+*/
 void SetAddressFilter( j1939_uint8_t Address )   
 {   
+	/*软件滤波*/
 #if J1939SoftwareFilterEn == J1939_TRUE
-   softwaerFilter = Address;
+	softwaerFilter = Address;
 #endif//J1939SoftwareFilterEn
-   Port_SetAddressFilter(Address);
+	/*硬件滤波*/
+	Port_SetAddressFilter(Address);
 }   
 
 /**
 * @param[in]  J1939_MESSAGE *
-* @note 发送*MsgPtr的信息，\n
-        所有的数据字段（比如数据长度、优先级、和源地址）必须已经设置。\n
-        在调用这个函数之前，设备在总线上声明的地址是正确的。
+* @note 发送*MsgPtr的信息，所有的数据字段（比如数据长度、优先级、和源地址）必须已经设置。\n
 */
 void SendOneMessage( J1939_MESSAGE *MsgPtr )   
 {    
@@ -184,83 +143,12 @@ void SendOneMessage( J1939_MESSAGE *MsgPtr )
     //发送一帧消息，将 J1939_MESSAGE 中的所有消息加载道can模块自有的结构中     
      Port_CAN_Transmit(MsgPtr);
 }   
- 
+
 /**
-* @param[in]  ADDRESS_CLAIM_RX 或 ADDRESS_CLAIM_TX
-* @note 1939地址请求处理  （参考J1939的网络层）\n
-		这段程序被调用，当CA必须要求其地址在总线上或另一个CA是试图声称相同的地址在总线上,\n
-		我们必须捍卫自己或放弃的地址。\n
-		如果CA的私有范围有一个地址0 - 127或248-253,它可以立即解决。\n
-		补充：\n
-		ADDRESS_CLAIM_RX表示一个地址声明消息已经收到,这个CA必须保卫或放弃其地址。\n
-		ADDRESS_CLAIM_TX表明CA是初始化一个声明其地址。\n
-*/
-void J1939_AddressClaimHandling( j1939_uint8_t Mode )   
-{   
-    OneMessage.Mxe.Priority = J1939_CONTROL_PRIORITY;
-    OneMessage.Mxe.PDUFormat = J1939_PF_ADDRESS_CLAIMED;
-    OneMessage.Mxe.DestinationAddress = J1939_GLOBAL_ADDRESS;
-    OneMessage.Mxe.DataLength = J1939_DATA_LENGTH;
-
-    if (Mode == ADDRESS_CLAIM_TX)   
-        goto SendAddressClaim;   
-    /*其他设备声明的地址与我们的不同，直接返回*/
-    if (OneMessage.Mxe.SourceAddress != J1939_Address)
-        return;   
-    /*如果我们的设备名，比网络中竞争的小*/
-    if (CompareName( OneMessage.Mxe.Data ) != -1)
-    {
-        //配置ECU为，可以是随机地址
-        #if J1939_ARBITRARY_ADDRESS != 0x00   
-            if (ECU_RecalculateAddress( &CommandedAddress ))   
-                goto SendAddressClaim;   
-        #endif   
-   
-        // 发送一个地址申请帧
-        CopyName();   
-        OneMessage.Mxe.SourceAddress = J1939_NULL_ADDRESS;
-        SendOneMessage( (J1939_MESSAGE *) &OneMessage );   
-   
-        //设置地址过滤器为J1939_GLOBAL_ADDRESS。  
-        SetAddressFilter( J1939_GLOBAL_ADDRESS );   
-   
-        J1939_Flags.CannotClaimAddress = 1;   
-        J1939_Flags.WaitingForAddressClaimContention = 0;   
-        return;   
-    }   
-   
-SendAddressClaim:
-    //发送一个请求地址消息。（申请本地的地址为CommandedAddress）
-    CopyName();   
-    OneMessage.Mxe.SourceAddress = CommandedAddress;
-
-    SendOneMessage( (J1939_MESSAGE *) &OneMessage );   
-   
-    if (((CommandedAddress & 0x80) == 0) ||         // Addresses 0-127   
-        ((CommandedAddress & 0xF8) == 0xF8))        // Addresses 248-253 (254,255 illegal)   
-    {   
-        J1939_Flags.CannotClaimAddress = 0;   
-        J1939_Address = CommandedAddress;   
-
-        //设置地址过滤器为J1939_Address。
-        SetAddressFilter( J1939_Address );
-
-        J1939_Flags.WaitingForAddressClaimContention = 0;
-        ContentionWaitTime = 0;
-    }   
-    else   
-    {   
-        //我们没有一个专有的地址,所以我们需要等待。  
-        J1939_Flags.WaitingForAddressClaimContention = 1;   
-        ContentionWaitTime = 0;   
-    }   
-} 
-/**
-* @param[in]  MsgPtr     用户要出队的消息
-* @param[in]  _Can_Node  要出队的CAN硬件编号
-* @return    RC_SUCCESS           消息列中移除成功
+* @param[in]  MsgPtr             用户要出队的消息
+* @param[in]  _Can_Node          要出队的CAN硬件编号
+* @return    RC_SUCCESS          消息出队成功
 * @return    RC_QUEUEEMPTY       没有消息返回
-* @return    RC_CANNOTRECEIVE    目前系统没有接受到消息，应为不能在网络中申请到地址
 * @note      从接受队列中读取一个信息到*MsgPtr。如果我们用的是中断，需要将中断失能，在获取接受队列数据时
 */
 j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
@@ -277,9 +165,6 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 		{
 		    if (RXQueueCount_1 == 0)
 		    {
-		        if (J1939_Flags.CannotClaimAddress)
-		            rc = RC_CANNOTRECEIVE;
-		        else
 		            rc = RC_QUEUEEMPTY;
 		    }
 		    else
@@ -296,9 +181,6 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 		{
 		    if (RXQueueCount_2 == 0)
 		    {
-		        if (J1939_Flags.CannotClaimAddress)
-		            rc = RC_CANNOTRECEIVE;
-		        else
 		            rc = RC_QUEUEEMPTY;
 		    }
 		    else
@@ -315,9 +197,6 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 		{
 		    if (RXQueueCount_3 == 0)
 		    {
-		        if (J1939_Flags.CannotClaimAddress)
-		            rc = RC_CANNOTRECEIVE;
-		        else
 		            rc = RC_QUEUEEMPTY;
 		    }
 		    else
@@ -334,9 +213,6 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 		{
 			if (RXQueueCount_4 == 0)
 			{
-				if (J1939_Flags.CannotClaimAddress)
-					rc = RC_CANNOTRECEIVE;
-				else
 					rc = RC_QUEUEEMPTY;
 			}
 			else
@@ -380,7 +256,7 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
     Port_TXinterruptDisable();
 #endif 
    
-    if (J1939_Flags.CannotClaimAddress)   
+    if (0)   
         rc = RC_CANNOTTRANSMIT;   
     else   
     {   
@@ -474,20 +350,16 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 }   
   
 /**
-* @param[in]  InitNAMEandAddress  是否需要初始化标识符(标识符参考J1939原文档)
-* @note 这段代码被调用，在系统初始化中。（放在CAN设备初始化之后）\n
+* 
+* @note 这段代码在系统初始化中被调用,（放在CAN设备初始化之后）\n
 		初始化J1939全局变量\n
-		然后在总线上，声明设备自己的地址\n
-		如果设备需要初始化自己的标识符和地址，将InitNAMEandAddress置位。
 */
-void J1939_Initialization( j1939_uint8_t InitNAMEandAddress )   
+void J1939_Initialization()
 {
     /*初始化全局变量*/   
-    J1939_Flags.FlagVal = 1; //没有声明地址，其他的标识位将被设置为0（复位）
-    ContentionWaitTime = 0l; //初始化地址竞争等待时间
+    J1939_Flags.FlagVal = 0; //没有声明地址，其他的标识位将被设置为0（复位）
 
     /*初始化接受和发送列队*/
-    TXQueueCount_1 = 0;
     TXHead_1 = 0;
     TXHead_2 = 0;
     TXHead_3 = 0;
@@ -504,6 +376,10 @@ void J1939_Initialization( j1939_uint8_t InitNAMEandAddress )
     RXTail_2 = 0xFF;
     RXTail_3 = 0xFF;
     RXTail_4 = 0xFF;
+	TXQueueCount_1 = 0;
+	TXQueueCount_2 = 0;
+	TXQueueCount_3 = 0;
+	TXQueueCount_4 = 0;
     RXQueueCount_1 = 0;
     RXQueueCount_2 = 0;
     RXQueueCount_3 = 0;
@@ -534,22 +410,6 @@ void J1939_Initialization( j1939_uint8_t InitNAMEandAddress )
 	TP_RX_MSG.time = 0;
 	TP_RX_MSG.state = J1939_TP_RX_WAIT;
 #endif
-    if (InitNAMEandAddress)   
-    {   
-        J1939_Address = J1939_STARTING_ADDRESS_1;
-        CA_Name[7] = J1939_CA_NAME7;   
-        CA_Name[6] = J1939_CA_NAME6;   
-        CA_Name[5] = J1939_CA_NAME5;   
-        CA_Name[4] = J1939_CA_NAME4;   
-        CA_Name[3] = J1939_CA_NAME3;   
-        CA_Name[2] = J1939_CA_NAME2;   
-        CA_Name[1] = J1939_CA_NAME1;   
-        CA_Name[0] = J1939_CA_NAME0;   
-    }   
-    CommandedAddress = J1939_Address;   
-       
-    J1939_AddressClaimHandling( ADDRESS_CLAIM_TX );
-
 }   
 
 /**
@@ -589,10 +449,8 @@ void J1939_ISR( void )
 */
 //声明TP轮询函数
 void     J1939_TP_Poll();
-void J1939_Poll( j1939_uint32_t ElapsedTime )   
+void J1939_Poll( )   
 {
-    //更新的竞争等待时间
-    ContentionWaitTime += ElapsedTime;   
     //我们必须调用J1939_ReceiveMessages接受函数，在时间被重置为0之前。
 #if J1939_POLL_ECAN == J1939_TRUE
     	Can_Node = Select_CAN_NODE_1;
@@ -614,30 +472,7 @@ void J1939_Poll( j1939_uint32_t ElapsedTime )
 #if J1939_TP_RX_TX
         J1939_TP_Poll();
 #endif //J1939_TP_RX_TX
-#endif //J1939_POLL_ECAN == J1939_TRUE
-
-//当ECU需要竞争地址时，WaitingForAddressClaimContention在初始化中置位，并运行下面语句
-//如果我们正在等待一个地址竞争反应。 并且超时，我们只接收特定的消息（目标地址 = J1939_Address）
-    if (J1939_Flags.WaitingForAddressClaimContention && (ContentionWaitTime >= 250000l))
-    {   
-        J1939_Flags.CannotClaimAddress = 0;   
-        J1939_Flags.WaitingForAddressClaimContention = 0;   
-        J1939_Address = CommandedAddress;   
-
-        //如果我们使用中断,确保中断是禁用的,因为它会打乱我们程序逻辑
-#if J1939_POLL_ECAN == J1939_FALSE
-        Port_RXinterruptDisable();
-        Port_TXinterruptDisable();
-#endif
-        //设置接收滤波器地址为设备地址。
-        SetAddressFilter( J1939_Address );   
-        //开启中断
-#if J1939_POLL_ECAN == J1939_FALSE
-        Port_TXinterruptEnable();
-        Port_RXinterruptEnable();
-#endif
-
-    }   
+#endif //J1939_POLL_ECAN == J1939_TRUE 
 }   
 void J1939_Response(const j1939_uint32_t PGN);
 
@@ -676,21 +511,20 @@ j1939_uint8_t J1939_Messages_Filter(J1939_MESSAGE *MsgPtr)
 #endif //J1939SoftwareFilterEn
 
 /**
-* @note 这段程序被调用，当CAN收发器接受数据后从中断 或者 轮询。\n
+* @note 这段程序被调用，当CAN收发器接受数据（中断 或者 轮询）。\n
         如果一个信息被接受, 它将被调用\n
         如果信息是一个网络管理信息或长帧传输（TP），接受的信息将被加工处理，在这个函数中。\n
         否则, 信息将放置在用户的接收队列。\n
         注意：在这段程序运行期间中断是失能的。\n
-        注意：为了节省空间，函数J1939_CommandedAddressHandling（）采用内联的函数\n
 */
 void J1939_ReceiveMessages( void )   
 {
 #if J1939_TP_RX_TX
 	j1939_uint32_t _pgn = 0;
-#endif //J1939_TP_RX_T
+#endif //J1939_TP_RX_TX
     /*从接收缓存中读取信息到OneMessage中，OneMessage是一个全局变量*/
     /*Port_CAN_Receive函数读取到数据返回1，没有数据则返回0*/
-    while(Port_CAN_Receive(&OneMessage))
+    if(Port_CAN_Receive(&OneMessage))
     {
 #if J1939SoftwareFilterEn == J1939_TRUE
     if(J1939_Messages_Filter(&OneMessage) != RC_SUCCESS)
@@ -700,21 +534,8 @@ void J1939_ReceiveMessages( void )
 #endif //J1939SoftwareFilterEn
         switch( OneMessage.Mxe.PDUFormat)
         { 
-#if (J1939_TP_RX_TX || J1939_ACCEPT_CMDADD)
-			case J1939_PF_TP_CM:       //参考J1939-21 TP多帧传输协议
-#if J1939_ACCEPT_CMDADD == J1939_TRUE
-                //参考J1939-81 地址命令配置
-                if ((OneMessage.Mxe.Data[0] == J1939_BAM_CONTROL_BYTE) &&
-                    (OneMessage.Mxe.Data[5] == J1939_PGN0_COMMANDED_ADDRESS) &&
-                    (OneMessage.Mxe.Data[6] == J1939_PGN1_COMMANDED_ADDRESS) &&
-                    (OneMessage.Mxe.Data[7] == J1939_PGN2_COMMANDED_ADDRESS))
-                {   
-                    J1939_Flags.GettingCommandedAddress = 1;   
-                    CommandedAddressSource = OneMessage.Mxe.SourceAddress;
-                    break;
-                }
-#endif//J1939_ACCEPT_CMDADD
 #if J1939_TP_RX_TX
+			case J1939_PF_TP_CM:       //参考J1939-21 TP多帧传输协议
                 _pgn = (j1939_uint32_t)((OneMessage.Mxe.Data[7]<<16)&0xFF0000)
                 						+(j1939_uint32_t)((OneMessage.Mxe.Data[6]<<8)&0xFF00)
                 						+(j1939_uint32_t)((OneMessage.Mxe.Data[5])&0xFF);
@@ -804,40 +625,12 @@ void J1939_ReceiveMessages( void )
 		        		}
 					}
 				}
-#endif//J1939_TP_RX_TX
-                goto PutInReceiveQueue;
+				goto PutInReceiveQueue;
 				break;
-#endif //(J1939_TP_RX_TX || J1939_ACCEPT_CMDADD)
-            /*远程对ECU的地址配置*/
-#if J1939_TP_RX_TX || J1939_ACCEPT_CMDADD
-            case J1939_PF_DT:   
-#if J1939_ACCEPT_CMDADD
-                if ((J1939_Flags.GettingCommandedAddress == 1) &&   
-                    (CommandedAddressSource == OneMessage.Mxe.SourceAddress))
-                {     
-                    if ((!J1939_Flags.GotFirstDataPacket) &&   
-                        (OneMessage.Mxe.Data[0] == 1))
-                    {   
-                        for (Loop=0; Loop<7; Loop++)   
-                            CommandedAddressName[Loop] = OneMessage.Mxe.Data[Loop+1];
-                        J1939_Flags.GotFirstDataPacket = 1;
-                        break;
-                    }   
-                    else if ((J1939_Flags.GotFirstDataPacket) &&   
-                        (OneMessage.Mxe.Data[0] == 2))
-                    {   
-                        CommandedAddressName[7] = OneMessage.Mxe.Data[1];
-                        CommandedAddress =OneMessage.Mxe.Data[2];
-                        // 确保消息是针对与我们的。然后可以改变地址。
-                        if ((CompareName( CommandedAddressName ) == 0) && CA_AcceptCommandedAddress())   
-                            J1939_AddressClaimHandling( ADDRESS_CLAIM_TX );   
-                        J1939_Flags.GotFirstDataPacket = 0;   
-                        J1939_Flags.GettingCommandedAddress = 0;
-                        break;
-                    }
-                }
-#endif//J1939_ACCEPT_CMDADD
+#endif//J1939_TP_RX_TX
+
 #if J1939_TP_RX_TX
+            case J1939_PF_DT:   
                 if((TP_RX_MSG.state == J1939_TP_RX_DATA_WAIT)&&(TP_RX_MSG.tp_rx_msg.SA == OneMessage.Mxe.SourceAddress))
                 {
                 	TP_RX_MSG.tp_rx_msg.data[(OneMessage.Mxe.Data[0]-1)*7u]=OneMessage.Mxe.Data[1];
@@ -864,34 +657,20 @@ void J1939_ReceiveMessages( void )
                 //程序不可能运行到这，但是我们不能放弃接受的数据包
                 goto PutInReceiveQueue;
 #endif//J1939_TP_RX_TX
-#endif//(J1939_TP_RX_TX || J1939_ACCEPT_CMDADD)
             case J1939_PF_REQUEST:   
-                if ((OneMessage.Mxe.Data[0] == J1939_PGN0_REQ_ADDRESS_CLAIM) &&
-                    (OneMessage.Mxe.Data[1] == J1939_PGN1_REQ_ADDRESS_CLAIM) &&
-                    (OneMessage.Mxe.Data[2] == J1939_PGN2_REQ_ADDRESS_CLAIM))
-                {
-                    J1939_RequestForAddressClaimHandling();   
-                }
-                else
-                {
-                	/*用OneMessage.Mxe.PGN 来存下被请求的PGN*/
-                	if(OneMessage.Mxe.Data[1] < 240)
-                	{
-						OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Mxe.Data[2]<<16)&0x030000)
-											+(j1939_uint32_t)((OneMessage.Mxe.Data[1]<<8)&0xFF00)
-											+0x00;
-					}else{
-						OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Mxe.Data[2]<<16)&0x030000)
-											+(j1939_uint32_t)((OneMessage.Mxe.Data[1]<<8)&0xFF00)
-											+(j1939_uint32_t)((OneMessage.Mxe.Data[0])&0xFF);
-					}
-                	J1939_Response(OneMessage.Mxe.PGN);
-
-                }
-                break;   
-            case J1939_PF_ADDRESS_CLAIMED:   
-                J1939_AddressClaimHandling( ADDRESS_CLAIM_RX );   
-                break;   
+				/*用OneMessage.Mxe.PGN 来存下被请求的PGN*/
+				if(OneMessage.Mxe.Data[1] < 240)
+				{
+					OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Mxe.Data[2]<<16)&0x030000)
+										+(j1939_uint32_t)((OneMessage.Mxe.Data[1]<<8)&0xFF00)
+										+0x00;
+				}else{
+					OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Mxe.Data[2]<<16)&0x030000)
+										+(j1939_uint32_t)((OneMessage.Mxe.Data[1]<<8)&0xFF00)
+										+(j1939_uint32_t)((OneMessage.Mxe.Data[0])&0xFF);
+				}
+				J1939_Response(OneMessage.Mxe.PGN);
+                break;    
             default:   
 PutInReceiveQueue:   
 			{
@@ -990,33 +769,14 @@ PutInReceiveQueue:
 
 }   
 
-/**
-* @note 如果接收到地址声明请求，这个函数将被调用\n
-        如果我们的设备不需要发送一个地址声明，我们将不发送地址声明消息，否则，反之。\n
-        为了减少代码大小。两条消息之间只有源地址的变化。
-*/
-void J1939_RequestForAddressClaimHandling( void )   
-{   
-    if (J1939_Flags.CannotClaimAddress)   
-    	OneMessage.Mxe.SourceAddress = J1939_NULL_ADDRESS;  //发送一个不能声明的地址消息
-    else   
-    	OneMessage.Mxe.SourceAddress = J1939_Address;       //发送一个当前地址的声明
-   
-    OneMessage.Mxe.Priority = J1939_CONTROL_PRIORITY;
-    OneMessage.Mxe.PDUFormat = J1939_PF_ADDRESS_CLAIMED;    // 同 J1939_PF_CANNOT_CLAIM_ADDRESS值 一样
-    OneMessage.Mxe.DestinationAddress = J1939_GLOBAL_ADDRESS;
-    OneMessage.Mxe.DataLength = J1939_DATA_LENGTH;
-    CopyName();   
 
-    SendOneMessage( (J1939_MESSAGE *) &OneMessage );   
-}   
 /**
 * @return    RC_SUCCESS          信息发送成功
-* @return    RC_CANNOTTRANSMIT   系统没有发送消息，因为设备没有申请到地址，或者没有要发送的消息,或错误的CAN设备
+* @return    RC_CANNOTTRANSMIT   系统没有发送消息,没有要发送的消息,或错误的CAN设备
 * @note      调用这个函数后，如果发送消息列队中有消息就位，则会发送消息 ，如果不能发送消息，相关的错误代码将返回。\n
              程序运行期间，中断是被失能的。
 */
-static j1939_uint8_t J1939_TransmitMessages( void )   
+static j1939_uint8_t J1939_TransmitMessages()
 {   
 	switch (Can_Node)
 	{
@@ -1032,10 +792,6 @@ static j1939_uint8_t J1939_TransmitMessages( void )
 		    }
 		    else
 		    {
-		        //设备没有正确的声明到地址
-		        if (J1939_Flags.CannotClaimAddress)
-		            return RC_CANNOTTRANSMIT;
-
 		        while(TXQueueCount_1 > 0)
 		        {
 		            /*确保上次数据发送成功*/
@@ -1069,9 +825,6 @@ static j1939_uint8_t J1939_TransmitMessages( void )
 			}
 			else
 			{
-				//设备没有正确的声明到地址
-				if (J1939_Flags.CannotClaimAddress)
-					return RC_CANNOTTRANSMIT;
 
 				while(TXQueueCount_2 > 0)
 				{
@@ -1106,10 +859,6 @@ static j1939_uint8_t J1939_TransmitMessages( void )
 			}
 			else
 			{
-				//设备没有正确的声明到地址
-				if (J1939_Flags.CannotClaimAddress)
-					return RC_CANNOTTRANSMIT;
-
 				while(TXQueueCount_3 > 0)
 				{
 					/*确保上次数据发送成功*/
@@ -1143,9 +892,6 @@ static j1939_uint8_t J1939_TransmitMessages( void )
 			}
 			else
 			{
-				//设备没有正确的声明到地址
-				if (J1939_Flags.CannotClaimAddress)
-					return RC_CANNOTTRANSMIT;
 
 				while(TXQueueCount_4 > 0)
 				{

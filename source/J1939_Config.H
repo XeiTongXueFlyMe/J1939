@@ -19,7 +19,7 @@
  *		https://xeitongxueflyme.github.io/j1939doc.github.io/
  *
  * Version     Date        Description
- * ----------------------------------------------------------------------
+ * -------------------------------------------------------------------
  * v1.00     2017/06/04    首个版本
  * v1.01     2017/08/04    完善功能
  * v1.10     2017/11/22    Version 1 稳定发布版
@@ -42,35 +42,15 @@
 extern CAN_NODE   Can_Node;   //CAN硬件选择
 
 
-/***************************J1939 标识符和地址配置*************************************/
+/***************************J1939 地址配置*****************************/
 //设备默认的地址（地址命名是有规定的，参考J1939的附录B 地址和标识符的分配）
 #define J1939_STARTING_ADDRESS_1 248
 #define J1939_STARTING_ADDRESS_2 244
 #define J1939_STARTING_ADDRESS_3 247
 #define J1939_STARTING_ADDRESS_4 0
 
-//如果声明不为0，表示我们的ECU(电子控制单元)支持网络中申请的任意地址，（参考J1939的网络层）
-#define J1939_ARBITRARY_ADDRESS 0x00
-#define J1939_INDUSTRY_GROUP 0
-#define J1939_VEHICLE_INSTANCE 0
-#define J1939_CA_NAME7 (J1939_ARBITRARY_ADDRESS | (J1939_INDUSTRY_GROUP << 4) | J1939_VEHICLE_INSTANCE)
-#define J1939_VEHICLE_SYSTEM 0
-#define J1939_CA_NAME6 (J1939_VEHICLE_SYSTEM << 1)
-#define J1939_FUNCTION 0
-#define J1939_CA_NAME5 J1939_FUNCTION
-#define J1939_FUNCTION_INSTANCE 0
-#define J1939_ECU_INSTANCE 0
-#define J1939_CA_NAME4 ((J1939_FUNCTION_INSTANCE << 3) | J1939_ECU_INSTANCE)
-#define J1939_MANUFACTURER_CODE 0
-#define J1939_IDENTITY_NUMBER 50
-#define J1939_CA_NAME3 (J1939_MANUFACTURER_CODE >> 3)
-#define J1939_CA_NAME2 (((J1939_MANUFACTURER_CODE & 0x07) << 5) | (J1939_IDENTITY_NUMBER >> 16))
-#define J1939_CA_NAME1 ((J1939_IDENTITY_NUMBER >> 8) & 0xFF)
-#define J1939_CA_NAME0 (J1939_IDENTITY_NUMBER & 0xFF)
 
-/******************************J1939功能配置******************************************/
-//是否使用接受协议TP对设备的地址进行远程配置（参考J1939-21，J1939-81）
-#define J1939_ACCEPT_CMDADD J1939_FALSE
+/******************************J1939功能配置***************************/
 #define J1939_RX_QUEUE_SIZE 3
 //当mcu来不及处理消息，接收消息列队是否允许被新的消息覆盖
 #define J1939_OVERWRITE_RX_QUEUE J1939_FALSE
@@ -79,10 +59,9 @@ extern CAN_NODE   Can_Node;   //CAN硬件选择
 #define J1939_OVERWRITE_TX_QUEUE J1939_FALSE
 //是否使用轮询模式（否则使用中断模式）
 #define J1939_POLL_ECAN J1939_TRUE
-#define J1939_PRIORITIZED_INT J1939_TRUE
 //是否启用软件滤波器
 #define J1939SoftwareFilterEn J1939_TRUE
-/******************************J1939移植配置函数******************************************/
+/******************************J1939移植配置函数************************/
 
 #define Port_CAN_Transmit(MsgPtr) J1939_CAN_Transmit(MsgPtr)
 #define Port_CAN_Receive(MsgPtr) J1939_CAN_Receive(MsgPtr)
@@ -113,42 +92,22 @@ extern CAN_NODE   Can_Node;   //CAN硬件选择
 */
 void J1939_SetAddressFilter(unsigned char Ps_Address)
 {
-//	switch (Can_Node)
-//	{
-//		case  Select_CAN_NODE_1:
-//		{
-//			break;
-//		}
-//		case  Select_CAN_NODE_2:
-//		{
-//			break;
-//		}
-//		case  Select_CAN_NODE_3:
-//		{
-//			break;
-//		}
-//		case  Select_CAN_NODE_4:
-//		{
-//			break;
-//		}
-//		default  :
-//		{
-//			break;
-//		}
-//	}
-	/*上面屏蔽的是标准的流程*/
-	/*地址滤波和动态地址分配出现冲突（暂时优先考虑地址滤波）*/
-	/*暂时在Select_CAN_NODE_1中 把每一路的滤波都设置了*/
 	switch (Can_Node)
 	{
 		case  Select_CAN_NODE_1:
 		{
-			/*设置每一路的ID号*/
-		
-
-			/*设置每一路的遮掩码*/
-	
-
+			break;
+		}
+		case  Select_CAN_NODE_2:
+		{
+			break;
+		}
+		case  Select_CAN_NODE_3:
+		{
+			break;
+		}
+		case  Select_CAN_NODE_4:
+		{
 			break;
 		}
 		default  :

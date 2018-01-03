@@ -300,11 +300,11 @@ union J1939_FLAGS_UNION
 { 
 	struct 
 	{ 
-		j1939_uint32_t	CannotClaimAddress				: 1; 
-		j1939_uint32_t	WaitingForAddressClaimContention: 1; 
-		j1939_uint32_t	GettingCommandedAddress			: 1; 
-		j1939_uint32_t	GotFirstDataPacket				: 1; 
-		j1939_uint32_t	ReceivedMessagesDropped			: 1; 
+		// j1939_uint32_t	CannotClaimAddress				: 1; 
+		// j1939_uint32_t	WaitingForAddressClaimContention: 1; 
+		// j1939_uint32_t	GettingCommandedAddress			: 1; 
+		// j1939_uint32_t	GotFirstDataPacket				: 1; 
+		j1939_uint32_t	ReceivedMessagesDropped			: 1;  
    }; 
 	  j1939_uint8_t		FlagVal; 
 }; 
@@ -315,11 +315,11 @@ typedef union J1939_FLAGS_UNION J1939_FLAG;
 extern J1939_FLAG    	J1939_Flags;
 
 //初始化
-extern void 			J1939_Initialization(j1939_uint8_t );
+extern void 			J1939_Initialization();
 //中断入口
 extern void			    J1939_ISR( void );
 //心跳函数入口
-extern void 			J1939_Poll( j1939_uint32_t ElapsedTime );
+extern void 			J1939_Poll();
 //出列 用于接受 *MsgPtr代表要存入的缓存
 extern j1939_uint8_t	J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node);
 //入列 用于发送 *MsgPtr代表要发送的缓存
@@ -333,17 +333,7 @@ extern void             J1939_Request_PGN(j1939_uint32_t pgn ,j1939_uint8_t DA, 
 //创建一个PGN响应
 extern void             J1939_Create_Response(j1939_uint8_t data[], j1939_uint16_t dataLenght, j1939_uint32_t PGN, void (*dataUPFun)(), CAN_NODE  _Can_Node);
 
-#ifdef J1939_ACCEPT_CMDADD
-extern void  			J1939_CommandedAddressHandling( void );
-#endif
-#ifdef  __J1939_SOURCE 
-static void 		    J1939_ReceiveMessages( void );
-static void 		    J1939_RequestForAddressClaimHandling( void );
-static j1939_uint8_t 	J1939_TransmitMessages( void );
-static void 		    J1939_AddressClaimHandling( j1939_uint8_t Mode );
-#endif 
- 
-#endif
+#endif //__J1939_H
 
 
  
