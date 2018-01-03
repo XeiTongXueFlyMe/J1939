@@ -239,6 +239,17 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
    return rc;   
 }
 /**
+* @param[in] MsgPtr              存储读取消息的缓存
+* @param[in] _Can_Node           读取消息的CAN硬件编号（从哪一路CAN读取数据）
+* @return    RC_SUCCESS          读取消息成功，
+* @return    RC_QUEUEEMPTY       读取消息不成功，没有消息。
+* @note      从接受队列中读取一个信息到*MsgPtr。
+*/
+j1939_uint8_t J1939_Read_Message( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
+{
+	J1939_DequeueMessage(MsgPtr,_Can_Node);
+}
+/**
 * @param[in]  MsgPtr     用户要入队的消息
 * @param[in]  _Can_Node  要入队的CAN硬件编号（要选择的使用的CAN硬件编号）
 * @return     RC_SUCCESS          消息入队成功 
@@ -348,7 +359,18 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 #endif   
     return rc;   
 }   
-  
+/**
+* @param[in]  MsgPtr              存储发送消息的缓存
+* @param[in]  _Can_Node           发送消息的CAN硬件编号（从哪一路CAN发送数据）
+* @return     RC_SUCCESS          发送消息成功 
+* @return     RC_QUEUEFULL        发送消息不成功，发送列队满，消息入队失败 
+* @return     RC_CANNOTTRANSMIT   发送消息不成功，系统目前不能发送消息  
+* @note       如果信息不能入队或者发送，将有一个相应的返回提示，\n
+*/
+j1939_uint8_t J1939_Send_Message( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
+{
+	J1939_EnqueueMessage(MsgPtr,_Can_Node);
+}
 /**
 * 
 * @note 这段代码在系统初始化中被调用,（放在CAN设备初始化之后）\n
