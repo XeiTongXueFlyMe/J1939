@@ -19,11 +19,12 @@
  *		https://xeitongxueflyme.github.io/j1939doc.github.io/
  *
  * Version     Date        Description
- * ----------------------------------------------------------------------
- * v1.00     2017/06/04    首个版本
- * v1.01     2017/08/04    完善功能
- * v1.10     2017/11/22    Version 1 稳定发布版
- * v2.01     2017/11/24    Version 2 测试版发布
+ * -------------------------------------------------------------------
+ * v1.0.0     2017/06/04    首个版本 Version 1 测试版发布
+ * v1.0.1     2017/08/04    完善功能
+ * v1.1.0     2017/11/22    Version 1 稳定发布版
+ * v2.0.1     2017/11/24    Version 2 测试版发布
+ * v2.0.2     2018/01/03    解决V2.0.1 遗留问题
  * Author               Date         changes
  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *XeiTongXueFlyMe       7/06/04      首个版本
@@ -32,6 +33,7 @@
  *XeiTongXueFlyMe       7/11/29      增加请求和响应API
  *XeiTongXueFlyMe       7/12/07      重做TP接受API函数
  *XeiTongXueFlyMe       7/12/08      增加软件滤波器
+ *XeiTongXueFlyMe       8/01/03      重做接受发送API，简化协议栈初始化调用逻辑
  **********************************************************************/
 #ifndef         __J1939_SOURCE
 #define         __J1939_SOURCE
@@ -99,13 +101,15 @@ j1939_uint8_t                   TXTail_4;
 j1939_uint8_t                   TXQueueCount_4;
 J1939_MESSAGE                   TXQueue_4[J1939_TX_QUEUE_SIZE];
 
+struct Request_List REQUEST_LIST;
+
 #if J1939_TP_RX_TX
 //TP协议全局变量  
 J1939_TP_Flags                  J1939_TP_Flags_t;   
 J1939_TRANSPORT_RX_INFO         TP_RX_MSG;    
 J1939_TRANSPORT_TX_INFO         TP_TX_MSG;
-struct Request_List REQUEST_LIST;
 #endif //J1939_TP_RX_TX
+
 
 static void 		    J1939_ReceiveMessages( void );
 static j1939_uint8_t 	J1939_TransmitMessages( void );
@@ -153,7 +157,7 @@ void SendOneMessage( J1939_MESSAGE *MsgPtr )
 */
 j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 {   
-    j1939_uint8_t   rc = RC_SUCCESS;   
+    j1939_uint8_t   _rc = RC_SUCCESS;
 
  //***************************关接受中断********************************  
  #if J1939_POLL_ECAN == J1939_FALSE
@@ -165,7 +169,7 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 		{
 		    if (RXQueueCount_1 == 0)
 		    {
-		            rc = RC_QUEUEEMPTY;
+		            _rc = RC_QUEUEEMPTY;
 		    }
 		    else
 		    {
@@ -181,7 +185,7 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 		{
 		    if (RXQueueCount_2 == 0)
 		    {
-		            rc = RC_QUEUEEMPTY;
+		            _rc = RC_QUEUEEMPTY;
 		    }
 		    else
 		    {
@@ -197,7 +201,7 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 		{
 		    if (RXQueueCount_3 == 0)
 		    {
-		            rc = RC_QUEUEEMPTY;
+		            _rc = RC_QUEUEEMPTY;
 		    }
 		    else
 		    {
@@ -213,7 +217,7 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 		{
 			if (RXQueueCount_4 == 0)
 			{
-					rc = RC_QUEUEEMPTY;
+					_rc = RC_QUEUEEMPTY;
 			}
 			else
 			{
@@ -227,7 +231,7 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 		}
 		default  :
 		{
-			rc = RC_CANNOTRECEIVE;
+			_rc = RC_CANNOTRECEIVE;
 			break;
 		}
 	}
@@ -236,7 +240,7 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
    Port_RXinterruptEnable();
 #endif
 
-   return rc;   
+   return _rc;
 }
 /**
 * @param[in] MsgPtr              存储读取消息的缓存
@@ -261,14 +265,14 @@ j1939_uint8_t J1939_Read_Message( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 */
 j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 {   
-    j1939_uint8_t   rc = RC_SUCCESS;   
+    j1939_uint8_t   _rc = RC_SUCCESS;
 
 #if J1939_POLL_ECAN == J1939_FALSE  
     Port_TXinterruptDisable();
 #endif 
    
     if (0)   
-        rc = RC_CANNOTTRANSMIT;   
+        _rc = RC_CANNOTTRANSMIT;
     else   
     {   
     	switch (_Can_Node)
@@ -288,7 +292,7 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 					TXQueue_1[TXTail_1] = *MsgPtr;
 				}
 				else
-					rc = RC_QUEUEFULL;
+					_rc = RC_QUEUEFULL;
 				break;
 			}
 			case  Select_CAN_NODE_2:
@@ -306,7 +310,7 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 					TXQueue_2[TXTail_2] = *MsgPtr;
 				}
 				else
-					rc = RC_QUEUEFULL;
+					_rc = RC_QUEUEFULL;
 				break;
 			}
 			case  Select_CAN_NODE_3:
@@ -324,7 +328,7 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 					TXQueue_3[TXTail_3] = *MsgPtr;
 				}
 				else
-					rc = RC_QUEUEFULL;
+					_rc = RC_QUEUEFULL;
 				break;
 			}
 			case  Select_CAN_NODE_4:
@@ -342,7 +346,7 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 					TXQueue_4[TXTail_4] = *MsgPtr;
 				}
 				else
-					rc = RC_QUEUEFULL;
+					_rc = RC_QUEUEFULL;
 				break;
 			}
 			default  :
@@ -357,7 +361,7 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
     //触发发送中断
     Port_TXinterruptOk();
 #endif   
-    return rc;   
+    return _rc;
 }   
 /**
 * @param[in]  MsgPtr              存储发送消息的缓存
@@ -696,6 +700,7 @@ void J1939_ReceiveMessages( void )
             default:   
 PutInReceiveQueue:   
 			{
+				/*这里会涉及到位反转的问题，需要解决*/
             	if(OneMessage.Mxe.PDUFormat < 240){
             		OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
 										+(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)

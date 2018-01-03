@@ -20,10 +20,11 @@
  *
  * Version     Date        Description
  * -------------------------------------------------------------------
- * v1.00     2017/06/04    首个版本
- * v1.01     2017/08/04    完善功能
- * v1.10     2017/11/22    Version 1 稳定发布版
- * v2.01     2017/11/24    Version 2 测试版发布
+ * v1.0.0     2017/06/04    首个版本 Version 1 测试版发布
+ * v1.0.1     2017/08/04    完善功能
+ * v1.1.0     2017/11/22    Version 1 稳定发布版
+ * v2.0.1     2017/11/24    Version 2 测试版发布
+ * v2.0.2     2018/01/03    解决V2.0.1 遗留问题
  * Author               Date         changes
  *~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *XeiTongXueFlyMe       7/06/04      首个版本
@@ -32,19 +33,19 @@
  *XeiTongXueFlyMe       7/11/29      增加请求和响应API
  *XeiTongXueFlyMe       7/12/07      重做TP接受API函数
  *XeiTongXueFlyMe       7/12/08      增加软件滤波器
+ *XeiTongXueFlyMe       8/01/03      重做接受发送API，简化协议栈初始化调用逻辑
  **********************************************************************/
 
 #ifndef __J1939_Config_H 
 #define __J1939_Config_H 
 
-#include "CAN.h"//工程中与CAN驱动相关的头文件
 #include "J1939.H"
 extern CAN_NODE   Can_Node;   //CAN硬件选择
 
 
 /***************************J1939 地址配置*****************************/
 //设备默认的地址（地址命名是有规定的，参考J1939的附录B 地址和标识符的分配）
-#define J1939_STARTING_ADDRESS_1 248
+#define J1939_STARTING_ADDRESS_1 0x01
 #define J1939_STARTING_ADDRESS_2 244
 #define J1939_STARTING_ADDRESS_3 247
 #define J1939_STARTING_ADDRESS_4 0
@@ -117,21 +118,12 @@ void J1939_SetAddressFilter(unsigned char Ps_Address)
 	}
 }
 /*
-*输入： CAN自带的结构体（包含ID） 协议本身的结构体 IDJ1939_MESSAGE
+*输入：  *MsgPtr ，协议要发送的消息，
 *输出： 
-*说明：配置can的远程帧ID,     函数ChangeGroupIDofLMO（）提供这样的配置。
-		配置方法和移植，和J1939_CAN_Transmit函数有关，建议一起配置：
-*/
-void ChangeGroupIDofLMO()
-{
-	;
-}
-/*
-*输入： J1939_MESSAGE *MsgPtr ，协议要发送的消息，
-*输出： 
-*说明：从MsgPtr加载到CAN驱动自带的结构体中
-		将和ChangeGroupIDofLMO（）联合移植（可不这样设计）
-		先将传入函数的MsgPtr中的数据写到CAN的结构体（加载），调用CAN驱动的发送函数
+*说明：      将数据 从MsgPtr结构体赋值到CAN驱动自带的结构体中
+		先将传入函数的MsgPtr中的数据写到CAN的结构体，再调用CAN驱动的发送函数
+		默认支持4路CAN硬件的收发。如少于4路，只需配置相应的Can_Node开关代码区，
+		其他（Select_CAN_NODE）保持不变。就直接返回（break）。
 */
 void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 {
@@ -142,7 +134,7 @@ void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 		{
 			
 			/*加载第一路CAN硬件的29位ID*/
-			ChangeGroupIDofLMO();
+
 			/*CAN硬件加载数据长度*/
 	
 			/*CAN硬件加载数据*/
@@ -157,7 +149,7 @@ void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 		{
 	
 			/*加载第二路CAN硬件的29位ID*/
-			ChangeGroupIDofLMO();
+
 			/*CAN硬件加载数据长度*/
 	
 			/*CAN硬件加载数据*/
@@ -171,7 +163,7 @@ void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 		{
 			
 			/*加载第三路CAN硬件的29位ID*/
-			ChangeGroupIDofLMO();
+
 			/*CAN硬件加载数据长度*/
 	
 			/*CAN硬件加载数据*/
@@ -184,7 +176,7 @@ void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 		case  Select_CAN_NODE_4:
 		{
 			/*加载第四路CAN硬件的29位ID*/
-			ChangeGroupIDofLMO();
+
 			/*CAN硬件加载数据长度*/
 	
 			/*CAN硬件加载数据*/
@@ -201,10 +193,12 @@ void J1939_CAN_Transmit(J1939_MESSAGE *MsgPtr)
 	}
 }
 /*
-*输入：J1939_MESSAGE *MsgPtr 数据要存入的内存的指针
-*输出：1 | 0
-*说明：读取CAN驱动的数据，如果没有数据，返回0
-		将设备CAN中的数据取出，存入J1939_MESSAGE结构体中
+*输入：     *MsgPtr 数据要存入的内存的指针
+*输出：      1 | 0
+*说明：      读取CAN驱动的数据，如果没有数据，返回0
+		将CAN中的数据取出，存入J1939_MESSAGE结构体中
+		默认支持4路CAN硬件的收发。如少于4路，只需配置相应的Can_Node开关代码区，
+		其他（Select_CAN_NODE）保持不变。就直接返回（return 0）
 */
 
 int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
@@ -214,7 +208,7 @@ int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 	{
 		case  Select_CAN_NODE_1:
 		{
-			if(如果有新的数据)
+			if("你的代码")//判断CAN硬件1是否有数据到来
 			{
 				//你的代码，从CAN硬件1 中将数据读取后，存入 MsgPtr
 				return 1;
@@ -224,7 +218,7 @@ int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 		}
 		case  Select_CAN_NODE_2:
 		{
-			if(如果有新的数据)
+			if("你的代码")//判断CAN硬件2是否有数据到来
 			{
 				//你的代码，从CAN硬件2 中将数据读取后，存入 MsgPtr
 				return 1;
@@ -235,7 +229,7 @@ int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 		}
 		case  Select_CAN_NODE_3:
 		{
-			if(如果有新的数据)
+			if("你的代码")//判断CAN硬件3是否有数据到来
 			{
 				//你的代码，从CAN硬件3 中将数据读取后，存入 MsgPtr
 				return 1;
@@ -246,7 +240,7 @@ int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 		}
 		case  Select_CAN_NODE_4:
 		{
-			if(如果有新的数据)
+			if("你的代码")//判断CAN硬件4是否有数据到来
 			{
 				//你的代码，从CAN硬件4 中将数据读取后，存入 MsgPtr
 				return 1;
@@ -262,19 +256,7 @@ int J1939_CAN_Receive(J1939_MESSAGE *MsgPtr)
 	}
 	return 0;//没有消息
 }
-/*
-*输入：
-*输出： 
-*说明：地址竞争重新估算，设备在总线上要重新申请的地址。
-	  设备是固定地址的，不需要移植此函数。
-	  函数为各个厂家想申请的地址，如果默认地址没有申请成功
-	  则调用此函数，重新申请一个希望得到的地址，当然可能再一次
-	  申请不成功，所以函数可以返回多个不同的地址，一次返回一个
-*/
-j1939_int8_t  ECU_RecalculateAddress( unsigned char * Address)
-{
-	return 0;//没有生成新的地址，返回0
-}
+
 /*不使用中断模式，不对下面的函数进行移植*/
 #if J1939_POLL_ECAN == J1939_FALSE
 /*
