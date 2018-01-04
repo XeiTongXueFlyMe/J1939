@@ -288,6 +288,8 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 						TXTail_1 ++;
 						if (TXTail_1 >= J1939_TX_QUEUE_SIZE)
 							TXTail_1 = 0;
+					}else{
+						J1939_Flags.TransmitMessagesdCover = 1;//发送数据被覆盖，上一帧数据被覆盖
 					}
 					TXQueue_1[TXTail_1] = *MsgPtr;
 				}
@@ -306,6 +308,8 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 						TXTail_2 ++;
 						if (TXTail_2 >= J1939_TX_QUEUE_SIZE)
 							TXTail_2 = 0;
+					}else{
+						J1939_Flags.TransmitMessagesdCover = 1;//发送数据被覆盖，上一帧数据被覆盖
 					}
 					TXQueue_2[TXTail_2] = *MsgPtr;
 				}
@@ -324,6 +328,8 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 						TXTail_3 ++;
 						if (TXTail_3 >= J1939_TX_QUEUE_SIZE)
 							TXTail_3 = 0;
+					}else{
+						J1939_Flags.TransmitMessagesdCover = 1;//发送数据被覆盖，上一帧数据被覆盖
 					}
 					TXQueue_3[TXTail_3] = *MsgPtr;
 				}
@@ -342,6 +348,8 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 						TXTail_4 ++;
 						if (TXTail_4 >= J1939_TX_QUEUE_SIZE)
 							TXTail_4 = 0;
+					}else{
+						J1939_Flags.TransmitMessagesdCover = 1;//发送数据被覆盖，上一帧数据被覆盖
 					}
 					TXQueue_4[TXTail_4] = *MsgPtr;
 				}
@@ -735,11 +743,14 @@ if(OneMessage.Mxe.PDUFormat < 240){
 								RXTail_1 ++;
 								if (RXTail_1 >= J1939_RX_QUEUE_SIZE)
 									RXTail_1 = 0;
+							}else{
+								J1939_Flags.ReceivedMessagesdCover = 1; //产生数据覆盖
+								J1939_Flags.ReceivedMessagesdCoverOrDroppedNode = Select_CAN_NODE_1;
 							}
 							RXQueue_1[RXTail_1] = OneMessage;
 						}
 						else
-							J1939_Flags.ReceivedMessagesDropped = 1;
+							J1939_Flags.ReceivedMessagesDropped = 1; //产生数据溢出
 						break;
 					}
 					case  Select_CAN_NODE_2:
@@ -753,6 +764,9 @@ if(OneMessage.Mxe.PDUFormat < 240){
 								RXTail_2 ++;
 								if (RXTail_2 >= J1939_RX_QUEUE_SIZE)
 									RXTail_2 = 0;
+							}else{
+								J1939_Flags.ReceivedMessagesdCover = 1; //产生数据覆盖
+								J1939_Flags.ReceivedMessagesdCoverOrDroppedNode = Select_CAN_NODE_2;
 							}
 							RXQueue_2[RXTail_2] = OneMessage;
 						}
@@ -771,6 +785,9 @@ if(OneMessage.Mxe.PDUFormat < 240){
 								RXTail_3 ++;
 								if (RXTail_3 >= J1939_RX_QUEUE_SIZE)
 									RXTail_3 = 0;
+							}else{
+								J1939_Flags.ReceivedMessagesdCover = 1; //产生数据覆盖
+								J1939_Flags.ReceivedMessagesdCoverOrDroppedNode = Select_CAN_NODE_3;
 							}
 							RXQueue_3[RXTail_3] = OneMessage;
 						}
@@ -789,6 +806,9 @@ if(OneMessage.Mxe.PDUFormat < 240){
 								RXTail_4 ++;
 								if (RXTail_4 >= J1939_RX_QUEUE_SIZE)
 									RXTail_4 = 0;
+							}else{
+								J1939_Flags.ReceivedMessagesdCover = 1; //产生数据覆盖
+								J1939_Flags.ReceivedMessagesdCoverOrDroppedNode = Select_CAN_NODE_4;
 							}
 							RXQueue_4[RXTail_4] = OneMessage;
 						}

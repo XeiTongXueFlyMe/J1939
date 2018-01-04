@@ -302,18 +302,17 @@ union J1939_FLAGS_UNION
 { 
 	struct 
 	{ 
-		// j1939_uint32_t	CannotClaimAddress				: 1; 
-		// j1939_uint32_t	WaitingForAddressClaimContention: 1; 
-		// j1939_uint32_t	GettingCommandedAddress			: 1; 
-		// j1939_uint32_t	GotFirstDataPacket				: 1; 
-		j1939_uint32_t	ReceivedMessagesDropped			: 1;  
+		j1939_uint8_t	TransmitMessagesdCover				: 1;  //发送数据时，J1939协议接受缓存有数据覆盖
+		j1939_uint8_t	ReceivedMessagesdCoverOrDroppedNode	: 3;
+		j1939_uint8_t	ReceivedMessagesdCover				: 1;  //接受数据时，J1939协议接受缓存有数据覆盖
+		j1939_uint8_t	ReceivedMessagesDropped				: 1;  //接受数据时，J1939协议接受缓存有数据溢出
    }; 
 	  j1939_uint8_t		FlagVal; 
 }; 
 
 typedef union J1939_FLAGS_UNION J1939_FLAG; 
 
-/******************************************* API**************************************************************/
+/********************************************API**************************************************************/
 
 //初始化函数
 extern void 			J1939_Initialization( );
