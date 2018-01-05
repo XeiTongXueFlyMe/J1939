@@ -60,7 +60,7 @@ j1939_uint8_t                   J1939_Address;
 J1939_FLAG                      J1939_Flags;   
 J1939_MESSAGE                   OneMessage;   
 CAN_NODE                        Can_Node;
-//接受列队全局变量(CAN_NODE_1)
+//接受列队全局变量(CAN_NODE_1) 
 j1939_uint8_t                   RXHead_1;
 j1939_uint8_t                   RXTail_1;
 j1939_uint8_t                   RXQueueCount_1;
@@ -251,7 +251,7 @@ j1939_uint8_t J1939_DequeueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 */
 j1939_uint8_t J1939_Read_Message( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 {
-	J1939_DequeueMessage(MsgPtr,_Can_Node);
+	return 	J1939_DequeueMessage(MsgPtr,_Can_Node);
 }
 /**
 * @param[in]  MsgPtr     用户要入队的消息
@@ -381,7 +381,7 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 */
 j1939_uint8_t J1939_Send_Message( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 {
-	J1939_EnqueueMessage(MsgPtr,_Can_Node);
+	return	J1939_EnqueueMessage(MsgPtr,_Can_Node);
 }
 /**
 * 
