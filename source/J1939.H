@@ -102,7 +102,7 @@ typedef char           j1939_int8_t;    /** < 8位无符号整形*/
 #define J1939_TP_T3						1250 /**< 宏定义TP的超时时间*/
 #define J1939_TP_T4						1050 /**< 宏定义TP的超时时间*/
 #define J1939_TP_TIMEOUT_NORMAL			0    /**< 未超时正常*/
-#define J1939_TP_IMEOUT_ABNORMAL		1    /**< 超时*/
+#define J1939_TP_TIMEOUT_ABNORMAL		1    /**< 超时*/
 #define J1939_RTS_CONTROL_BYTE			16	 /**< TP.CM_RTS*/
 #define J1939_CTS_CONTROL_BYTE			17	 /**< TP.CM_CTS*/
 #define J1939_EOMACK_CONTROL_BYTE		19	 /**< 消息应答结束*/

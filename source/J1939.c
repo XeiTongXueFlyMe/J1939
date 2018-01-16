@@ -1162,7 +1162,7 @@ j1939_uint8_t J1939_TP_TX_RefreshCMTimer(j1939_uint16_t dt_ms)
 		{
 			/*超时 */
 			TP_TX_MSG.time = 0u;
-			return  J1939_TP_IMEOUT_ABNORMAL;
+			return  J1939_TP_TIMEOUT_ABNORMAL;
 		}
 
 	}
@@ -1187,7 +1187,7 @@ j1939_uint8_t J1939_TP_RX_RefreshCMTimer(j1939_uint16_t dt_ms)
 		{
 			/*超时 */
 			TP_RX_MSG.time = 0u;
-			return  J1939_TP_IMEOUT_ABNORMAL;
+			return  J1939_TP_TIMEOUT_ABNORMAL;
 		}
 
 	}
@@ -1298,7 +1298,7 @@ void J1939_TP_Poll()
 			break;
 		case J1939_TP_RX_DATA_WAIT:
 			/*等待TP.DT帧传输的消息*/
-			if(J1939_TP_IMEOUT_ABNORMAL == J1939_TP_RX_RefreshCMTimer(10))
+			if(J1939_TP_TIMEOUT_ABNORMAL == J1939_TP_RX_RefreshCMTimer(10))
 			{
 				/* 等待超时，发生连接异常，跳转到异常步骤 */
 				TP_RX_MSG.state = J1939_TP_RX_ERROR;
@@ -1334,7 +1334,7 @@ void J1939_TP_Poll()
 				break;
 			case J1939_TP_TX_CM_WAIT:
 	    		/*等待TP.CM_CTS帧传输的消息*/
-				if(J1939_TP_IMEOUT_ABNORMAL == J1939_TP_TX_RefreshCMTimer(10))
+				if(J1939_TP_TIMEOUT_ABNORMAL == J1939_TP_TX_RefreshCMTimer(10))
 				{
 					/* 等待超时，发生连接异常，跳转到异常步骤 */
 					TP_TX_MSG.state = J1939_TP_TX_ERROR;
@@ -1345,7 +1345,7 @@ void J1939_TP_Poll()
 	    		break;
 	        case J1939_TP_WAIT_ACK:
 	        	/*等待TP.EndofMsgACK帧传输的消息*/
-				if(J1939_TP_IMEOUT_ABNORMAL == J1939_TP_TX_RefreshCMTimer(10))
+				if(J1939_TP_TIMEOUT_ABNORMAL == J1939_TP_TX_RefreshCMTimer(10))
 				{
 					/* 等待超时，发生连接异常，跳转到异常步骤 */
 					TP_TX_MSG.state = J1939_TP_TX_ERROR;
