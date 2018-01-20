@@ -61,7 +61,7 @@ extern CAN_NODE   Can_Node;   //CAN硬件选择
 //是否使用轮询模式（否则使用中断模式）
 #define J1939_POLL_ECAN J1939_TRUE
 //是否启用软件滤波器
-#define J1939SoftwareFilterEn J1939_FALSE
+#define J1939SoftwareFilterEn J1939_TRUE
 /******************************J1939移植配置函数************************/
 
 #define Port_CAN_Transmit(MsgPtr) J1939_CAN_Transmit(MsgPtr)

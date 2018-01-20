@@ -60,6 +60,11 @@ j1939_uint8_t                   J1939_Address;
 J1939_FLAG                      J1939_Flags;   
 J1939_MESSAGE                   OneMessage;   
 CAN_NODE                        Can_Node;
+//节点地址
+j1939_uint8_t					NodeAddress_1;
+j1939_uint8_t					NodeAddress_2;
+j1939_uint8_t					NodeAddress_3;
+j1939_uint8_t					NodeAddress_4;
 //接受列队全局变量(CAN_NODE_1) 
 j1939_uint8_t                   RXHead_1;
 j1939_uint8_t                   RXTail_1;
@@ -115,19 +120,39 @@ static void 		    J1939_ReceiveMessages( void );
 static j1939_uint8_t 	J1939_TransmitMessages( void );
 
 /**
-* @note  初始化软件滤波器变量\n
-*/
-#if J1939SoftwareFilterEn == J1939_TRUE
-j1939_uint8_t softwaerFilter = 0;
-#endif//J1939SoftwareFilterEn
-/**
 * @note  硬件滤波器2 或 软件滤波器  滤波配置（设置PS段）\n
 */
 void SetAddressFilter( j1939_uint8_t Address )   
 {   
 	/*软件滤波*/
 #if J1939SoftwareFilterEn == J1939_TRUE
-	softwaerFilter = Address;
+	switch (Can_Node)
+	{
+		case  Select_CAN_NODE_1:
+		{
+			NodeAddress_1 = Address;
+			break;
+		}
+		case  Select_CAN_NODE_2:
+		{
+			NodeAddress_2 = Address;
+			break;
+		}
+		case  Select_CAN_NODE_3:
+		{
+			NodeAddress_3 = Address;
+			break;
+		}
+		case  Select_CAN_NODE_4:
+		{
+			NodeAddress_4 = Address;
+			break;
+		}
+		default  :
+		{
+			break;
+		}
+	}
 #endif//J1939SoftwareFilterEn
 	/*硬件滤波*/
 	Port_SetAddressFilter(Address);
@@ -418,6 +443,11 @@ void J1939_Initialization()
     RXQueueCount_2 = 0;
     RXQueueCount_3 = 0;
     RXQueueCount_4 = 0;
+	/*初始化节点地址*/
+	NodeAddress_1 = J1939_STARTING_ADDRESS_1;
+	NodeAddress_2 = J1939_STARTING_ADDRESS_2;
+	NodeAddress_3 = J1939_STARTING_ADDRESS_3;
+	NodeAddress_4 = J1939_STARTING_ADDRESS_4;
     /*初始化CAN节点的选择*/
     Can_Node = Select_CAN_NODE_1;
     /*初始化请求链表*/
@@ -488,19 +518,19 @@ void J1939_Poll( )
     //我们必须调用J1939_ReceiveMessages接受函数，在时间被重置为0之前。
 #if J1939_POLL_ECAN == J1939_TRUE
     	Can_Node = Select_CAN_NODE_1;
-    	J1939_Address = J1939_STARTING_ADDRESS_1;
+    	J1939_Address = NodeAddress_1;
         J1939_ReceiveMessages();
         J1939_TransmitMessages();
     	Can_Node = Select_CAN_NODE_2;
-    	J1939_Address = J1939_STARTING_ADDRESS_2;
+    	J1939_Address = NodeAddress_2;
         J1939_ReceiveMessages();
         J1939_TransmitMessages();
     	Can_Node = Select_CAN_NODE_3;
-    	J1939_Address = J1939_STARTING_ADDRESS_3;
+    	J1939_Address = NodeAddress_3;
         J1939_ReceiveMessages();
         J1939_TransmitMessages();
     	Can_Node = Select_CAN_NODE_4;
-        J1939_Address = J1939_STARTING_ADDRESS_4;
+        J1939_Address = NodeAddress_4;
         J1939_ReceiveMessages();
         J1939_TransmitMessages();
 #if J1939_TP_RX_TX
@@ -533,12 +563,46 @@ j1939_uint8_t J1939_Messages_Filter(J1939_MESSAGE *MsgPtr)
     {
         return RC_SUCCESS;
     }
-    /*滤波器2*/
-    if(((MsgPtr->Mxe.PDUFormat) < 240) && (MsgPtr->Mxe.PDUSpecific == softwaerFilter))
-    {
-        return RC_SUCCESS;
-    }
-
+	/*滤波器2*/
+	switch (Can_Node)
+	{
+		case  Select_CAN_NODE_1:
+		{
+			if(((MsgPtr->Mxe.PDUFormat) < 240) && (MsgPtr->Mxe.PDUSpecific == NodeAddress_1))
+			{
+				return RC_SUCCESS;
+			}
+			break;
+		}
+		case  Select_CAN_NODE_2:
+		{
+			if(((MsgPtr->Mxe.PDUFormat) < 240) && (MsgPtr->Mxe.PDUSpecific == NodeAddress_2))
+			{
+				return RC_SUCCESS;
+			}
+			break;
+		}
+		case  Select_CAN_NODE_3:
+		{
+			if(((MsgPtr->Mxe.PDUFormat) < 240) && (MsgPtr->Mxe.PDUSpecific == NodeAddress_3))
+			{
+				return RC_SUCCESS;
+			}
+			break;
+		}
+		case  Select_CAN_NODE_4:
+		{
+			if(((MsgPtr->Mxe.PDUFormat) < 240) && (MsgPtr->Mxe.PDUSpecific == NodeAddress_4))
+			{
+				return RC_SUCCESS;
+			}
+			break;
+		}
+		default  :
+		{
+			break;
+		}
+	}
     return RC_CANNOTTRANSMIT;
 }
 
@@ -856,7 +920,7 @@ static j1939_uint8_t J1939_TransmitMessages()
 		            /*确保上次数据发送成功*/
 		            /**************可增加一个判断函数**************************/
 
-		        	TXQueue_1[TXHead_1].Mxe.SourceAddress = J1939_STARTING_ADDRESS_1;
+		        	TXQueue_1[TXHead_1].Mxe.SourceAddress = NodeAddress_1;
 
 		            SendOneMessage( (J1939_MESSAGE *) &(TXQueue_1[TXHead_1]) );
 		            TXHead_1 ++;
@@ -890,7 +954,7 @@ static j1939_uint8_t J1939_TransmitMessages()
 					/*确保上次数据发送成功*/
 					/**************可增加一个判断函数**************************/
 
-					TXQueue_2[TXHead_2].Mxe.SourceAddress = J1939_STARTING_ADDRESS_2;
+					TXQueue_2[TXHead_2].Mxe.SourceAddress = NodeAddress_2;
 
 					SendOneMessage( (J1939_MESSAGE *) &(TXQueue_2[TXHead_2]) );
 					TXHead_2 ++;
@@ -923,7 +987,7 @@ static j1939_uint8_t J1939_TransmitMessages()
 					/*确保上次数据发送成功*/
 					/**************可增加一个判断函数**************************/
 
-					TXQueue_3[TXHead_3].Mxe.SourceAddress = J1939_STARTING_ADDRESS_3;
+					TXQueue_3[TXHead_3].Mxe.SourceAddress = NodeAddress_3;
 
 					SendOneMessage( (J1939_MESSAGE *) &(TXQueue_3[TXHead_3]) );
 					TXHead_3 ++;
@@ -957,7 +1021,7 @@ static j1939_uint8_t J1939_TransmitMessages()
 					/*确保上次数据发送成功*/
 					/**************可增加一个判断函数**************************/
 
-					TXQueue_4[TXHead_4].Mxe.SourceAddress = J1939_STARTING_ADDRESS_4;
+					TXQueue_4[TXHead_4].Mxe.SourceAddress = NodeAddress_4;
 
 					SendOneMessage( (J1939_MESSAGE *) &(TXQueue_4[TXHead_4]) );
 					TXHead_4 ++;
