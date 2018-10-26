@@ -310,14 +310,14 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 				{
 					if (TXQueueCount_1 < J1939_TX_QUEUE_SIZE)
 					{
-						TXQueueCount_1 ++;
-						TXTail_1 ++;
+						TXQueueCount_1 ++;						
 						if (TXTail_1 >= J1939_TX_QUEUE_SIZE)
 							TXTail_1 = 0;
 					}else{
 						J1939_Flags.TransmitMessagesdCover = 1;//发送数据被覆盖，上一帧数据被覆盖
 					}
 					TXQueue_1[TXTail_1] = *MsgPtr;
+					TXTail_1 ++;
 				}
 				else
 					_rc = RC_QUEUEFULL;
@@ -330,14 +330,14 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 				{
 					if (TXQueueCount_2 < J1939_TX_QUEUE_SIZE)
 					{
-						TXQueueCount_2 ++;
-						TXTail_2 ++;
+						TXQueueCount_2 ++;						
 						if (TXTail_2 >= J1939_TX_QUEUE_SIZE)
 							TXTail_2 = 0;
 					}else{
 						J1939_Flags.TransmitMessagesdCover = 1;//发送数据被覆盖，上一帧数据被覆盖
 					}
 					TXQueue_2[TXTail_2] = *MsgPtr;
+					TXTail_2 ++;
 				}
 				else
 					_rc = RC_QUEUEFULL;
@@ -350,14 +350,14 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 				{
 					if (TXQueueCount_3 < J1939_TX_QUEUE_SIZE)
 					{
-						TXQueueCount_3 ++;
-						TXTail_3 ++;
+						TXQueueCount_3 ++;						
 						if (TXTail_3 >= J1939_TX_QUEUE_SIZE)
 							TXTail_3 = 0;
 					}else{
 						J1939_Flags.TransmitMessagesdCover = 1;//发送数据被覆盖，上一帧数据被覆盖
 					}
 					TXQueue_3[TXTail_3] = *MsgPtr;
+					TXTail_3 ++;
 				}
 				else
 					_rc = RC_QUEUEFULL;
@@ -370,14 +370,14 @@ j1939_uint8_t J1939_EnqueueMessage( J1939_MESSAGE *MsgPtr, CAN_NODE  _Can_Node)
 				{
 					if (TXQueueCount_4 < J1939_TX_QUEUE_SIZE)
 					{
-						TXQueueCount_4 ++;
-						TXTail_4 ++;
+						TXQueueCount_4 ++;						
 						if (TXTail_4 >= J1939_TX_QUEUE_SIZE)
 							TXTail_4 = 0;
 					}else{
 						J1939_Flags.TransmitMessagesdCover = 1;//发送数据被覆盖，上一帧数据被覆盖
 					}
 					TXQueue_4[TXTail_4] = *MsgPtr;
+					TXTail_4 ++;
 				}
 				else
 					_rc = RC_QUEUEFULL;
