@@ -201,7 +201,8 @@ void J1939_Initialization(void)
     J1939_Flags.FlagVal = 0; /* 没有声明地址，其他的标识位将被设置为0（复位） */
 
     /* 初始化接受和发送队列 */
-    for (j1939_uint8_t i = 0; i < J1939_NODE_NUM; i++)
+    j1939_uint8_t i;
+    for (i = 0; i < J1939_NODE_NUM; i++)
     {
         TXHead[i] = 0;
         TXTail[i] = 0xFF;
