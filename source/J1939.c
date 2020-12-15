@@ -47,7 +47,7 @@ static void J1939_TP_Poll(void);
 #endif /* J1939_TP_RX_TX */
 
 static void J1939_ReceiveMessages(void);
-static j1939_uint8_t J1939_TransmitMessages(void);
+static J1939_Status_t J1939_TransmitMessages(void);
 static void J1939_Response(const j1939_uint32_t PGN);
 
 /**
