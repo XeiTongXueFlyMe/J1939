@@ -1,6 +1,7 @@
+#include <stdlib.h>
+
 #include "J1939.h"
 #include "J1939_Config.h"
-#include <stdlib.h>
 
 #define ADDRESS_CLAIM_TX   1    /**< 进入地址竞争发送处理模式*/
 #define ADDRESS_CLAIM_RX   2    /**< 进入地址竞争接受处理模式*/
@@ -513,16 +514,15 @@ void J1939_ReceiveMessages(void)
 #if J1939_TP_RX_TX
 PutInReceiveQueue: {
                     /*
-                     if(OneMessage.Mxe.PDUFormat < 240){
-                     OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
-                     +(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
-                     +0x00;
-                     }else{
-                     OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
-                     +(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
-                     +(j1939_uint32_t)((OneMessage.Array[2])&0xFF);
-                     }
-                     */
+                    if (OneMessage.Mxe.PDUFormat < 240) {
+                        OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0] << 16) & 0x030000)
+                                             + (j1939_uint32_t)((OneMessage.Array[1] << 8) & 0xFF00)
+                                             + 0x00;
+                    } else {
+                        OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0] << 16) & 0x030000)
+                                             + (j1939_uint32_t)((OneMessage.Array[1] << 8) & 0xFF00)
+                                             + (j1939_uint32_t)((OneMessage.Array[2]) & 0xFF);
+                    } */
                     if (OneMessage.Mxe.PDUFormat < 240) {
                         OneMessage.Mxe.PGN = (OneMessage.Mxe.Res << 17)
                                              + (OneMessage.Mxe.DataPage << 16)
