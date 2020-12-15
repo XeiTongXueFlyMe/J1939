@@ -1,4 +1,4 @@
-﻿#include "J1939.h"
+#include "J1939.h"
 #include "J1939_Config.h"
 #include <stdlib.h>
 

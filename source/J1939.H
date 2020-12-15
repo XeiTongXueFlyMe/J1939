@@ -1,4 +1,4 @@
-﻿#ifndef __J1939_H
+#ifndef __J1939_H
 #define __J1939_H
 
 #include <stdint.h>

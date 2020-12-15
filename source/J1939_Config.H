@@ -1,4 +1,4 @@
-﻿#ifndef __J1939_Config_H
+#ifndef __J1939_Config_H
 #define __J1939_Config_H
 
 #include "J1939.h"
