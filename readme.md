@@ -1,4 +1,4 @@
-# 简述
+# 简述 <a title="Hits" target="_blank" href="https://github.com/SummerFalls/J1939"><img src="https://hits.b3log.org/SummerFalls/J1939.svg"></a>
 
 1. 源代码下载：
    > <https://github.com/XeiTongXueFlyMe/J1939>
