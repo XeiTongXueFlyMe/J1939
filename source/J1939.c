@@ -1,6 +1,7 @@
-﻿#include "J1939.h"
-#include "J1939_Config.h"
 #include <stdlib.h>
+
+#include "J1939.h"
+#include "J1939_Config.h"
 
 #define ADDRESS_CLAIM_TX   1    /**< 进入地址竞争发送处理模式*/
 #define ADDRESS_CLAIM_RX   2    /**< 进入地址竞争接受处理模式*/
@@ -47,7 +48,7 @@ static void J1939_TP_Poll(void);
 #endif /* J1939_TP_RX_TX */
 
 static void J1939_ReceiveMessages(void);
-static j1939_uint8_t J1939_TransmitMessages(void);
+static J1939_Status_t J1939_TransmitMessages(void);
 static void J1939_Response(const j1939_uint32_t PGN);
 
 /**
@@ -201,7 +202,8 @@ void J1939_Initialization(void)
     J1939_Flags.FlagVal = 0; /* 没有声明地址，其他的标识位将被设置为0（复位） */
 
     /* 初始化接受和发送队列 */
-    for (j1939_uint8_t i = 0; i < J1939_NODE_NUM; i++)
+    j1939_uint8_t i;
+    for (i = 0; i < J1939_NODE_NUM; i++)
     {
         TXHead[i] = 0;
         TXTail[i] = 0xFF;
@@ -512,16 +514,15 @@ void J1939_ReceiveMessages(void)
 #if J1939_TP_RX_TX
 PutInReceiveQueue: {
                     /*
-                     if(OneMessage.Mxe.PDUFormat < 240){
-                     OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
-                     +(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
-                     +0x00;
-                     }else{
-                     OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0]<<16)&0x030000)
-                     +(j1939_uint32_t)((OneMessage.Array[1]<<8)&0xFF00)
-                     +(j1939_uint32_t)((OneMessage.Array[2])&0xFF);
-                     }
-                     */
+                    if (OneMessage.Mxe.PDUFormat < 240) {
+                        OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0] << 16) & 0x030000)
+                                             + (j1939_uint32_t)((OneMessage.Array[1] << 8) & 0xFF00)
+                                             + 0x00;
+                    } else {
+                        OneMessage.Mxe.PGN = (j1939_uint32_t)((OneMessage.Array[0] << 16) & 0x030000)
+                                             + (j1939_uint32_t)((OneMessage.Array[1] << 8) & 0xFF00)
+                                             + (j1939_uint32_t)((OneMessage.Array[2]) & 0xFF);
+                    } */
                     if (OneMessage.Mxe.PDUFormat < 240) {
                         OneMessage.Mxe.PGN = (OneMessage.Mxe.Res << 17)
                                              + (OneMessage.Mxe.DataPage << 16)
